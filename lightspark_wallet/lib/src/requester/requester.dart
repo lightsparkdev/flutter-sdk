@@ -28,7 +28,7 @@ class Requester {
           },
         ),
         _authProvider = authProvider ?? StubAuthProvider() {
-    // TODO(Jeremy): Add websocket support.
+    // TODO(Jeremy): Add websocket/subscription support.
     _authLink = AuthLink(
       getToken: () => _authProvider.getAuthToken(),
       headerKey: _authProvider.authHeaderKey ?? 'Authorization',

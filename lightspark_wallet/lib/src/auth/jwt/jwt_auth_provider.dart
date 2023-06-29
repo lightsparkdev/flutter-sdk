@@ -1,4 +1,5 @@
 import 'package:lightspark_wallet/src/auth/jwt/jwt_storage.dart';
+import 'package:lightspark_wallet/src/auth/jwt/jwt_token_info.dart';
 
 import '../auth_provider.dart';
 
@@ -9,6 +10,14 @@ class JwtAuthProvider implements AuthProvider {
 
   @override
   String? get authHeaderKey => 'Authorization';
+
+  Future<void> setTokenInfo(JwtTokenInfo tokenInfo) async {
+    await _jwtStorage.saveToken(tokenInfo);
+  }
+
+  Future<void> logout() async {
+    await _jwtStorage.deleteToken();
+  }
 
   @override
   Future<String?> getAuthToken() async {

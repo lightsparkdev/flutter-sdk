@@ -45,11 +45,25 @@ class SharedPreferencesJwtStorage implements JwtStorage {
     if (tokenStr == null) {
       return null;
     }
-    return jsonDecode(tokenStr);
+    return _jwtTokenInfoFromJson(tokenStr);
   }
 
   @override
   Future<void> saveToken(JwtTokenInfo token) async {
-    (await _sharedPreferences).setString('jwt_token', jsonEncode(token));
+    (await _sharedPreferences).setString('jwt_token', token.toJson());
   }
+}
+
+extension on JwtTokenInfo {
+  String toJson() {
+    return '{ "accessToken": "$accessToken", "validUntil": "${validUntil.toIso8601String()}" }';
+  }
+}
+
+JwtTokenInfo _jwtTokenInfoFromJson(String json) {
+  final decoded = jsonDecode(json);
+  return (
+    accessToken: decoded['accessToken'],
+    validUntil: DateTime.parse(decoded['validUntil']),
+  );
 }
