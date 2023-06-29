@@ -58,4 +58,4 @@ query WalletDashboard(
 ${Transaction.fragment}
 ${Balances.fragment}
 ${PaymentRequest.fragment}
-`;
+''';

@@ -10,8 +10,8 @@ class Query<T> {
   /// The function that will be called to construct the object from the response. *
   final T Function(Map<String, dynamic>) constructObject;
 
-  /// The id of the node that will be used to sign the query. *
-  final String? signingNodeId;
+  /// True if this operation must be signed with the wallet's signing key.
+  final bool isSignedOp;
 
   /// True if auth headers should be omitted for this query. *
   final bool skipAuth;
@@ -20,7 +20,7 @@ class Query<T> {
     this.queryPayload,
     this.constructObject, {
     this.variables = const <String, Object>{},
-    this.signingNodeId,
+    this.isSignedOp = false,
     this.skipAuth = false,
   });
 }

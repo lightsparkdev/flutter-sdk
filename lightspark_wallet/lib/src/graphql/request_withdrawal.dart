@@ -8,8 +8,8 @@ const RequestWithdrawalMutation = '''
     \$bitcoin_address: String!
   ) {
     request_withdrawal(input: {
-        amount_sats: $amount_sats
-        bitcoin_address: $bitcoin_address
+        amount_sats: \$amount_sats
+        bitcoin_address: \$bitcoin_address
     }) {
         request {
             ...WithdrawalRequestFragment
