@@ -3,9 +3,9 @@
 import './on_chain_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import './transaction_status.dart';
 import './currency_amount.dart';
 import '../requester/query.dart';
+import './transaction_status.dart';
 
 /// The transaction on Bitcoin blockchain to open a channel on Lightning Network funded by the local Lightspark node.
 class ChannelOpeningTransaction

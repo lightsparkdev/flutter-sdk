@@ -1,12 +1,12 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './entity.dart';
-import './transaction_type.dart';
-import './wallet_status.dart';
 import './wallet_to_transactions_connection.dart';
-import './wallet_to_payment_requests_connection.dart';
 import './transaction_status.dart';
+import './wallet_status.dart';
+import './wallet_to_payment_requests_connection.dart';
 import './balances.dart';
+import './transaction_type.dart';
 import "../lightspark_wallet_client.dart";
 import '../requester/query.dart';
 
