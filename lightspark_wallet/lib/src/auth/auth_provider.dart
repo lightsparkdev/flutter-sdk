@@ -1,4 +1,4 @@
-abstract class AuthProvider {
+abstract interface class AuthProvider {
   Future<String?> getAuthToken();
   String? get authHeaderKey;
   Future<bool> isAuthorized();

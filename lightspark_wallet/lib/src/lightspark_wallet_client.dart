@@ -1,3 +1,5 @@
+import 'package:fast_rsa/fast_rsa.dart';
+import 'package:lightspark_wallet/src/crypto/node_key_cache.dart';
 import 'package:lightspark_wallet/src/graphql/lightning_fee_estimate_for_invoice.dart';
 import 'package:lightspark_wallet/src/graphql/lightning_fee_estimate_for_node.dart';
 import 'package:lightspark_wallet/src/objects/objects.dart';
@@ -14,6 +16,7 @@ import 'graphql/create_test_mode_payment.dart';
 import 'graphql/current_wallet.dart';
 import 'graphql/decode_invoice.dart';
 import 'graphql/deploy_wallet.dart';
+import 'graphql/initialize_wallet.dart';
 import 'graphql/login_with_jwt.dart';
 import 'graphql/pay_invoice.dart';
 import 'graphql/request_withdrawal.dart';
@@ -25,19 +28,22 @@ import 'requester/query.dart';
 import 'requester/requester.dart';
 
 class LightsparkWalletClient {
-  Requester _requester;
+  late Requester _requester;
   AuthProvider _authProvider;
   final String _serverUrl;
+  final NodeKeyCache _nodeKeyCache = NodeKeyCache();
 
   LightsparkWalletClient({
     AuthProvider? authProvider,
     String serverUrl = "api.lightspark.com",
   })  : _serverUrl = serverUrl,
-        _requester = Requester(
-          baseUrl: serverUrl,
-          authProvider: authProvider,
-        ),
-        _authProvider = authProvider ?? StubAuthProvider();
+        _authProvider = authProvider ?? StubAuthProvider() {
+    _requester = Requester(
+      _nodeKeyCache,
+      baseUrl: serverUrl,
+      authProvider: authProvider,
+    );
+  }
 
   Future<bool> isAuthorized() async {
     return await _authProvider.isAuthorized();
@@ -46,6 +52,7 @@ class LightsparkWalletClient {
   void setAuthProvider(AuthProvider authProvider) {
     _authProvider = authProvider;
     _requester = Requester(
+      _nodeKeyCache,
       baseUrl: _serverUrl,
       authProvider: authProvider,
     );
@@ -135,24 +142,99 @@ class LightsparkWalletClient {
   }
 
   Future<WalletStatus> _waitForWalletStatus(
-    List<WalletStatus> statuses,
-  ) async {
+    List<WalletStatus> statuses, {
+    int timeoutSecs = 60,
+  }) async {
     // TODO(Jeremy): Switch to subscription.
     var wallet = await getCurrentWallet();
-    while (!statuses.contains(wallet?.status)) {
-      await Future.delayed(const Duration(seconds: 2));
+    const delayIncrementSec = 2;
+    var totalDelay = 0;
+    while (!statuses.contains(wallet?.status) && totalDelay < timeoutSecs) {
+      await Future.delayed(const Duration(seconds: delayIncrementSec));
+      totalDelay += delayIncrementSec;
       wallet = await getCurrentWallet();
     }
     if (statuses.contains(wallet?.status)) {
       return wallet!.status;
     }
+
     throw LightsparkException(
       "WalletStatusAwaitError",
       "Wallet status subscription completed without receiving a status update.",
     );
   }
 
-  // TODO(Jeremy): Add initialize wallet.
+  /// Initializes a wallet in the Lightspark infrastructure and syncs it to the Bitcoin network. This is an
+  /// asynchronous operation, the caller should then poll the wallet frequently (or subscribe to its modifications).
+  /// When this process is over, the Wallet status will change to `READY` (or `FAILED`).
+  ///
+  /// [keyType] The type of key to use for the wallet.
+  /// [signingPublicKey] The base64-encoded public key to use for signing transactions.
+  /// [signingPrivateKey] An object containing either the base64-encoded private key. The key will be
+  ///     used for signing transactions. This key will not leave the device. It is only used for
+  ///     signing transactions locally.
+  /// Returns the [Wallet] that was initialized.
+  Future<Wallet> initializeWallet(
+    KeyType keyType,
+    String signingPublicKey,
+    String signingPrivateKey,
+  ) async {
+    await _requireValidAuth();
+    loadWalletSigningKey(signingPublicKey, signingPrivateKey);
+    return await executeRawQuery(Query(
+      InitializeWallet,
+      (responseJson) =>
+          InitializeWalletOutput.fromJson(responseJson["initialize_wallet"])
+              .wallet,
+      variables: {
+        "key_type": keyType,
+        "signing_public_key": signingPublicKey,
+      },
+      isSignedOp: true,
+    ));
+  }
+
+  /// Initializes a wallet in the Lightspark infrastructure and syncs it to the Bitcoin network.
+  /// This is an asynchronous operation, which will continue processing wallet status updates until
+  /// the Wallet status changes to [WalletStatus.READY] (or [WalletStatus.FAILED]).
+  ///
+  /// [keyType] The type of key to use for the wallet.
+  /// [signingPublicKey] The base64-encoded public key to use for signing transactions.
+  /// [signingPrivateKey] An object containing either the base64-encoded private key. The key will be
+  ///     used for signing transactions. This key will not leave the device. It is only used for
+  ///     signing transactions locally.
+  /// Returns a [Future] with the final wallet status after initialization or failure.
+  /// Throws a [LightsparkException] if the wallet status is not [WalletStatus.READY] or
+  ///     [WalletStatus.FAILED] after 5 minutes, or if the subscription fails.
+  Future<WalletStatus> initializeWalletAndAwaitReady(
+    KeyType keyType,
+    String signingPublicKey,
+    String signingPrivateKey,
+  ) async {
+    final wallet = await initializeWallet(
+      keyType,
+      signingPublicKey,
+      signingPrivateKey,
+    );
+    if (wallet.status == WalletStatus.READY ||
+        wallet.status == WalletStatus.FAILED) {
+      return wallet.status;
+    }
+    return await _waitForWalletStatus(
+      [WalletStatus.READY, WalletStatus.FAILED],
+      timeoutSecs: 300,
+    );
+  }
+
+  /// Unlocks the wallet for use with the SDK for the current application session. This function
+  /// must be called before any other functions that require wallet signing keys, including [payInvoice].
+  ///
+  /// This function is intended for use in cases where the wallet's private signing key is already saved by the
+  /// application outside of the SDK. It is the responsibility of the application to ensure that the key is valid and
+  /// that it is the correct key for the wallet. Otherwise signed requests will fail.
+  void loadWalletSigningKey(String publicKey, String privateKey) {
+    _nodeKeyCache.setKeyPair(KeyPair(publicKey, privateKey));
+  }
 
   /// Removes the wallet from Lightspark infrastructure. It won't be connected to the Lightning network anymore and
   /// its funds won't be accessible outside of the Funds Recovery Kit process.
@@ -424,8 +506,8 @@ class LightsparkWalletClient {
     }
     if (!completionStatuses.contains(payment.status)) {
       throw LightsparkException(
-        "WalletStatusAwaitError",
-        "Wallet status subscription completed without receiving a status update.",
+        "PaymentTimeoutError",
+        "Payment did not complete before the timeout of $timeoutSecs seconds.",
       );
     }
     return payment;

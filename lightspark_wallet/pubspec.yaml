@@ -8,6 +8,8 @@ environment:
   flutter: ">=3.3.0"
 
 dependencies:
+  crypto: ^3.0.3
+  fast_rsa: ^3.5.7
   flutter:
     sdk: flutter
   gql: ^0.14.0
