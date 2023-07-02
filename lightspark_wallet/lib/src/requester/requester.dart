@@ -73,6 +73,7 @@ class Requester {
               variables: query.variables,
               context: Context.fromList([
                 NeedsSignature(query.isSignedOp),
+                SkipAuth(query.skipAuth),
               ]),
             ),
           )
@@ -83,6 +84,7 @@ class Requester {
               variables: query.variables,
               context: Context.fromList([
                 NeedsSignature(query.isSignedOp),
+                SkipAuth(query.skipAuth),
               ]),
             ),
           );
@@ -94,6 +96,14 @@ class Requester {
     }
     return query.constructObject(result.data!);
   }
+}
+
+class SkipAuth extends ContextEntry {
+  final bool skipAuth;
+  const SkipAuth(this.skipAuth);
+
+  @override
+  List<Object?> get fieldsForEquality => [skipAuth];
 }
 
 class NeedsSignature extends ContextEntry {
@@ -112,6 +122,13 @@ class SigningSerializer extends RequestSerializer {
   @override
   Map<String, dynamic> serializeRequest(Request request) {
     final body = super.serializeRequest(request);
+    
+    final skipAuth = request.context.entry<SkipAuth>()?.skipAuth ?? false;
+    if (skipAuth) {
+      request.updateContextEntry<HttpLinkHeaders>((entry) => entry!
+        ..headers.remove('Authorization'));
+    }
+
     final needsSignature =
         request.context.entry<NeedsSignature>()?.needsSignature ?? false;
     if (!needsSignature) {
@@ -138,7 +155,8 @@ class SigningSerializer extends RequestSerializer {
       'signature': signature,
       'v': 1,
     });
-    request.context.updateEntry<HttpLinkHeaders>((entry) => entry!
+
+    request.updateContextEntry<HttpLinkHeaders>((entry) => entry!
       ..headers.addAll({
         'X-Lightspark-Signing': signatureJson,
       }));

@@ -262,27 +262,22 @@ class LightsparkWalletClient {
       WalletDashboardQuery,
       (responseJson) {
         final currentWallet = responseJson["current_wallet"];
-        if (!currentWallet) {
+        if (currentWallet == null) {
           return null;
         }
         return WalletDashboard(
-          id: currentWallet.id,
-          status: currentWallet.status as WalletStatus,
-          balances: currentWallet.balances != null
-              ? Balances.fromJson(currentWallet.balances)
+          id: currentWallet["id"],
+          status: WalletStatus.values.asNameMap()[currentWallet["status"]] ??
+              WalletStatus.FUTURE_VALUE,
+          balances: currentWallet["balances"] != null
+              ? Balances.fromJson(currentWallet["balances"])
               : null,
-          recentTransactions: currentWallet.recent_transactions
-                  ?.wallet_to_transactions_connection_entities
-                  ?.map(
-                (tx) => Transaction.fromJson(tx),
-              ) ??
-              [],
-          paymentRequests: currentWallet.payment_requests
-                  ?.wallet_to_payment_requests_connection_entities
-                  ?.map(
-                (pr) => PaymentRequest.fromJson(pr),
-              ) ??
-              [],
+          recentTransactions: WalletToTransactionsConnection.fromJson(
+            currentWallet["recent_transactions"],
+          ),
+          paymentRequests: WalletToPaymentRequestsConnection.fromJson(
+            currentWallet["payment_requests"],
+          ),
         );
       },
       variables: {

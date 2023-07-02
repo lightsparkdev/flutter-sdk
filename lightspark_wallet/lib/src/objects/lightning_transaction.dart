@@ -2,15 +2,15 @@
 
 import './transaction.dart';
 import './entity.dart';
-import './currency_amount.dart';
-import './incoming_payment.dart';
-import './rich_text.dart';
-import './outgoing_payment.dart';
 import './payment_request_data.dart';
-import '../lightspark_exception.dart';
 import './transaction_status.dart';
 import '../requester/query.dart';
+import './currency_amount.dart';
+import '../lightspark_exception.dart';
+import './rich_text.dart';
+import './incoming_payment.dart';
 import './payment_failure_reason.dart';
+import './outgoing_payment.dart';
 
 class LightningTransaction implements Transaction, Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.

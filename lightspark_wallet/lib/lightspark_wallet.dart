@@ -8,6 +8,7 @@ export 'src/auth/auth_provider.dart' show AuthProvider;
 export 'src/auth/jwt/jwt_auth_provider.dart' show JwtAuthProvider;
 export 'src/auth/jwt/jwt_storage.dart' show JwtStorage, InMemoryJwtStorage, SharedPreferencesJwtStorage;
 export 'src/crypto/crypto.dart' show getNonce;
+export 'src/objects/objects.dart';
 
 class LightsparkWallet {
   Future<String?> getPlatformVersion() {

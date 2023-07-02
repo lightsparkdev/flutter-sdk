@@ -2,8 +2,8 @@
 
 import './payment_request_data.dart';
 import './currency_amount.dart';
-import './graph_node.dart';
 import './bitcoin_network.dart';
+import './graph_node.dart';
 
 /// This object represents the BOLT #11 invoice protocol for Lightning Payments. See https://github.com/lightning/bolts/blob/master/11-payment-encoding.md.
 class InvoiceData implements PaymentRequestData {

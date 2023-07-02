@@ -1,19 +1,19 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './entity.dart';
-import './currency_amount.dart';
-import './incoming_payment.dart';
-import './channel_closing_transaction.dart';
-import './rich_text.dart';
-import './outgoing_payment.dart';
 import './payment_request_data.dart';
-import './withdrawal.dart';
-import '../lightspark_exception.dart';
 import './transaction_status.dart';
-import './channel_opening_transaction.dart';
 import '../requester/query.dart';
-import './payment_failure_reason.dart';
+import './withdrawal.dart';
+import './currency_amount.dart';
+import '../lightspark_exception.dart';
+import './rich_text.dart';
 import './deposit.dart';
+import './incoming_payment.dart';
+import './payment_failure_reason.dart';
+import './channel_opening_transaction.dart';
+import './channel_closing_transaction.dart';
+import './outgoing_payment.dart';
 
 class Transaction implements Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.

@@ -2,14 +2,14 @@
 
 import './transaction.dart';
 import './entity.dart';
-import './currency_amount.dart';
-import './channel_closing_transaction.dart';
-import './withdrawal.dart';
-import '../lightspark_exception.dart';
 import './transaction_status.dart';
-import './channel_opening_transaction.dart';
 import '../requester/query.dart';
+import './withdrawal.dart';
+import './currency_amount.dart';
+import '../lightspark_exception.dart';
 import './deposit.dart';
+import './channel_opening_transaction.dart';
+import './channel_closing_transaction.dart';
 
 /// Transaction happened on Bitcoin blockchain.
 class OnChainTransaction implements Transaction, Entity {

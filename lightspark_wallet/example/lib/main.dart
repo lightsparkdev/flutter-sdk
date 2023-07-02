@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:lightspark_wallet/lightspark_wallet.dart';
+import 'package:lightspark_wallet_example/src/screens/login_screen.dart';
+import 'package:provider/provider.dart';
+
+import 'src/model/lightspark_client_notifier.dart';
+import 'src/screens/home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => LightsparkClientNotifier(
+        LightsparkWalletClient(
+          authProvider: JwtAuthProvider(SharedPreferencesJwtStorage()),
+        ),
+      ),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -16,115 +29,77 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  final _lightsparkWalletPlugin = LightsparkWallet();
-  final client = LightsparkWalletClient();
-  int nonce = getNonce();
-  final _accountTextController = TextEditingController();
-  final _jwtTextController = TextEditingController();
+  bool _isLoggedIn = false;
 
   @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  @override
-  void dispose() {
-    _accountTextController.dispose();
-    _jwtTextController.dispose();
-    super.dispose();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion = await _lightsparkWalletPlugin.getPlatformVersion() ??
-          'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final client = Provider.of<LightsparkClientNotifier>(
+      context,
+      listen: false,
+    ).value;
+    client.isAuthorized().then((value) {
+      setState(() {
+        _isLoggedIn = value;
+      });
     });
   }
 
-  updateNonce() {
-    setState(() {
-      nonce = getNonce();
-    });
-  }
-
-  loginWithJwt() async {
+  Future<bool> _loginWithJwt(String accountId, String jwt) async {
+    final client = Provider.of<LightsparkClientNotifier>(
+      context,
+      listen: false,
+    ).value;
     final jwtAuthStorage = SharedPreferencesJwtStorage();
     await client.loginWithJwt(
-      _accountTextController.text,
-      _jwtTextController.text,
+      accountId,
+      jwt,
       jwtAuthStorage,
     );
+    final loggedIn = await client.isAuthorized();
+    setState(() {
+      _isLoggedIn = loggedIn;
+    });
+    return loggedIn;
+  }
+
+  Future<void> _logout() async {
+    final client = Provider.of<LightsparkClientNotifier>(
+      context,
+      listen: false,
+    ).value;
+    final authProvider = JwtAuthProvider(
+      SharedPreferencesJwtStorage(),
+    );
+    await authProvider.logout();
+    client.setAuthProvider(authProvider);
+    setState(() {
+      _isLoggedIn = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Lightspark wallet example app'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              tooltip: 'Logout',
+              onPressed: () async {
+                await _logout();
+              },
+            ),
+          ],
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Running on: $_platformVersion\n'),
-              Text('Nonce: $nonce\n'),
-              ElevatedButton(
-                onPressed: updateNonce,
-                child: const Text('Update nonce'),
-              ),
-              InputText(label: 'Account ID', controller: _accountTextController),
-              InputText(label: 'JWT', controller: _jwtTextController),
-              ElevatedButton(
-                onPressed: loginWithJwt,
-                child: const Text('Login with JWT'),
-              ),
-            ],
-          ),
+          child: _isLoggedIn
+              ? const HomeScreen()
+              : LoginScreen(onLogin: _loginWithJwt),
         ),
-      ),
-    );
-  }
-}
-
-class InputText extends StatelessWidget {
-  const InputText({
-    super.key,
-    required String label,
-    required TextEditingController controller,
-  }) : _controller = controller,
-       _label = label;
-
-  final TextEditingController _controller;
-  final String _label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: TextField(
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          labelText: _label,
-        ),
-        controller: _controller,
       ),
     );
   }

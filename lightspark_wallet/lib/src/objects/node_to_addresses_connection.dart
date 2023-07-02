@@ -20,7 +20,8 @@ class NodeToAddressesConnection {
     return NodeToAddressesConnection(
       json["node_to_addresses_connection_count"],
       json["node_to_addresses_connection_entities"]
-          .map((e) => NodeAddress.fromJson(e)),
+          .map<NodeAddress>((e) => NodeAddress.fromJson(e))
+          .toList(),
     );
   }
 

@@ -26,7 +26,8 @@ class WalletToPaymentRequestsConnection {
           json["wallet_to_payment_requests_connection_page_info"]),
       json["wallet_to_payment_requests_connection_count"],
       json["wallet_to_payment_requests_connection_entities"]
-          .map((e) => PaymentRequest.fromJson(e)),
+          .map<PaymentRequest>((e) => PaymentRequest.fromJson(e))
+          .toList(),
     );
   }
 
