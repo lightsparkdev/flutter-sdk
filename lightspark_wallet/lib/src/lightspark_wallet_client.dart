@@ -65,7 +65,7 @@ class LightsparkWalletClient {
   /// Login using the Custom JWT authentication scheme described in our documentation.
   ///
   /// Note: When using this method, you are responsible for refreshing the JWT token before or when it expires. If the
-  /// token expires, the client will throw a [LightsparkAuthenticationException] on the next API call which requires
+  /// token expires, the client will throw a [LightsparkAuthException] on the next API call which requires
   /// valid authentication. Then you'll need to call this method again to get a new token.
   ///
   /// [accountId] The account ID to login with. This is specific to your company's account.
@@ -439,7 +439,7 @@ class LightsparkWalletClient {
   /// This function will return immediately with the payment details, which may still be in a PENDING state. You can use
   /// the [sendPaymentAndAwaitResult] function to wait for the payment to complete or fail.
   ///
-  /// [destinationPublicKey] The public key of the destination node.
+  /// [destinationNodePublicKey] The public key of the destination node.
   /// [amountMsats] The amount to pay in milli-satoshis.
   /// [maxFeesMsats] The maximum amount of fees that you want to pay for this payment to be sent.
   ///     As guidance, a maximum fee of 15 basis points should make almost all transactions succeed. For example,
@@ -484,13 +484,13 @@ class LightsparkWalletClient {
   /// Sends a payment directly to a node on the Lightning Network through the public key of the node without an invoice.
   /// Waits for the payment to complete or fail.
   ///
-  /// [destinationPublicKey] The public key of the destination node.
+  /// [destinationNodePublicKey] The public key of the destination node.
   /// [amountMsats] The amount to pay in milli-satoshis.
   /// [maxFeesMsats] The maximum amount of fees that you want to pay for this payment to be sent.
   ///     As guidance, a maximum fee of 15 basis points should make almost all transactions succeed. For example,
   ///     for a transaction between 10k sats and 100k sats, this would mean a fee limit of 15 to 150 sats.
   /// [timeoutSecs] The timeout in seconds that we will try to make the payment.
-  /// Returns an [OutgoingPayment] object. Check the [status] field to see if the payment succeeded or failed.
+  /// Returns an [OutgoingPayment] object. Check the [OutgoingPayment.status] field to see if the payment succeeded or failed.
   Future<OutgoingPayment> sendPaymentAndAwaitResult(
     String destinationNodePublicKey,
     int amountMsats,
@@ -537,8 +537,6 @@ class LightsparkWalletClient {
 
   /// Gets an estimate of the fee for sending a payment over the given bitcoin network, including a
   /// minimum fee rate, and a max-speed fee rate.
-  ///
-  /// [bitcoinNetwork] The bitcoin network for which to get a fee estimate. Defaults to MAINNET.
   Future<FeeEstimate> getBitcoinFeeEstimate() async {
     return await executeRawQuery(Query(
       BitcoinFeeEstimateQuery,
