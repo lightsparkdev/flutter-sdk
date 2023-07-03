@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lightspark_wallet/lightspark_wallet.dart';
 import 'package:lightspark_wallet_example/src/model/lightspark_client_notifier.dart';
 import 'package:provider/provider.dart';
+import '../components/transaction_row.dart';
+import '../utils/currency.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,6 +11,24 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
+
+final testTransaction = IncomingPayment(
+  "test",
+  "2023-08-01T04:32:01Z",
+  "2023-08-01T04:32:01Z",
+  TransactionStatus.SUCCESS,
+  CurrencyAmount(
+    50000,
+    CurrencyUnit.SATOSHI,
+    CurrencyUnit.USD,
+    132,
+    132,
+  ),
+  "IncomingPayment",
+  "2023-08-01T04:33:01Z",
+  "4894089ffnrjfh4y74u",
+  "",
+);
 
 class _HomeScreenState extends State<HomeScreen> {
   WalletDashboard? _dashboard;
@@ -40,12 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         children: [
           Text(
-            'Welcome ${_dashboard!.id}!',
-            style: Theme.of(context).textTheme.headlineSmall,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-          Text(
             'Your wallet is ${_dashboard!.status.name}',
             style: Theme.of(context).textTheme.bodyLarge,
             textAlign: TextAlign.center,
@@ -65,6 +79,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   name: 'Available to Withdraw'),
             ],
           ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _dashboard!.recentTransactions.count + 3,
+              itemBuilder: (context, index) {
+                final transaction =
+                    (_dashboard!.recentTransactions.entities + [testTransaction, testTransaction, testTransaction])[index];
+                return TransactionRow(transaction: transaction);
+              },
+            ),
+          )
         ],
       ),
     );
@@ -98,7 +123,8 @@ class Balance extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              _balance!.preferredCurrencyUnit.toTextValue(_balance!.preferredCurrencyValueRounded),
+              _balance!.preferredCurrencyUnit
+                  .toTextValue(_balance!.preferredCurrencyValueRounded),
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
@@ -111,33 +137,5 @@ class Balance extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-extension on CurrencyUnit {
-  String get shortName {
-    return switch (this) {
-      CurrencyUnit.BITCOIN => 'BTC',
-      CurrencyUnit.MILLIBITCOIN => 'mBTC',
-      CurrencyUnit.MICROBITCOIN => 'μBTC',
-      CurrencyUnit.NANOBITCOIN => 'nBTC',
-      CurrencyUnit.SATOSHI => 'sat',
-      CurrencyUnit.MILLISATOSHI => 'msat',
-      CurrencyUnit.USD => 'USD',
-      CurrencyUnit.FUTURE_VALUE => '',
-    };
-  }
-
-  String toTextValue(int amount) {
-    return switch (this) {
-      CurrencyUnit.BITCOIN => '${amount.toStringAsFixed(8)} $shortName',
-      CurrencyUnit.MILLIBITCOIN => '${amount.toStringAsFixed(5)} $shortName',
-      CurrencyUnit.MICROBITCOIN => '${amount.toStringAsFixed(2)} $shortName',
-      CurrencyUnit.NANOBITCOIN => '${amount.toStringAsFixed(0)} $shortName',
-      CurrencyUnit.SATOSHI => '${amount.toStringAsFixed(3)} $shortName',
-      CurrencyUnit.MILLISATOSHI => '${amount.toStringAsFixed(0)} $shortName',
-      CurrencyUnit.USD => '\$${amount.toStringAsFixed(2)} $shortName',
-      CurrencyUnit.FUTURE_VALUE => '',
-    };
   }
 }
