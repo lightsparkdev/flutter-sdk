@@ -55,6 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_dashboard == null) {
       return const Center(child: CircularProgressIndicator());
     }
+
+    if (_dashboard!.status != WalletStatus.READY) {
+      return _buildNotInitialized(context, _dashboard!.status);
+    }
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -84,14 +88,69 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ListView.builder(
               itemCount: _dashboard!.recentTransactions.count + 3,
               itemBuilder: (context, index) {
-                final transaction =
-                    (_dashboard!.recentTransactions.entities + [testTransaction, testTransaction, testTransaction])[index];
+                final transaction = (_dashboard!.recentTransactions.entities +
+                    [testTransaction, testTransaction, testTransaction])[index];
                 return TransactionRow(transaction: transaction);
               },
             ),
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildNotInitialized(BuildContext context, WalletStatus status) {
+    const statusMessage = {
+      WalletStatus.NOT_SETUP: 'Your wallet needs to be deployed.',
+      WalletStatus.DEPLOYING: 'Your wallet is deploying...',
+      WalletStatus.DEPLOYED: 'Your wallet needs to be initialized.',
+      WalletStatus.INITIALIZING: 'Your wallet is initializing...',
+      WalletStatus.FAILED:
+          'Something went wrong with your wallet. Try re-deploying it.',
+    };
+
+    const buttonText = {
+      WalletStatus.NOT_SETUP: "Deploy Wallet",
+      WalletStatus.DEPLOYED: "Initialize Wallet",
+      WalletStatus.FAILED: "Re-deploy Wallet",
+    };
+
+    final isLoading =
+        status == WalletStatus.DEPLOYING || status == WalletStatus.INITIALIZING;
+
+    return Column(
+      children: [
+        Text(
+          statusMessage[status] ?? 'Wallet status unknown',
+          style: Theme.of(context).textTheme.bodyLarge,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 16),
+        isLoading
+            ? const CircularProgressIndicator()
+            : ElevatedButton(
+                onPressed: () async {
+                  final client = Provider.of<LightsparkClientNotifier>(
+                    context,
+                    listen: false,
+                  ).value;
+                  if (status == WalletStatus.DEPLOYED) {
+                    final keyPair = await generateRsaKeyPair();
+                    print('Public Key: ${keyPair.publicKey}');
+                    print('Private Key: ${keyPair.privateKey}');
+                    await client.initializeWalletAndAwaitReady(
+                      KeyType.RSA_OAEP,
+                      keyPair.publicKey,
+                      keyPair.privateKey,
+                    );
+                  } else {
+                    await client.deployWalletAndAwaitDeployed();
+                  }
+                  await _loadDashboard();
+                },
+                child: Text(buttonText[status] ?? 'Deploy Wallet'),
+              ),
+      ],
     );
   }
 }

@@ -213,7 +213,7 @@ class LightsparkWalletClient {
           InitializeWalletOutput.fromJson(responseJson["initialize_wallet"])
               .wallet,
       variables: {
-        "key_type": keyType,
+        "key_type": keyType.name,
         "signing_public_key": signingPublicKey,
       },
       isSignedOp: true,
@@ -330,7 +330,7 @@ class LightsparkWalletClient {
       variables: {
         "amountMsats": amountMsats,
         "memo": memo,
-        "type": type,
+        "type": type.name,
       },
     ));
   }
@@ -656,7 +656,7 @@ class LightsparkWalletClient {
       variables: {
         "amount_msats": amountMsats,
         "memo": memo,
-        "invoice_type": invoiceType,
+        "invoice_type": invoiceType.name,
       },
     ));
   }

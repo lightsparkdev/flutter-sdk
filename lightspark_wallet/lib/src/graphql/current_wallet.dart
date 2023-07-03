@@ -5,6 +5,7 @@ import "../objects/wallet.dart";
 const CurrentWalletQuery = '''
 query CurrentWallet {
     current_wallet {
+        id
         ...WalletFragment
     }
 }
