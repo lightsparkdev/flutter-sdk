@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:graphql/client.dart';
 import 'package:gql/ast.dart';
 import 'package:gql/language.dart';
@@ -12,9 +13,17 @@ import './query.dart';
 const defaultBaseUrl = 'api.lightspark.com';
 const walletSdkEndpoint = "graphql/wallet/2023-05-05";
 
+// TODO(Jeremy): Add SDK version and platform info user agent.
+const _defaultHeaders = {
+  "X-Lightspark-SDK": "flutter-wallet-sdk",
+  "User-Agent": "flutter-wallet-sdk",
+  "X-Lightspark-Beta": "z2h0BBYxTA83cjW7fi8QwWtBPCzkQKiemcuhKY08LOo",
+};
+
 class Requester {
   final AuthProvider _authProvider;
   final HttpLink _httpLink;
+  late SocketCustomLink _wsLink;
   late AuthLink _authLink;
   late Link _link;
   late final GraphQLClient _client;
@@ -23,22 +32,25 @@ class Requester {
     NodeKeyCache nodeKeyCache, {
     String baseUrl = defaultBaseUrl,
     AuthProvider? authProvider,
-  })  : _httpLink = HttpLink('https://$baseUrl/$walletSdkEndpoint',
-            // TODO(Jeremy): Add SDK version and platform info user agent.
-            defaultHeaders: {
-              "X-Lightspark-SDK": "flutter-wallet-sdk",
-              "User-Agent": "flutter-wallet-sdk",
-              "X-Lightspark-Beta":
-                  "z2h0BBYxTA83cjW7fi8QwWtBPCzkQKiemcuhKY08LOo",
-            },
-            serializer: SigningSerializer(nodeKeyCache)),
+  })  : _httpLink = HttpLink(
+          'https://$baseUrl/$walletSdkEndpoint',
+          defaultHeaders: _defaultHeaders,
+          serializer: SigningSerializer(nodeKeyCache),
+        ),
         _authProvider = authProvider ?? StubAuthProvider() {
-    // TODO(Jeremy): Add websocket/subscription support.
     _authLink = AuthLink(
       getToken: () => _authProvider.getAuthToken(),
       headerKey: _authProvider.authHeaderKey ?? 'Authorization',
     );
-    _link = _authLink.concat(_httpLink);
+    _wsLink = SocketCustomLink(
+      'wss://$baseUrl/$walletSdkEndpoint',
+      _authProvider,
+    );
+    _link = Link.split(
+      (request) => request.isSubscription,
+      _wsLink,
+      _authLink.concat(_httpLink),
+    );
     _client = GraphQLClient(
       cache: GraphQLCache(),
       link: _link,
@@ -96,6 +108,33 @@ class Requester {
     }
     return query.constructObject(result.data!);
   }
+
+  Stream<QueryResult<T>> executeSubscription<T>(Query<T> query) {
+    final operationNameRegex = RegExp(
+        r"^\s*(query|mutation|subscription)\s+(\w+)",
+        caseSensitive: false);
+    final operationMatch = operationNameRegex.matchAsPrefix(query.queryPayload);
+    if (operationMatch == null || operationMatch.groupCount < 2) {
+      throw Exception('Invalid query payload');
+    }
+
+    return _client
+        .subscribe(
+      SubscriptionOptions(
+        operationName: operationMatch[2],
+        document: gql(query.queryPayload),
+        variables: query.variables,
+        context: Context.fromList([
+          NeedsSignature(query.isSignedOp),
+          SkipAuth(query.skipAuth),
+        ]),
+      ),
+    )
+        .map((event) {
+      event.parserFn = query.constructObject;
+      return event as QueryResult<T>;
+    });
+  }
 }
 
 class SkipAuth extends ContextEntry {
@@ -122,11 +161,11 @@ class SigningSerializer extends RequestSerializer {
   @override
   Map<String, dynamic> serializeRequest(Request request) {
     final body = super.serializeRequest(request);
-    
+
     final skipAuth = request.context.entry<SkipAuth>()?.skipAuth ?? false;
     if (skipAuth) {
-      request.updateContextEntry<HttpLinkHeaders>((entry) => entry!
-        ..headers.remove('Authorization'));
+      request.updateContextEntry<HttpLinkHeaders>(
+          (entry) => entry!..headers.remove('Authorization'));
     }
 
     final needsSignature =
@@ -162,4 +201,77 @@ class SigningSerializer extends RequestSerializer {
       }));
     return bodyWithNonce;
   }
+}
+
+class SocketCustomLink extends Link {
+  SocketCustomLink(this._url, this._authProvider);
+  final String _url;
+  final AuthProvider _authProvider;
+  _WsConnection? _connection;
+
+  @override
+  Stream<Response> request(Request request, [forward]) async* {
+    final connectionParams = await _authProvider.getWsConnectionParams();
+
+    /// check is connection is null or the token changed
+    if (_connection == null ||
+        !_paramsEqual(_connection!.connectionParams, connectionParams)) {
+      _connectOrReconnect(connectionParams);
+    }
+    yield* _connection!.client.subscribe(request, true);
+  }
+
+  bool _paramsEqual(
+      Map<String, dynamic>? paramsA, Map<String, dynamic>? paramsB) {
+    if (paramsA == null && paramsB == null) {
+      return true;
+    }
+    if (paramsA == null || paramsB == null) {
+      return false;
+    }
+    if (paramsA.length != paramsB.length) {
+      return false;
+    }
+
+    for (var key in paramsA.keys) {
+      if (paramsA[key] != paramsB[key]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  void _connectOrReconnect(Map<String, dynamic>? connectionParams) {
+    _connection?.client.dispose();
+    var url = Uri.parse(_url);
+    _connection = _WsConnection(
+      client: SocketClient(
+        url.toString(),
+        config: SocketClientConfig(
+          autoReconnect: true,
+          headers: kIsWeb ? null : _defaultHeaders,
+          inactivityTimeout: const Duration(seconds: 30),
+          initialPayload: connectionParams,
+        ),
+      ),
+      connectionParams: connectionParams,
+    );
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _connection?.client.dispose();
+    _connection = null;
+  }
+}
+
+/// this a wrapper for web socket to hold the used token
+class _WsConnection {
+  SocketClient client;
+  Map<String, dynamic>? connectionParams;
+  _WsConnection({
+    required this.client,
+    required this.connectionParams,
+  });
 }

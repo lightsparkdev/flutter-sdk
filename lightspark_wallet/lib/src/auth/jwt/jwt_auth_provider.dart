@@ -29,9 +29,12 @@ class JwtAuthProvider implements AuthProvider {
   }
 
   @override
-  Future<Map<String, Object>> getWsConnectionParams() {
-    // TODO: implement getWsConnectionParams
-    throw UnimplementedError();
+  Future<Map<String, Object>> getWsConnectionParams() async {
+    final tokenInfo = await _jwtStorage.getToken();
+    if (tokenInfo == null) {
+      return {};
+    }
+    return { "access_token": tokenInfo.accessToken };
   }
 
   @override

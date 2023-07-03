@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:fast_rsa/fast_rsa.dart';
+import 'package:graphql/client.dart';
 import 'package:lightspark_wallet/src/crypto/node_key_cache.dart';
 import 'package:lightspark_wallet/src/graphql/lightning_fee_estimate_for_invoice.dart';
 import 'package:lightspark_wallet/src/graphql/lightning_fee_estimate_for_node.dart';
@@ -145,23 +148,46 @@ class LightsparkWalletClient {
     List<WalletStatus> statuses, {
     int timeoutSecs = 60,
   }) async {
-    // TODO(Jeremy): Switch to subscription.
     var wallet = await getCurrentWallet();
-    const delayIncrementSec = 2;
-    var totalDelay = 0;
-    while (!statuses.contains(wallet?.status) && totalDelay < timeoutSecs) {
-      await Future.delayed(const Duration(seconds: delayIncrementSec));
-      totalDelay += delayIncrementSec;
-      wallet = await getCurrentWallet();
-    }
     if (statuses.contains(wallet?.status)) {
       return wallet!.status;
     }
 
-    throw LightsparkException(
-      "WalletStatusAwaitError",
-      "Wallet status subscription completed without receiving a status update.",
-    );
+    final resultCompleter = Completer<WalletStatus>();
+    final subscription = executeRawSubscription(Query(
+      r'''
+        subscription {
+          current_wallet {
+            status
+          }
+        }''',
+      (json) =>
+          WalletStatus.values.asNameMap()[json["current_wallet"]["status"]] ??
+          WalletStatus.FUTURE_VALUE,
+    )).timeout(Duration(seconds: timeoutSecs));
+
+    final subscriptionStream = subscription.listen((event) {
+      if (statuses.contains(event.parsedData)) {
+        resultCompleter.complete(event.parsedData);
+      }
+    });
+
+    resultCompleter.future.then((_) {
+      subscriptionStream.cancel();
+    }).catchError((_) {
+      subscriptionStream.cancel();
+    });
+
+    subscriptionStream.onDone(() {
+      if (!resultCompleter.isCompleted) {
+        resultCompleter.completeError(LightsparkException(
+          "WalletStatusAwaitError",
+          "Wallet status subscription completed without receiving a status update.",
+        ));
+      }
+    });
+
+    return resultCompleter.future;
   }
 
   /// Initializes a wallet in the Lightspark infrastructure and syncs it to the Bitcoin network. This is an
@@ -681,6 +707,12 @@ class LightsparkWalletClient {
     Query<T> query,
   ) async {
     return await _requester.executeQuery(query);
+  }
+
+  Stream<QueryResult<T>> executeRawSubscription<T>(
+    Query<T> query,
+  ) {
+    return _requester.executeSubscription(query);
   }
 
   Future<void> _requireValidAuth() async {

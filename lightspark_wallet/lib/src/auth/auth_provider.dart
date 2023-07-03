@@ -2,7 +2,7 @@ abstract interface class AuthProvider {
   Future<String?> getAuthToken();
   String? get authHeaderKey;
   Future<bool> isAuthorized();
-  Future<Map<String, Object>> getWsConnectionParams();
+  Future<Map<String, dynamic>> getWsConnectionParams();
 }
 
 class StubAuthProvider implements AuthProvider {
