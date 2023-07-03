@@ -35,7 +35,7 @@ class Requester {
   })  : _httpLink = HttpLink(
           'https://$baseUrl/$walletSdkEndpoint',
           defaultHeaders: _defaultHeaders,
-          serializer: SigningSerializer(nodeKeyCache),
+          serializer: SigningSerializer(),
         ),
         _authProvider = authProvider ?? StubAuthProvider() {
     _authLink = AuthLink(
@@ -46,10 +46,12 @@ class Requester {
       'wss://$baseUrl/$walletSdkEndpoint',
       _authProvider,
     );
-    _link = Link.split(
-      (request) => request.isSubscription,
-      _wsLink,
-      _authLink.concat(_httpLink),
+    _link = SigningLink(nodeKeyCache).concat(
+      Link.split(
+        (request) => request.isSubscription,
+        _wsLink,
+        _authLink.concat(_httpLink),
+      ),
     );
     _client = GraphQLClient(
       cache: GraphQLCache(),
@@ -80,6 +82,7 @@ class Requester {
     final result = operationType == 'mutation'
         ? await _client.mutate(
             MutationOptions(
+              fetchPolicy: FetchPolicy.noCache,
               operationName: operationMatch[2],
               document: document,
               variables: query.variables,
@@ -91,6 +94,7 @@ class Requester {
           )
         : await _client.query(
             QueryOptions(
+              fetchPolicy: FetchPolicy.noCache,
               operationName: operationMatch[2],
               document: document,
               variables: query.variables,
@@ -119,7 +123,7 @@ class Requester {
     }
 
     return _client
-        .subscribe(
+        .subscribe<T>(
       SubscriptionOptions(
         operationName: operationMatch[2],
         document: gql(query.queryPayload),
@@ -128,12 +132,9 @@ class Requester {
           NeedsSignature(query.isSignedOp),
           SkipAuth(query.skipAuth),
         ]),
+        parserFn: query.constructObject,
       ),
-    )
-        .map((event) {
-      event.parserFn = query.constructObject;
-      return event as QueryResult<T>;
-    });
+    );
   }
 }
 
@@ -153,11 +154,65 @@ class NeedsSignature extends ContextEntry {
   List<Object?> get fieldsForEquality => [needsSignature];
 }
 
-class SigningSerializer extends RequestSerializer {
+class SignatureDetails extends ContextEntry {
+  final String signatureJson;
+  final String expiration;
+  final int nonce;
+  const SignatureDetails(
+    this.signatureJson,
+    this.expiration,
+    this.nonce,
+  );
+
+  @override
+  List<Object?> get fieldsForEquality => [signatureJson, expiration, nonce];
+}
+
+class SigningLink extends Link {
   final NodeKeyCache _nodeKeyCache;
 
-  SigningSerializer(this._nodeKeyCache);
+  SigningLink(this._nodeKeyCache);
 
+  @override
+  Stream<Response> request(Request request, [forward]) async* {
+    final needsSignature =
+        request.context.entry<NeedsSignature>()?.needsSignature ?? false;
+    if (!needsSignature) {
+      yield* forward!(request);
+    }
+
+    final nonce = getNonce();
+    final keyPair = _nodeKeyCache.getKeyPair();
+    if (keyPair == null) {
+      throw Exception('No key pair found for signing');
+    }
+    final expiration =
+        DateTime.now().add(const Duration(hours: 1)).toIso8601String();
+
+    final body = const RequestSerializer().serializeRequest(request);
+    final bodyWithNonce = {
+      ...body,
+      'nonce': nonce,
+      'expires_at': expiration,
+    };
+    final signature = await signRsa(
+      keyPair.privateKey,
+      jsonEncode(bodyWithNonce),
+    );
+    final signatureJson = jsonEncode({
+      'signature': signature,
+      'v': 1,
+    });
+
+    final newRequest = request.updateContextEntry<SignatureDetails>(
+      (entry) => SignatureDetails(signatureJson, expiration, nonce),
+    );
+
+    yield* forward!(newRequest);
+  }
+}
+
+class SigningSerializer extends RequestSerializer {
   @override
   Map<String, dynamic> serializeRequest(Request request) {
     final body = super.serializeRequest(request);
@@ -168,37 +223,22 @@ class SigningSerializer extends RequestSerializer {
           (entry) => entry!..headers.remove('Authorization'));
     }
 
-    final needsSignature =
-        request.context.entry<NeedsSignature>()?.needsSignature ?? false;
-    if (!needsSignature) {
+    final signatureDetails = request.context.entry<SignatureDetails>();
+    if (signatureDetails == null) {
       return body;
-    }
-
-    final nonce = getNonce();
-    final keyPair = _nodeKeyCache.getKeyPair();
-    if (keyPair == null) {
-      throw Exception('No key pair found for signing');
     }
 
     final bodyWithNonce = {
       ...body,
-      'nonce': nonce,
-      'expires_at':
-          DateTime.now().add(const Duration(hours: 1)).toIso8601String(),
+      'nonce': signatureDetails.nonce,
+      'expires_at': signatureDetails.expiration,
     };
-    final signature = signRsa(
-      keyPair.privateKey,
-      jsonEncode(bodyWithNonce),
-    );
-    final signatureJson = jsonEncode({
-      'signature': signature,
-      'v': 1,
-    });
 
     request.updateContextEntry<HttpLinkHeaders>((entry) => entry!
       ..headers.addAll({
-        'X-Lightspark-Signing': signatureJson,
+        'X-Lightspark-Signing': signatureDetails.signatureJson,
       }));
+
     return bodyWithNonce;
   }
 }
@@ -248,6 +288,7 @@ class SocketCustomLink extends Link {
     _connection = _WsConnection(
       client: SocketClient(
         url.toString(),
+        protocol: GraphQLProtocol.graphqlTransportWs,
         config: SocketClientConfig(
           autoReconnect: true,
           headers: kIsWeb ? null : _defaultHeaders,

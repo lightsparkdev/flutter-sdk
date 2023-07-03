@@ -1,19 +1,19 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './entity.dart';
-import './payment_request_data.dart';
-import './transaction_status.dart';
-import '../requester/query.dart';
-import './withdrawal.dart';
-import './currency_amount.dart';
-import '../lightspark_exception.dart';
-import './rich_text.dart';
-import './deposit.dart';
-import './incoming_payment.dart';
-import './payment_failure_reason.dart';
-import './channel_opening_transaction.dart';
 import './channel_closing_transaction.dart';
+import '../requester/query.dart';
+import './currency_amount.dart';
+import './payment_failure_reason.dart';
+import './deposit.dart';
+import './withdrawal.dart';
+import '../lightspark_exception.dart';
+import './transaction_status.dart';
+import './payment_request_data.dart';
+import './rich_text.dart';
+import './channel_opening_transaction.dart';
 import './outgoing_payment.dart';
+import './incoming_payment.dart';
 
 class Transaction implements Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
@@ -84,7 +84,8 @@ $fragment
             TransactionStatus.FUTURE_VALUE,
         CurrencyAmount.fromJson(json["channel_closing_transaction_amount"]),
         json["channel_closing_transaction_block_height"],
-        json["channel_closing_transaction_destination_addresses"],
+        List<String>.from(
+            json["channel_closing_transaction_destination_addresses"]),
         "ChannelClosingTransaction",
         json["channel_closing_transaction_resolved_at"],
         json["channel_closing_transaction_transaction_hash"],
@@ -105,7 +106,8 @@ $fragment
             TransactionStatus.FUTURE_VALUE,
         CurrencyAmount.fromJson(json["channel_opening_transaction_amount"]),
         json["channel_opening_transaction_block_height"],
-        json["channel_opening_transaction_destination_addresses"],
+        List<String>.from(
+            json["channel_opening_transaction_destination_addresses"]),
         "ChannelOpeningTransaction",
         json["channel_opening_transaction_resolved_at"],
         json["channel_opening_transaction_transaction_hash"],
@@ -125,7 +127,7 @@ $fragment
             TransactionStatus.FUTURE_VALUE,
         CurrencyAmount.fromJson(json["deposit_amount"]),
         json["deposit_block_height"],
-        json["deposit_destination_addresses"],
+        List<String>.from(json["deposit_destination_addresses"]),
         "Deposit",
         json["deposit_resolved_at"],
         json["deposit_transaction_hash"],
@@ -187,7 +189,7 @@ $fragment
             TransactionStatus.FUTURE_VALUE,
         CurrencyAmount.fromJson(json["withdrawal_amount"]),
         json["withdrawal_block_height"],
-        json["withdrawal_destination_addresses"],
+        List<String>.from(json["withdrawal_destination_addresses"]),
         "Withdrawal",
         json["withdrawal_resolved_at"],
         json["withdrawal_transaction_hash"],

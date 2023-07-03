@@ -3,9 +3,9 @@
 import './on_chain_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import './currency_amount.dart';
-import '../requester/query.dart';
 import './transaction_status.dart';
+import '../requester/query.dart';
+import './currency_amount.dart';
 
 /// The transaction on Bitcoin blockchain to open a channel on Lightning Network funded by the local Lightspark node.
 class ChannelOpeningTransaction
@@ -107,7 +107,8 @@ $fragment
           TransactionStatus.FUTURE_VALUE,
       CurrencyAmount.fromJson(json["channel_opening_transaction_amount"]),
       json["channel_opening_transaction_block_height"],
-      json["channel_opening_transaction_destination_addresses"],
+      List<String>.from(
+          json["channel_opening_transaction_destination_addresses"]),
       "ChannelOpeningTransaction",
       json["channel_opening_transaction_resolved_at"],
       json["channel_opening_transaction_transaction_hash"],

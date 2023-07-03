@@ -3,9 +3,9 @@
 import './on_chain_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import './currency_amount.dart';
-import '../requester/query.dart';
 import './transaction_status.dart';
+import '../requester/query.dart';
+import './currency_amount.dart';
 
 /// The transaction on Bitcoin blockchain to fund the Lightspark node's wallet.
 class Deposit implements OnChainTransaction, Transaction, Entity {
@@ -104,7 +104,7 @@ $fragment
           TransactionStatus.FUTURE_VALUE,
       CurrencyAmount.fromJson(json["deposit_amount"]),
       json["deposit_block_height"],
-      json["deposit_destination_addresses"],
+      List<String>.from(json["deposit_destination_addresses"]),
       "Deposit",
       json["deposit_resolved_at"],
       json["deposit_transaction_hash"],

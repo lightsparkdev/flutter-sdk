@@ -32,6 +32,7 @@ final testTransaction = IncomingPayment(
 
 class _HomeScreenState extends State<HomeScreen> {
   WalletDashboard? _dashboard;
+  WalletStatus? _forcedStatus;
 
   @override
   void initState() {
@@ -56,9 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (_dashboard!.status != WalletStatus.READY) {
-      return _buildNotInitialized(context, _dashboard!.status);
+    if (_dashboard!.status != WalletStatus.READY || _forcedStatus != null) {
+      return _buildNotInitialized(context, _forcedStatus ?? _dashboard!.status);
     }
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -119,6 +121,8 @@ class _HomeScreenState extends State<HomeScreen> {
         status == WalletStatus.DEPLOYING || status == WalletStatus.INITIALIZING;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           statusMessage[status] ?? 'Wallet status unknown',
@@ -135,6 +139,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     listen: false,
                   ).value;
                   if (status == WalletStatus.DEPLOYED) {
+                    setState(() {
+                      _forcedStatus = WalletStatus.INITIALIZING;
+                    });
                     final keyPair = await generateRsaKeyPair();
                     print('Public Key: ${keyPair.publicKey}');
                     print('Private Key: ${keyPair.privateKey}');
@@ -144,8 +151,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       keyPair.privateKey,
                     );
                   } else {
+                    setState(() {
+                      _forcedStatus = WalletStatus.DEPLOYING;
+                    });
                     await client.deployWalletAndAwaitDeployed();
                   }
+                  setState(() {
+                    _forcedStatus = null;
+                  });
                   await _loadDashboard();
                 },
                 child: Text(buttonText[status] ?? 'Deploy Wallet'),

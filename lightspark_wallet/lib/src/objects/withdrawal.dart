@@ -3,9 +3,9 @@
 import './on_chain_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import './currency_amount.dart';
-import '../requester/query.dart';
 import './transaction_status.dart';
+import '../requester/query.dart';
+import './currency_amount.dart';
 
 /// The transaction on the Bitcoin blockchain to withdraw funds from the Lightspark node to a Bitcoin wallet.
 class Withdrawal implements OnChainTransaction, Transaction, Entity {
@@ -104,7 +104,7 @@ $fragment
           TransactionStatus.FUTURE_VALUE,
       CurrencyAmount.fromJson(json["withdrawal_amount"]),
       json["withdrawal_block_height"],
-      json["withdrawal_destination_addresses"],
+      List<String>.from(json["withdrawal_destination_addresses"]),
       "Withdrawal",
       json["withdrawal_resolved_at"],
       json["withdrawal_transaction_hash"],

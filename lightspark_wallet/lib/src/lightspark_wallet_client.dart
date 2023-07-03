@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fast_rsa/fast_rsa.dart';
 import 'package:graphql/client.dart';
+import 'package:lightspark_wallet/src/crypto/crypto.dart';
 import 'package:lightspark_wallet/src/crypto/node_key_cache.dart';
 import 'package:lightspark_wallet/src/graphql/lightning_fee_estimate_for_invoice.dart';
 import 'package:lightspark_wallet/src/graphql/lightning_fee_estimate_for_node.dart';
@@ -156,7 +157,7 @@ class LightsparkWalletClient {
     final resultCompleter = Completer<WalletStatus>();
     final subscription = executeRawSubscription(Query(
       r'''
-        subscription {
+        subscription WalletStatusSubscription {
           current_wallet {
             status
           }
@@ -214,7 +215,7 @@ class LightsparkWalletClient {
               .wallet,
       variables: {
         "key_type": keyType.name,
-        "signing_public_key": signingPublicKey,
+        "signing_public_key": stripPemTags(signingPublicKey),
       },
       isSignedOp: true,
     ));

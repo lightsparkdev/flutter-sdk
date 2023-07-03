@@ -35,7 +35,7 @@ query WalletDashboard(
                 page_info_start_cursor: start_cursor
                 page_info_end_cursor: end_cursor
             }
-            type: __typename
+            __typename
         }
         payment_requests(
             first: \$numPaymentRequests

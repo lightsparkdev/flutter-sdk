@@ -2,14 +2,14 @@
 
 import './transaction.dart';
 import './entity.dart';
-import './transaction_status.dart';
-import '../requester/query.dart';
-import './withdrawal.dart';
-import './currency_amount.dart';
-import '../lightspark_exception.dart';
-import './deposit.dart';
-import './channel_opening_transaction.dart';
 import './channel_closing_transaction.dart';
+import '../requester/query.dart';
+import './currency_amount.dart';
+import './deposit.dart';
+import './withdrawal.dart';
+import '../lightspark_exception.dart';
+import './transaction_status.dart';
+import './channel_opening_transaction.dart';
 
 /// Transaction happened on Bitcoin blockchain.
 class OnChainTransaction implements Transaction, Entity {
@@ -105,7 +105,8 @@ $fragment
             TransactionStatus.FUTURE_VALUE,
         CurrencyAmount.fromJson(json["channel_closing_transaction_amount"]),
         json["channel_closing_transaction_block_height"],
-        json["channel_closing_transaction_destination_addresses"],
+        List<String>.from(
+            json["channel_closing_transaction_destination_addresses"]),
         "ChannelClosingTransaction",
         json["channel_closing_transaction_resolved_at"],
         json["channel_closing_transaction_transaction_hash"],
@@ -126,7 +127,8 @@ $fragment
             TransactionStatus.FUTURE_VALUE,
         CurrencyAmount.fromJson(json["channel_opening_transaction_amount"]),
         json["channel_opening_transaction_block_height"],
-        json["channel_opening_transaction_destination_addresses"],
+        List<String>.from(
+            json["channel_opening_transaction_destination_addresses"]),
         "ChannelOpeningTransaction",
         json["channel_opening_transaction_resolved_at"],
         json["channel_opening_transaction_transaction_hash"],
@@ -146,7 +148,7 @@ $fragment
             TransactionStatus.FUTURE_VALUE,
         CurrencyAmount.fromJson(json["deposit_amount"]),
         json["deposit_block_height"],
-        json["deposit_destination_addresses"],
+        List<String>.from(json["deposit_destination_addresses"]),
         "Deposit",
         json["deposit_resolved_at"],
         json["deposit_transaction_hash"],
@@ -166,7 +168,7 @@ $fragment
             TransactionStatus.FUTURE_VALUE,
         CurrencyAmount.fromJson(json["withdrawal_amount"]),
         json["withdrawal_block_height"],
-        json["withdrawal_destination_addresses"],
+        List<String>.from(json["withdrawal_destination_addresses"]),
         "Withdrawal",
         json["withdrawal_resolved_at"],
         json["withdrawal_transaction_hash"],
