@@ -6,19 +6,22 @@ import 'package:gql/ast.dart';
 import 'package:gql/language.dart';
 import 'package:lightspark_wallet/src/crypto/crypto.dart';
 import 'package:lightspark_wallet/src/crypto/node_key_cache.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../auth/auth_provider.dart';
 import './query.dart';
 
 const defaultBaseUrl = 'api.lightspark.com';
 const walletSdkEndpoint = "graphql/wallet/2023-05-05";
-
-// TODO(Jeremy): Add SDK version and platform info user agent.
 const _defaultHeaders = {
-  "X-Lightspark-SDK": "flutter-wallet-sdk",
-  "User-Agent": "flutter-wallet-sdk",
   "X-Lightspark-Beta": "z2h0BBYxTA83cjW7fi8QwWtBPCzkQKiemcuhKY08LOo",
 };
+
+PackageInfo? _packageInfo;
+Future<PackageInfo> _getPackageInfo() async {
+  _packageInfo ??= await PackageInfo.fromPlatform();
+  return _packageInfo!;
+}
 
 class Requester {
   final AuthProvider _authProvider;
@@ -46,12 +49,10 @@ class Requester {
       'wss://$baseUrl/$walletSdkEndpoint',
       _authProvider,
     );
-    _link = SigningLink(nodeKeyCache).concat(
-      Link.split(
-        (request) => request.isSubscription,
-        _wsLink,
-        _authLink.concat(_httpLink),
-      ),
+    _link = Link.split(
+      (request) => request.isSubscription,
+      SigningLink(nodeKeyCache).concat(_wsLink),
+      _authLink.concat(SigningLink(nodeKeyCache)).concat(_httpLink),
     );
     _client = GraphQLClient(
       cache: GraphQLCache(),
@@ -122,8 +123,7 @@ class Requester {
       throw Exception('Invalid query payload');
     }
 
-    return _client
-        .subscribe<T>(
+    return _client.subscribe<T>(
       SubscriptionOptions(
         operationName: operationMatch[2],
         document: gql(query.queryPayload),
@@ -175,6 +175,23 @@ class SigningLink extends Link {
 
   @override
   Stream<Response> request(Request request, [forward]) async* {
+    final packageInfo = await _getPackageInfo();
+    final skipAuth = request.context.entry<SkipAuth>()?.skipAuth ?? false;
+
+    request = request.updateContextEntry<HttpLinkHeaders>((entry) {
+      final newHeaders = {
+        "X-Lightspark-SDK": "flutter-wallet-sdk/${packageInfo.version}",
+        "User-Agent": "flutter-wallet-sdk/${packageInfo.version}",
+      };
+      var currentHeaders = entry?.headers ?? <String, String>{};
+      if (skipAuth) {
+        currentHeaders.remove("Authorization");
+      }
+      return HttpLinkHeaders(
+        headers: {...currentHeaders, ...newHeaders},
+      );
+    });
+
     final needsSignature =
         request.context.entry<NeedsSignature>()?.needsSignature ?? false;
     if (!needsSignature) {
@@ -204,11 +221,16 @@ class SigningLink extends Link {
       'v': 1,
     });
 
-    final newRequest = request.updateContextEntry<SignatureDetails>(
-      (entry) => SignatureDetails(signatureJson, expiration, nonce),
-    );
+    request = request
+        .updateContextEntry<SignatureDetails>(
+          (entry) => SignatureDetails(signatureJson, expiration, nonce),
+        )
+        .updateContextEntry<HttpLinkHeaders>((entry) => entry!
+          ..headers.addAll({
+            'X-Lightspark-Signing': signatureJson,
+          }));
 
-    yield* forward!(newRequest);
+    yield* forward!(request);
   }
 }
 
@@ -216,12 +238,6 @@ class SigningSerializer extends RequestSerializer {
   @override
   Map<String, dynamic> serializeRequest(Request request) {
     final body = super.serializeRequest(request);
-
-    final skipAuth = request.context.entry<SkipAuth>()?.skipAuth ?? false;
-    if (skipAuth) {
-      request.updateContextEntry<HttpLinkHeaders>(
-          (entry) => entry!..headers.remove('Authorization'));
-    }
 
     final signatureDetails = request.context.entry<SignatureDetails>();
     if (signatureDetails == null) {
@@ -234,17 +250,15 @@ class SigningSerializer extends RequestSerializer {
       'expires_at': signatureDetails.expiration,
     };
 
-    request.updateContextEntry<HttpLinkHeaders>((entry) => entry!
-      ..headers.addAll({
-        'X-Lightspark-Signing': signatureDetails.signatureJson,
-      }));
-
     return bodyWithNonce;
   }
 }
 
 class SocketCustomLink extends Link {
-  SocketCustomLink(this._url, this._authProvider);
+  SocketCustomLink(
+    this._url,
+    this._authProvider,
+  );
   final String _url;
   final AuthProvider _authProvider;
   _WsConnection? _connection;
