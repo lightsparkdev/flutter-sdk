@@ -11,7 +11,7 @@ class DeployWalletOutput {
 
   static DeployWalletOutput fromJson(Map<String, dynamic> json) {
     return DeployWalletOutput(
-      Wallet.fromJson(json["deploy_wallet_output_wallet"]),
+      Wallet.fromJson(json['deploy_wallet_output_wallet']),
     );
   }
 

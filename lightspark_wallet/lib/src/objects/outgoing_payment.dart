@@ -84,36 +84,36 @@ query GetOutgoingPayment(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => OutgoingPayment.fromJson(json["entity"]),
+      (json) => OutgoingPayment.fromJson(json['entity']),
       variables: {'id': id},
     );
   }
 
   static OutgoingPayment fromJson(Map<String, dynamic> json) {
     return OutgoingPayment(
-      json["outgoing_payment_id"],
-      json["outgoing_payment_created_at"],
-      json["outgoing_payment_updated_at"],
+      json['outgoing_payment_id'],
+      json['outgoing_payment_created_at'],
+      json['outgoing_payment_updated_at'],
       TransactionStatus.values.asNameMap()[json['outgoing_payment_status']] ??
           TransactionStatus.FUTURE_VALUE,
-      CurrencyAmount.fromJson(json["outgoing_payment_amount"]),
-      "OutgoingPayment",
-      json["outgoing_payment_resolved_at"],
-      json["outgoing_payment_transaction_hash"],
-      (json["outgoing_payment_fees"] != null
-          ? CurrencyAmount.fromJson(json["outgoing_payment_fees"])
+      CurrencyAmount.fromJson(json['outgoing_payment_amount']),
+      'OutgoingPayment',
+      json['outgoing_payment_resolved_at'],
+      json['outgoing_payment_transaction_hash'],
+      (json['outgoing_payment_fees'] != null
+          ? CurrencyAmount.fromJson(json['outgoing_payment_fees'])
           : null),
-      (json["outgoing_payment_payment_request_data"] != null
+      (json['outgoing_payment_payment_request_data'] != null
           ? PaymentRequestData.fromJson(
-              json["outgoing_payment_payment_request_data"])
+              json['outgoing_payment_payment_request_data'])
           : null),
-      (json["outgoing_payment_failure_reason"] != null)
+      (json['outgoing_payment_failure_reason'] != null)
           ? PaymentFailureReason.values
                   .asNameMap()[json['outgoing_payment_failure_reason']] ??
               PaymentFailureReason.FUTURE_VALUE
           : null,
-      (json["outgoing_payment_failure_message"] != null
-          ? RichText.fromJson(json["outgoing_payment_failure_message"])
+      (json['outgoing_payment_failure_message'] != null
+          ? RichText.fromJson(json['outgoing_payment_failure_message'])
           : null),
     );
   }

@@ -13,9 +13,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 final testTransaction = IncomingPayment(
-  "test",
-  "2023-08-01T04:32:01Z",
-  "2023-08-01T04:32:01Z",
+  'test',
+  '2023-08-01T04:32:01Z',
+  '2023-08-01T04:32:01Z',
   TransactionStatus.SUCCESS,
   CurrencyAmount(
     50000,
@@ -24,10 +24,10 @@ final testTransaction = IncomingPayment(
     132,
     132,
   ),
-  "IncomingPayment",
-  "2023-08-01T04:33:01Z",
-  "4894089ffnrjfh4y74u",
-  "",
+  'IncomingPayment',
+  '2023-08-01T04:33:01Z',
+  '4894089ffnrjfh4y74u',
+  '',
 );
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -112,9 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
     };
 
     const buttonText = {
-      WalletStatus.NOT_SETUP: "Deploy Wallet",
-      WalletStatus.DEPLOYED: "Initialize Wallet",
-      WalletStatus.FAILED: "Re-deploy Wallet",
+      WalletStatus.NOT_SETUP: 'Deploy Wallet',
+      WalletStatus.DEPLOYED: 'Initialize Wallet',
+      WalletStatus.FAILED: 'Re-deploy Wallet',
     };
 
     final isLoading =

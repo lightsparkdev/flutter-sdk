@@ -1,6 +1,6 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import  "../objects/outgoing_payment.dart";
+import  '../objects/outgoing_payment.dart';
 
 const CreateTestModePayment = '''
 mutation CreateTestModePayment(

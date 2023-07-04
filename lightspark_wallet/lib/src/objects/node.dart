@@ -1,7 +1,7 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './entity.dart';
-import "../lightspark_wallet_client.dart";
+import '../lightspark_wallet_client.dart';
 import './node_to_addresses_connection.dart';
 import '../lightspark_exception.dart';
 import './bitcoin_network.dart';
@@ -88,10 +88,10 @@ query FetchNodeToAddressesConnection($entity_id: ID!, $first: Int, $types: [Node
 }
 ''',
       (json) {
-        final connection = json["entity"]["addresses"];
+        final connection = json['entity']['addresses'];
         return NodeToAddressesConnection.fromJson(connection);
       },
-      variables: {"entity_id": id, "first": first, "types": types},
+      variables: {'entity_id': id, 'first': first, 'types': types},
     )));
   }
 
@@ -108,25 +108,25 @@ query GetNode(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => Node.fromJson(json["entity"]),
+      (json) => Node.fromJson(json['entity']),
       variables: {'id': id},
     );
   }
 
   static Node fromJson(Map<String, dynamic> json) {
-    if (json["__typename"] == "GraphNode") {
+    if (json['__typename'] == 'GraphNode') {
       return GraphNode(
-        json["graph_node_id"],
-        json["graph_node_created_at"],
-        json["graph_node_updated_at"],
+        json['graph_node_id'],
+        json['graph_node_created_at'],
+        json['graph_node_updated_at'],
         BitcoinNetwork.values.asNameMap()[json['graph_node_bitcoin_network']] ??
             BitcoinNetwork.FUTURE_VALUE,
-        json["graph_node_display_name"],
-        "GraphNode",
-        json["graph_node_alias"],
-        json["graph_node_color"],
-        json["graph_node_conductivity"],
-        json["graph_node_public_key"],
+        json['graph_node_display_name'],
+        'GraphNode',
+        json['graph_node_alias'],
+        json['graph_node_color'],
+        json['graph_node_conductivity'],
+        json['graph_node_public_key'],
       );
     }
     throw LightsparkException('DeserializationError',

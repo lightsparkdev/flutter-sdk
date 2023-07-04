@@ -18,8 +18,8 @@ class NodeToAddressesConnection {
 
   static NodeToAddressesConnection fromJson(Map<String, dynamic> json) {
     return NodeToAddressesConnection(
-      json["node_to_addresses_connection_count"],
-      json["node_to_addresses_connection_entities"]
+      json['node_to_addresses_connection_count'],
+      json['node_to_addresses_connection_entities']
           .map<NodeAddress>((e) => NodeAddress.fromJson(e))
           .toList(),
     );

@@ -22,9 +22,9 @@ class WalletToTransactionsConnection {
 
   static WalletToTransactionsConnection fromJson(Map<String, dynamic> json) {
     return WalletToTransactionsConnection(
-      PageInfo.fromJson(json["wallet_to_transactions_connection_page_info"]),
-      json["wallet_to_transactions_connection_count"],
-      json["wallet_to_transactions_connection_entities"]
+      PageInfo.fromJson(json['wallet_to_transactions_connection_page_info']),
+      json['wallet_to_transactions_connection_count'],
+      json['wallet_to_transactions_connection_entities']
           .map<Transaction>((e) => Transaction.fromJson(e))
           .toList(),
     );

@@ -22,10 +22,10 @@ class PayInvoiceInput {
 
   static PayInvoiceInput fromJson(Map<String, dynamic> json) {
     return PayInvoiceInput(
-      json["pay_invoice_input_encoded_invoice"],
-      json["pay_invoice_input_timeout_secs"],
-      json["pay_invoice_input_maximum_fees_msats"],
-      json["pay_invoice_input_amount_msats"],
+      json['pay_invoice_input_encoded_invoice'],
+      json['pay_invoice_input_timeout_secs'],
+      json['pay_invoice_input_maximum_fees_msats'],
+      json['pay_invoice_input_amount_msats'],
     );
   }
 }

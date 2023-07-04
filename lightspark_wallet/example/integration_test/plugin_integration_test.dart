@@ -161,26 +161,26 @@ void main() {
   testWidgets('get lightning fee estimate for invoice', (widgetTester) async {
     final client = LightsparkWalletClient();
     await client.loginWithJwt(accountId, jwt, InMemoryJwtStorage());
-    const invoice = "lnbcrt1pjr8xwypp5xqj2jfpkz095s8zu57ktsq8vt8yazwcmqpcke9pvl67ne9cpdr0qdqj2a5xzumnwd6hqurswqcqzpgxq9z0rgqsp55hfn0caa5sexea8u979cckkmwelw6h3zpwel5l8tn8s0elgwajss9q8pqqqssqefmmw79tknhl5xhnh7yfepzypxknwr9r4ya7ueqa6vz20axvys8se986hwj6gppeyzst44hm4yl04c4dqjjpqgtt0df254q087sjtfsq35yagj";
+    const invoice = 'lnbcrt1pjr8xwypp5xqj2jfpkz095s8zu57ktsq8vt8yazwcmqpcke9pvl67ne9cpdr0qdqj2a5xzumnwd6hqurswqcqzpgxq9z0rgqsp55hfn0caa5sexea8u979cckkmwelw6h3zpwel5l8tn8s0elgwajss9q8pqqqssqefmmw79tknhl5xhnh7yfepzypxknwr9r4ya7ueqa6vz20axvys8se986hwj6gppeyzst44hm4yl04c4dqjjpqgtt0df254q087sjtfsq35yagj';
     final estimate = await client.getLightningFeeEstimateForInvoice(invoice, 100000);
     expect(estimate, isNotNull);
-    print("Fee estimate: ${estimate.originalValue} ${estimate.originalUnit.name}}");
+    print('Fee estimate: ${estimate.originalValue} ${estimate.originalUnit.name}}');
   });
 
   testWidgets('get lightning fee estimate for node', (widgetTester) async {
     final client = LightsparkWalletClient();
     await client.loginWithJwt(accountId, jwt, InMemoryJwtStorage());
-    const destinationPublicKey = "03031864387b8f63ca4ffaeecd8aa973364bf31964f19c74343037b18d75e2d4f7";
+    const destinationPublicKey = '03031864387b8f63ca4ffaeecd8aa973364bf31964f19c74343037b18d75e2d4f7';
     final estimate = await client.getLightningFeeEstimateForNode(destinationPublicKey, 100000);
     expect(estimate, isNotNull);
-    print("Fee estimate: ${estimate.originalValue} ${estimate.originalUnit.name}}");
+    print('Fee estimate: ${estimate.originalValue} ${estimate.originalUnit.name}}');
   });
 
   testWidgets('test paying a test mode invoice', (widgetTester) async {
     final client = LightsparkWalletClient();
     await client.loginWithJwt(accountId, jwt, InMemoryJwtStorage());
     client.loadWalletSigningKey(signingPublicKey, signingPrivateKey);
-    final invoice = (await client.createTestModeInvoice(100000, memo: "test invoice"))!;
+    final invoice = (await client.createTestModeInvoice(100000, memo: 'test invoice'))!;
     final outgoingPayment = await client.payInvoiceAndAwaitResult(invoice, 10000);
     expect(outgoingPayment, isNotNull);
     expect(outgoingPayment.status, TransactionStatus.SUCCESS);
@@ -190,7 +190,7 @@ void main() {
     final client = LightsparkWalletClient();
     await client.loginWithJwt(accountId, jwt, InMemoryJwtStorage());
     client.loadWalletSigningKey(signingPublicKey, signingPrivateKey);
-    final invoice = await client.createInvoice(100000, memo: "test invoice");
+    final invoice = await client.createInvoice(100000, memo: 'test invoice');
     expect(invoice, isNotNull);
     final payment = await client.createTestModePayment(invoice.encodedPaymentRequest);
     expect(payment, isNotNull);

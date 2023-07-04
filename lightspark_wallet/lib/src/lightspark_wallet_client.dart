@@ -39,7 +39,7 @@ class LightsparkWalletClient {
 
   LightsparkWalletClient({
     AuthProvider? authProvider,
-    String serverUrl = "api.lightspark.com",
+    String serverUrl = 'api.lightspark.com',
   })  : _serverUrl = serverUrl,
         _authProvider = authProvider ?? StubAuthProvider() {
     _requester = Requester(
@@ -82,8 +82,8 @@ class LightsparkWalletClient {
         LoginWithJwt,
         (json) => LoginWithJWTOutput.fromJson(json['login_with_jwt']),
         variables: {
-          "account_id": accountId,
-          "jwt": jwt,
+          'account_id': accountId,
+          'jwt': jwt,
         },
         skipAuth: true,
       ),
@@ -104,10 +104,10 @@ class LightsparkWalletClient {
     return await executeRawQuery(Query(
       CurrentWalletQuery,
       (responseJson) {
-        if (responseJson["current_wallet"] == null) {
+        if (responseJson['current_wallet'] == null) {
           return null;
         }
-        return Wallet.fromJson(responseJson["current_wallet"]);
+        return Wallet.fromJson(responseJson['current_wallet']);
       },
     ));
   }
@@ -122,7 +122,7 @@ class LightsparkWalletClient {
     return await executeRawQuery(Query(
       DeployWallet,
       (responseJson) =>
-          DeployWalletOutput.fromJson(responseJson["deploy_wallet"]).wallet,
+          DeployWalletOutput.fromJson(responseJson['deploy_wallet']).wallet,
     ));
   }
 
@@ -163,7 +163,7 @@ class LightsparkWalletClient {
           }
         }''',
       (json) =>
-          WalletStatus.values.asNameMap()[json["current_wallet"]["status"]] ??
+          WalletStatus.values.asNameMap()[json['current_wallet']['status']] ??
           WalletStatus.FUTURE_VALUE,
     )).timeout(Duration(seconds: timeoutSecs));
 
@@ -173,7 +173,7 @@ class LightsparkWalletClient {
       }
     });
 
-    resultCompleter.future.then((_) {
+    await resultCompleter.future.then((_) {
       subscriptionStream.cancel();
     }).catchError((_) {
       subscriptionStream.cancel();
@@ -182,8 +182,8 @@ class LightsparkWalletClient {
     subscriptionStream.onDone(() {
       if (!resultCompleter.isCompleted) {
         resultCompleter.completeError(LightsparkException(
-          "WalletStatusAwaitError",
-          "Wallet status subscription completed without receiving a status update.",
+          'WalletStatusAwaitError',
+          'Wallet status subscription completed without receiving a status update.',
         ));
       }
     });
@@ -211,11 +211,11 @@ class LightsparkWalletClient {
     return await executeRawQuery(Query(
       InitializeWallet,
       (responseJson) =>
-          InitializeWalletOutput.fromJson(responseJson["initialize_wallet"])
+          InitializeWalletOutput.fromJson(responseJson['initialize_wallet'])
               .wallet,
       variables: {
-        "key_type": keyType.name,
-        "signing_public_key": stripPemTags(signingPublicKey),
+        'key_type': keyType.name,
+        'signing_public_key': stripPemTags(signingPublicKey),
       },
       isSignedOp: true,
     ));
@@ -272,7 +272,7 @@ class LightsparkWalletClient {
     return await executeRawQuery(Query(
       TerminateWallet,
       (responseJson) =>
-          TerminateWalletOutput.fromJson(responseJson["terminate_wallet"])
+          TerminateWalletOutput.fromJson(responseJson['terminate_wallet'])
               .wallet,
     ));
   }
@@ -290,28 +290,28 @@ class LightsparkWalletClient {
     return await executeRawQuery(Query(
       WalletDashboardQuery,
       (responseJson) {
-        final currentWallet = responseJson["current_wallet"];
+        final currentWallet = responseJson['current_wallet'];
         if (currentWallet == null) {
           return null;
         }
         return WalletDashboard(
-          id: currentWallet["id"],
-          status: WalletStatus.values.asNameMap()[currentWallet["status"]] ??
+          id: currentWallet['id'],
+          status: WalletStatus.values.asNameMap()[currentWallet['status']] ??
               WalletStatus.FUTURE_VALUE,
-          balances: currentWallet["balances"] != null
-              ? Balances.fromJson(currentWallet["balances"])
+          balances: currentWallet['balances'] != null
+              ? Balances.fromJson(currentWallet['balances'])
               : null,
           recentTransactions: WalletToTransactionsConnection.fromJson(
-            currentWallet["recent_transactions"],
+            currentWallet['recent_transactions'],
           ),
           paymentRequests: WalletToPaymentRequestsConnection.fromJson(
-            currentWallet["payment_requests"],
+            currentWallet['payment_requests'],
           ),
         );
       },
       variables: {
-        "numTransactions": numTransactions,
-        "numPaymentRequests": numPaymentRequests,
+        'numTransactions': numTransactions,
+        'numPaymentRequests': numPaymentRequests,
       },
     ));
   }
@@ -329,11 +329,11 @@ class LightsparkWalletClient {
     return await executeRawQuery(Query(
       CreateInvoiceMutation,
       (responseJson) => InvoiceData.fromJson(
-          responseJson["create_invoice"]["invoice"]["data"]),
+          responseJson['create_invoice']['invoice']['data']),
       variables: {
-        "amountMsats": amountMsats,
-        "memo": memo,
-        "type": type.name,
+        'amountMsats': amountMsats,
+        'memo': memo,
+        'type': type.name,
       },
     ));
   }
@@ -345,9 +345,9 @@ class LightsparkWalletClient {
     return await executeRawQuery(Query(
       DecodeInvoiceQuery,
       (responseJson) =>
-          InvoiceData.fromJson(responseJson["decoded_payment_request"]),
+          InvoiceData.fromJson(responseJson['decoded_payment_request']),
       variables: {
-        "encoded_payment_request": encodedInvoice,
+        'encoded_payment_request': encodedInvoice,
       },
     ));
   }
@@ -379,17 +379,17 @@ class LightsparkWalletClient {
     await _requireValidAuth();
     await _requireWalletUnlocked();
     final variables = {
-      "encoded_invoice": encodedInvoice,
-      "maximum_fees_msats": maxFeesMsats,
-      "timeout_secs": timeoutSecs,
+      'encoded_invoice': encodedInvoice,
+      'maximum_fees_msats': maxFeesMsats,
+      'timeout_secs': timeoutSecs,
     };
     if (amountMsats != null) {
-      variables["amount_msats"] = amountMsats;
+      variables['amount_msats'] = amountMsats;
     }
     final payment = await executeRawQuery(Query(
       PayInvoiceMutation,
       (responseJson) {
-        final paymentJson = responseJson["pay_invoice"]?["payment"];
+        final paymentJson = responseJson['pay_invoice']?['payment'];
         if (paymentJson == null) {
           return null;
         }
@@ -400,8 +400,8 @@ class LightsparkWalletClient {
     ));
     if (payment == null) {
       throw LightsparkException(
-        "PaymentNullError",
-        "Unknown error paying invoice",
+        'PaymentNullError',
+        'Unknown error paying invoice',
       );
     }
     return payment;
@@ -460,24 +460,24 @@ class LightsparkWalletClient {
     final payment = await executeRawQuery(Query(
       SendPaymentMutation,
       (responseJson) {
-        final paymentJson = responseJson["send_payment"]?["payment"];
+        final paymentJson = responseJson['send_payment']?['payment'];
         if (paymentJson == null) {
           return null;
         }
         return OutgoingPayment.fromJson(paymentJson);
       },
       variables: {
-        "destination_node_public_key": destinationNodePublicKey,
-        "amount_msats": amountMsats,
-        "maximum_fees_msats": maxFeesMsats,
-        "timeout_secs": timeoutSecs,
+        'destination_node_public_key': destinationNodePublicKey,
+        'amount_msats': amountMsats,
+        'maximum_fees_msats': maxFeesMsats,
+        'timeout_secs': timeoutSecs,
       },
       isSignedOp: true,
     ));
     if (payment == null) {
       throw LightsparkException(
-        "PaymentNullError",
-        "Unknown error sending payment",
+        'PaymentNullError',
+        'Unknown error sending payment',
       );
     }
     return payment;
@@ -530,8 +530,8 @@ class LightsparkWalletClient {
     }
     if (!completionStatuses.contains(payment.status)) {
       throw LightsparkException(
-        "PaymentTimeoutError",
-        "Payment did not complete before the timeout of $timeoutSecs seconds.",
+        'PaymentTimeoutError',
+        'Payment did not complete before the timeout of $timeoutSecs seconds.',
       );
     }
     return payment;
@@ -543,7 +543,7 @@ class LightsparkWalletClient {
     return await executeRawQuery(Query(
       BitcoinFeeEstimateQuery,
       (responseJson) =>
-          FeeEstimate.fromJson(responseJson["bitcoin_fee_estimate"]),
+          FeeEstimate.fromJson(responseJson['bitcoin_fee_estimate']),
     ));
   }
 
@@ -560,10 +560,10 @@ class LightsparkWalletClient {
       Query(
         LightningFeeEstimateForInvoiceQuery,
         (json) => CurrencyAmount.fromJson(
-            json["lightning_fee_estimate_for_invoice"]["fee_estimate"]),
+            json['lightning_fee_estimate_for_invoice']['fee_estimate']),
         variables: {
-          "encoded_payment_request": encodedPaymentRequest,
-          "amount_msats": amountMsats,
+          'encoded_payment_request': encodedPaymentRequest,
+          'amount_msats': amountMsats,
         },
       ),
     );
@@ -580,10 +580,10 @@ class LightsparkWalletClient {
       Query(
         LightningFeeEstimateForNodeQuery,
         (json) => CurrencyAmount.fromJson(
-            json["lightning_fee_estimate_for_node"]["fee_estimate"]),
+            json['lightning_fee_estimate_for_node']['fee_estimate']),
         variables: {
-          "destination_node_public_key": destinationNodePublicKey,
-          "amount_msats": amountMsats,
+          'destination_node_public_key': destinationNodePublicKey,
+          'amount_msats': amountMsats,
         },
       ),
     );
@@ -595,8 +595,8 @@ class LightsparkWalletClient {
     await _requireWalletUnlocked();
     return await executeRawQuery(Query(
       CreateBitcoinFundingAddress,
-      (responseJson) => responseJson["create_bitcoin_funding_address"]
-          ["bitcoin_address"] as String,
+      (responseJson) => responseJson['create_bitcoin_funding_address']
+          ['bitcoin_address'] as String,
       isSignedOp: true,
     ));
   }
@@ -617,15 +617,15 @@ class LightsparkWalletClient {
     return await executeRawQuery(Query(
       RequestWithdrawalMutation,
       (responseJson) {
-        final request = responseJson["request_withdrawal"]?["request"];
+        final request = responseJson['request_withdrawal']?['request'];
         if (request == null) {
           return null;
         }
         return WithdrawalRequest.fromJson(request);
       },
       variables: {
-        "amount_sats": amountSats,
-        "bitcoin_address": bitcoinAddress,
+        'amount_sats': amountSats,
+        'bitcoin_address': bitcoinAddress,
       },
       isSignedOp: true,
     ));
@@ -646,18 +646,18 @@ class LightsparkWalletClient {
     return await executeRawQuery(Query(
       CreateTestModeInvoice,
       (responseJson) {
-        final encodedPaymentRequest = responseJson["create_test_mode_invoice"]
-            ?["encoded_payment_request"];
+        final encodedPaymentRequest = responseJson['create_test_mode_invoice']
+            ?['encoded_payment_request'];
         if (encodedPaymentRequest == null) {
-          throw LightsparkException("CreateTestModeInvoiceError",
-              "Unable to create test mode invoice");
+          throw LightsparkException('CreateTestModeInvoiceError',
+              'Unable to create test mode invoice');
         }
         return encodedPaymentRequest as String;
       },
       variables: {
-        "amount_msats": amountMsats,
-        "memo": memo,
-        "invoice_type": invoiceType.name,
+        'amount_msats': amountMsats,
+        'memo': memo,
+        'invoice_type': invoiceType.name,
       },
     ));
   }
@@ -678,15 +678,15 @@ class LightsparkWalletClient {
       CreateTestModePayment,
       (responseJson) {
         final paymentJson =
-            responseJson["create_test_mode_payment"]?["payment"];
+            responseJson['create_test_mode_payment']?['payment'];
         if (paymentJson == null) {
           return null;
         }
         return OutgoingPayment.fromJson(paymentJson);
       },
       variables: {
-        "encoded_invoice": encodedInvoice,
-        "amount_msats": amountMsats,
+        'encoded_invoice': encodedInvoice,
+        'amount_msats': amountMsats,
       },
       isSignedOp: true,
     ));
@@ -700,7 +700,7 @@ class LightsparkWalletClient {
   _requireWalletUnlocked() {
     if (!isWalletUnlocked()) {
       throw LightsparkAuthException(
-          "You must unlock the wallet before performing this action.");
+          'You must unlock the wallet before performing this action.');
     }
   }
 
@@ -719,7 +719,7 @@ class LightsparkWalletClient {
   Future<void> _requireValidAuth() async {
     if (!await isAuthorized()) {
       throw LightsparkAuthException(
-          "You must be logged in to perform this action.");
+          'You must be logged in to perform this action.');
     }
   }
 }

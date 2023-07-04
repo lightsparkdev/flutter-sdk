@@ -50,7 +50,7 @@ class SharedPreferencesJwtStorage implements JwtStorage {
 
   @override
   Future<void> saveToken(JwtTokenInfo token) async {
-    (await _sharedPreferences).setString('jwt_token', token.toJson());
+    await (await _sharedPreferences).setString('jwt_token', token.toJson());
   }
 }
 

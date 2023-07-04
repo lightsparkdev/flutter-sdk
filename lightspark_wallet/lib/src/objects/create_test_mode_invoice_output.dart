@@ -9,7 +9,7 @@ class CreateTestModeInvoiceOutput {
 
   static CreateTestModeInvoiceOutput fromJson(Map<String, dynamic> json) {
     return CreateTestModeInvoiceOutput(
-      json["create_test_mode_invoice_output_encoded_payment_request"],
+      json['create_test_mode_invoice_output_encoded_payment_request'],
     );
   }
 

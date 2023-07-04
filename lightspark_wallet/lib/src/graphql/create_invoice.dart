@@ -1,6 +1,6 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import "../objects/invoice_data.dart";
+import '../objects/invoice_data.dart';
 
 const CreateInvoiceMutation = '''
   mutation CreateInvoice(

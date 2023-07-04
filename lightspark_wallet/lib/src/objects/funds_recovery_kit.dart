@@ -16,11 +16,11 @@ class FundsRecoveryKit {
   );
 
   static FundsRecoveryKit fromJson(Map<String, dynamic> json) {
-    if (json["__typename"] == "AmazonS3FundsRecoveryKit") {
+    if (json['__typename'] == 'AmazonS3FundsRecoveryKit') {
       return AmazonS3FundsRecoveryKit(
-        json["amazon_s3_funds_recovery_kit_bitcoin_wallet_address"],
-        json["amazon_s3_funds_recovery_kit_s3_bucket_url"],
-        "AmazonS3FundsRecoveryKit",
+        json['amazon_s3_funds_recovery_kit_bitcoin_wallet_address'],
+        json['amazon_s3_funds_recovery_kit_s3_bucket_url'],
+        'AmazonS3FundsRecoveryKit',
       );
     }
     throw LightsparkException('DeserializationError',

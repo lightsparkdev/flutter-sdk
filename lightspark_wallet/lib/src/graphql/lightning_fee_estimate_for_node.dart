@@ -1,6 +1,6 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import "../objects/lightning_fee_estimate_output.dart";
+import '../objects/lightning_fee_estimate_output.dart';
 
 const LightningFeeEstimateForNodeQuery = '''
   query LightningFeeEstimateForNode(

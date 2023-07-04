@@ -1,6 +1,6 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import "../objects/withdrawal_request.dart";
+import '../objects/withdrawal_request.dart';
 
 const RequestWithdrawalMutation = '''
   mutation RequestWithdrawal(

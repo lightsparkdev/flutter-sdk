@@ -56,10 +56,10 @@ class TransactionRow extends StatelessWidget {
 extension on Transaction {
   String get typeString {
     return switch (typename) {
-      "IncomingPayment" => 'Received',
-      "OutgoingPayment" => 'Sent',
-      "Deposit" => 'Deposit',
-      "Withdrawal" => 'Withdrawal',
+      'IncomingPayment' => 'Received',
+      'OutgoingPayment' => 'Sent',
+      'Deposit' => 'Deposit',
+      'Withdrawal' => 'Withdrawal',
       _ => 'Unknown',
     };
   }

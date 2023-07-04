@@ -12,9 +12,9 @@ import '../auth/auth_provider.dart';
 import './query.dart';
 
 const defaultBaseUrl = 'api.lightspark.com';
-const walletSdkEndpoint = "graphql/wallet/2023-05-05";
+const walletSdkEndpoint = 'graphql/wallet/2023-05-05';
 const _defaultHeaders = {
-  "X-Lightspark-Beta": "z2h0BBYxTA83cjW7fi8QwWtBPCzkQKiemcuhKY08LOo",
+  'X-Lightspark-Beta': 'z2h0BBYxTA83cjW7fi8QwWtBPCzkQKiemcuhKY08LOo',
 };
 
 PackageInfo? _packageInfo;
@@ -62,7 +62,7 @@ class Requester {
 
   Future<T> executeQuery<T>(Query<T> query) async {
     var operationNameRegex = RegExp(
-        r"^\s*(query|mutation|subscription)\s+(\w+)",
+        r'^\s*(query|mutation|subscription)\s+(\w+)',
         caseSensitive: false);
     var operationMatch = operationNameRegex.matchAsPrefix(query.queryPayload);
     if (operationMatch == null || operationMatch.groupCount < 2) {
@@ -116,7 +116,7 @@ class Requester {
 
   Stream<QueryResult<T>> executeSubscription<T>(Query<T> query) {
     final operationNameRegex = RegExp(
-        r"^\s*(query|mutation|subscription)\s+(\w+)",
+        r'^\s*(query|mutation|subscription)\s+(\w+)',
         caseSensitive: false);
     final operationMatch = operationNameRegex.matchAsPrefix(query.queryPayload);
     if (operationMatch == null || operationMatch.groupCount < 2) {
@@ -180,12 +180,12 @@ class SigningLink extends Link {
 
     request = request.updateContextEntry<HttpLinkHeaders>((entry) {
       final newHeaders = {
-        "X-Lightspark-SDK": "flutter-wallet-sdk/${packageInfo.version}",
-        "User-Agent": "flutter-wallet-sdk/${packageInfo.version}",
+        'X-Lightspark-SDK': 'flutter-wallet-sdk/${packageInfo.version}',
+        'User-Agent': 'flutter-wallet-sdk/${packageInfo.version}',
       };
       var currentHeaders = entry?.headers ?? <String, String>{};
       if (skipAuth) {
-        currentHeaders.remove("Authorization");
+        currentHeaders.remove('Authorization');
       }
       return HttpLinkHeaders(
         headers: {...currentHeaders, ...newHeaders},

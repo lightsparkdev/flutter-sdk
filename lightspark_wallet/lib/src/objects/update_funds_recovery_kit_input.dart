@@ -12,8 +12,8 @@ class UpdateFundsRecoveryKitInput {
 
   static UpdateFundsRecoveryKitInput fromJson(Map<String, dynamic> json) {
     return UpdateFundsRecoveryKitInput(
-      json["update_funds_recovery_kit_input_s3_bucket_url"],
-      json["update_funds_recovery_kit_input_bitcoin_wallet_address"],
+      json['update_funds_recovery_kit_input_s3_bucket_url'],
+      json['update_funds_recovery_kit_input_bitcoin_wallet_address'],
     );
   }
 }

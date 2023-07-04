@@ -69,51 +69,51 @@ query GetLightningTransaction(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => LightningTransaction.fromJson(json["entity"]),
+      (json) => LightningTransaction.fromJson(json['entity']),
       variables: {'id': id},
     );
   }
 
   static LightningTransaction fromJson(Map<String, dynamic> json) {
-    if (json["__typename"] == "IncomingPayment") {
+    if (json['__typename'] == 'IncomingPayment') {
       return IncomingPayment(
-        json["incoming_payment_id"],
-        json["incoming_payment_created_at"],
-        json["incoming_payment_updated_at"],
+        json['incoming_payment_id'],
+        json['incoming_payment_created_at'],
+        json['incoming_payment_updated_at'],
         TransactionStatus.values.asNameMap()[json['incoming_payment_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json["incoming_payment_amount"]),
-        "IncomingPayment",
-        json["incoming_payment_resolved_at"],
-        json["incoming_payment_transaction_hash"],
-        json["incoming_payment_payment_request"]?.id,
+        CurrencyAmount.fromJson(json['incoming_payment_amount']),
+        'IncomingPayment',
+        json['incoming_payment_resolved_at'],
+        json['incoming_payment_transaction_hash'],
+        json['incoming_payment_payment_request']?.id,
       );
     }
-    if (json["__typename"] == "OutgoingPayment") {
+    if (json['__typename'] == 'OutgoingPayment') {
       return OutgoingPayment(
-        json["outgoing_payment_id"],
-        json["outgoing_payment_created_at"],
-        json["outgoing_payment_updated_at"],
+        json['outgoing_payment_id'],
+        json['outgoing_payment_created_at'],
+        json['outgoing_payment_updated_at'],
         TransactionStatus.values.asNameMap()[json['outgoing_payment_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json["outgoing_payment_amount"]),
-        "OutgoingPayment",
-        json["outgoing_payment_resolved_at"],
-        json["outgoing_payment_transaction_hash"],
-        (json["outgoing_payment_fees"] != null
-            ? CurrencyAmount.fromJson(json["outgoing_payment_fees"])
+        CurrencyAmount.fromJson(json['outgoing_payment_amount']),
+        'OutgoingPayment',
+        json['outgoing_payment_resolved_at'],
+        json['outgoing_payment_transaction_hash'],
+        (json['outgoing_payment_fees'] != null
+            ? CurrencyAmount.fromJson(json['outgoing_payment_fees'])
             : null),
-        (json["outgoing_payment_payment_request_data"] != null
+        (json['outgoing_payment_payment_request_data'] != null
             ? PaymentRequestData.fromJson(
-                json["outgoing_payment_payment_request_data"])
+                json['outgoing_payment_payment_request_data'])
             : null),
-        (json["outgoing_payment_failure_reason"] != null)
+        (json['outgoing_payment_failure_reason'] != null)
             ? PaymentFailureReason.values
                     .asNameMap()[json['outgoing_payment_failure_reason']] ??
                 PaymentFailureReason.FUTURE_VALUE
             : null,
-        (json["outgoing_payment_failure_message"] != null
-            ? RichText.fromJson(json["outgoing_payment_failure_message"])
+        (json['outgoing_payment_failure_message'] != null
+            ? RichText.fromJson(json['outgoing_payment_failure_message'])
             : null),
       );
     }

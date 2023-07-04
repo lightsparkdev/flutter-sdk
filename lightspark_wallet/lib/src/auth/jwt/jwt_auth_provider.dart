@@ -34,7 +34,7 @@ class JwtAuthProvider implements AuthProvider {
     if (tokenInfo == null) {
       return {};
     }
-    return { "access_token": tokenInfo.accessToken };
+    return { 'access_token': tokenInfo.accessToken };
   }
 
   @override

@@ -68,136 +68,136 @@ query GetTransaction(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => Transaction.fromJson(json["entity"]),
+      (json) => Transaction.fromJson(json['entity']),
       variables: {'id': id},
     );
   }
 
   static Transaction fromJson(Map<String, dynamic> json) {
-    if (json["__typename"] == "ChannelClosingTransaction") {
+    if (json['__typename'] == 'ChannelClosingTransaction') {
       return ChannelClosingTransaction(
-        json["channel_closing_transaction_id"],
-        json["channel_closing_transaction_created_at"],
-        json["channel_closing_transaction_updated_at"],
+        json['channel_closing_transaction_id'],
+        json['channel_closing_transaction_created_at'],
+        json['channel_closing_transaction_updated_at'],
         TransactionStatus.values
                 .asNameMap()[json['channel_closing_transaction_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json["channel_closing_transaction_amount"]),
-        json["channel_closing_transaction_block_height"],
+        CurrencyAmount.fromJson(json['channel_closing_transaction_amount']),
+        json['channel_closing_transaction_block_height'],
         List<String>.from(
-            json["channel_closing_transaction_destination_addresses"]),
-        "ChannelClosingTransaction",
-        json["channel_closing_transaction_resolved_at"],
-        json["channel_closing_transaction_transaction_hash"],
-        (json["channel_closing_transaction_fees"] != null
-            ? CurrencyAmount.fromJson(json["channel_closing_transaction_fees"])
+            json['channel_closing_transaction_destination_addresses']),
+        'ChannelClosingTransaction',
+        json['channel_closing_transaction_resolved_at'],
+        json['channel_closing_transaction_transaction_hash'],
+        (json['channel_closing_transaction_fees'] != null
+            ? CurrencyAmount.fromJson(json['channel_closing_transaction_fees'])
             : null),
-        json["channel_closing_transaction_block_hash"],
-        json["channel_closing_transaction_num_confirmations"],
+        json['channel_closing_transaction_block_hash'],
+        json['channel_closing_transaction_num_confirmations'],
       );
     }
-    if (json["__typename"] == "ChannelOpeningTransaction") {
+    if (json['__typename'] == 'ChannelOpeningTransaction') {
       return ChannelOpeningTransaction(
-        json["channel_opening_transaction_id"],
-        json["channel_opening_transaction_created_at"],
-        json["channel_opening_transaction_updated_at"],
+        json['channel_opening_transaction_id'],
+        json['channel_opening_transaction_created_at'],
+        json['channel_opening_transaction_updated_at'],
         TransactionStatus.values
                 .asNameMap()[json['channel_opening_transaction_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json["channel_opening_transaction_amount"]),
-        json["channel_opening_transaction_block_height"],
+        CurrencyAmount.fromJson(json['channel_opening_transaction_amount']),
+        json['channel_opening_transaction_block_height'],
         List<String>.from(
-            json["channel_opening_transaction_destination_addresses"]),
-        "ChannelOpeningTransaction",
-        json["channel_opening_transaction_resolved_at"],
-        json["channel_opening_transaction_transaction_hash"],
-        (json["channel_opening_transaction_fees"] != null
-            ? CurrencyAmount.fromJson(json["channel_opening_transaction_fees"])
+            json['channel_opening_transaction_destination_addresses']),
+        'ChannelOpeningTransaction',
+        json['channel_opening_transaction_resolved_at'],
+        json['channel_opening_transaction_transaction_hash'],
+        (json['channel_opening_transaction_fees'] != null
+            ? CurrencyAmount.fromJson(json['channel_opening_transaction_fees'])
             : null),
-        json["channel_opening_transaction_block_hash"],
-        json["channel_opening_transaction_num_confirmations"],
+        json['channel_opening_transaction_block_hash'],
+        json['channel_opening_transaction_num_confirmations'],
       );
     }
-    if (json["__typename"] == "Deposit") {
+    if (json['__typename'] == 'Deposit') {
       return Deposit(
-        json["deposit_id"],
-        json["deposit_created_at"],
-        json["deposit_updated_at"],
+        json['deposit_id'],
+        json['deposit_created_at'],
+        json['deposit_updated_at'],
         TransactionStatus.values.asNameMap()[json['deposit_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json["deposit_amount"]),
-        json["deposit_block_height"],
-        List<String>.from(json["deposit_destination_addresses"]),
-        "Deposit",
-        json["deposit_resolved_at"],
-        json["deposit_transaction_hash"],
-        (json["deposit_fees"] != null
-            ? CurrencyAmount.fromJson(json["deposit_fees"])
+        CurrencyAmount.fromJson(json['deposit_amount']),
+        json['deposit_block_height'],
+        List<String>.from(json['deposit_destination_addresses']),
+        'Deposit',
+        json['deposit_resolved_at'],
+        json['deposit_transaction_hash'],
+        (json['deposit_fees'] != null
+            ? CurrencyAmount.fromJson(json['deposit_fees'])
             : null),
-        json["deposit_block_hash"],
-        json["deposit_num_confirmations"],
+        json['deposit_block_hash'],
+        json['deposit_num_confirmations'],
       );
     }
-    if (json["__typename"] == "IncomingPayment") {
+    if (json['__typename'] == 'IncomingPayment') {
       return IncomingPayment(
-        json["incoming_payment_id"],
-        json["incoming_payment_created_at"],
-        json["incoming_payment_updated_at"],
+        json['incoming_payment_id'],
+        json['incoming_payment_created_at'],
+        json['incoming_payment_updated_at'],
         TransactionStatus.values.asNameMap()[json['incoming_payment_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json["incoming_payment_amount"]),
-        "IncomingPayment",
-        json["incoming_payment_resolved_at"],
-        json["incoming_payment_transaction_hash"],
-        json["incoming_payment_payment_request"]?.id,
+        CurrencyAmount.fromJson(json['incoming_payment_amount']),
+        'IncomingPayment',
+        json['incoming_payment_resolved_at'],
+        json['incoming_payment_transaction_hash'],
+        json['incoming_payment_payment_request']?.id,
       );
     }
-    if (json["__typename"] == "OutgoingPayment") {
+    if (json['__typename'] == 'OutgoingPayment') {
       return OutgoingPayment(
-        json["outgoing_payment_id"],
-        json["outgoing_payment_created_at"],
-        json["outgoing_payment_updated_at"],
+        json['outgoing_payment_id'],
+        json['outgoing_payment_created_at'],
+        json['outgoing_payment_updated_at'],
         TransactionStatus.values.asNameMap()[json['outgoing_payment_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json["outgoing_payment_amount"]),
-        "OutgoingPayment",
-        json["outgoing_payment_resolved_at"],
-        json["outgoing_payment_transaction_hash"],
-        (json["outgoing_payment_fees"] != null
-            ? CurrencyAmount.fromJson(json["outgoing_payment_fees"])
+        CurrencyAmount.fromJson(json['outgoing_payment_amount']),
+        'OutgoingPayment',
+        json['outgoing_payment_resolved_at'],
+        json['outgoing_payment_transaction_hash'],
+        (json['outgoing_payment_fees'] != null
+            ? CurrencyAmount.fromJson(json['outgoing_payment_fees'])
             : null),
-        (json["outgoing_payment_payment_request_data"] != null
+        (json['outgoing_payment_payment_request_data'] != null
             ? PaymentRequestData.fromJson(
-                json["outgoing_payment_payment_request_data"])
+                json['outgoing_payment_payment_request_data'])
             : null),
-        (json["outgoing_payment_failure_reason"] != null)
+        (json['outgoing_payment_failure_reason'] != null)
             ? PaymentFailureReason.values
                     .asNameMap()[json['outgoing_payment_failure_reason']] ??
                 PaymentFailureReason.FUTURE_VALUE
             : null,
-        (json["outgoing_payment_failure_message"] != null
-            ? RichText.fromJson(json["outgoing_payment_failure_message"])
+        (json['outgoing_payment_failure_message'] != null
+            ? RichText.fromJson(json['outgoing_payment_failure_message'])
             : null),
       );
     }
-    if (json["__typename"] == "Withdrawal") {
+    if (json['__typename'] == 'Withdrawal') {
       return Withdrawal(
-        json["withdrawal_id"],
-        json["withdrawal_created_at"],
-        json["withdrawal_updated_at"],
+        json['withdrawal_id'],
+        json['withdrawal_created_at'],
+        json['withdrawal_updated_at'],
         TransactionStatus.values.asNameMap()[json['withdrawal_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json["withdrawal_amount"]),
-        json["withdrawal_block_height"],
-        List<String>.from(json["withdrawal_destination_addresses"]),
-        "Withdrawal",
-        json["withdrawal_resolved_at"],
-        json["withdrawal_transaction_hash"],
-        (json["withdrawal_fees"] != null
-            ? CurrencyAmount.fromJson(json["withdrawal_fees"])
+        CurrencyAmount.fromJson(json['withdrawal_amount']),
+        json['withdrawal_block_height'],
+        List<String>.from(json['withdrawal_destination_addresses']),
+        'Withdrawal',
+        json['withdrawal_resolved_at'],
+        json['withdrawal_transaction_hash'],
+        (json['withdrawal_fees'] != null
+            ? CurrencyAmount.fromJson(json['withdrawal_fees'])
             : null),
-        json["withdrawal_block_hash"],
-        json["withdrawal_num_confirmations"],
+        json['withdrawal_block_hash'],
+        json['withdrawal_num_confirmations'],
       );
     }
     throw LightsparkException('DeserializationError',

@@ -1,8 +1,8 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import "../objects/balances.dart";
-import "../objects/payment_request.dart";
-import "../objects/transaction.dart";
+import '../objects/balances.dart';
+import '../objects/payment_request.dart';
+import '../objects/transaction.dart';
 
 const WalletDashboardQuery = '''
 query WalletDashboard(

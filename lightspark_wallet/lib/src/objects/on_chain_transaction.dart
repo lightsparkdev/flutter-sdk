@@ -89,94 +89,94 @@ query GetOnChainTransaction(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => OnChainTransaction.fromJson(json["entity"]),
+      (json) => OnChainTransaction.fromJson(json['entity']),
       variables: {'id': id},
     );
   }
 
   static OnChainTransaction fromJson(Map<String, dynamic> json) {
-    if (json["__typename"] == "ChannelClosingTransaction") {
+    if (json['__typename'] == 'ChannelClosingTransaction') {
       return ChannelClosingTransaction(
-        json["channel_closing_transaction_id"],
-        json["channel_closing_transaction_created_at"],
-        json["channel_closing_transaction_updated_at"],
+        json['channel_closing_transaction_id'],
+        json['channel_closing_transaction_created_at'],
+        json['channel_closing_transaction_updated_at'],
         TransactionStatus.values
                 .asNameMap()[json['channel_closing_transaction_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json["channel_closing_transaction_amount"]),
-        json["channel_closing_transaction_block_height"],
+        CurrencyAmount.fromJson(json['channel_closing_transaction_amount']),
+        json['channel_closing_transaction_block_height'],
         List<String>.from(
-            json["channel_closing_transaction_destination_addresses"]),
-        "ChannelClosingTransaction",
-        json["channel_closing_transaction_resolved_at"],
-        json["channel_closing_transaction_transaction_hash"],
-        (json["channel_closing_transaction_fees"] != null
-            ? CurrencyAmount.fromJson(json["channel_closing_transaction_fees"])
+            json['channel_closing_transaction_destination_addresses']),
+        'ChannelClosingTransaction',
+        json['channel_closing_transaction_resolved_at'],
+        json['channel_closing_transaction_transaction_hash'],
+        (json['channel_closing_transaction_fees'] != null
+            ? CurrencyAmount.fromJson(json['channel_closing_transaction_fees'])
             : null),
-        json["channel_closing_transaction_block_hash"],
-        json["channel_closing_transaction_num_confirmations"],
+        json['channel_closing_transaction_block_hash'],
+        json['channel_closing_transaction_num_confirmations'],
       );
     }
-    if (json["__typename"] == "ChannelOpeningTransaction") {
+    if (json['__typename'] == 'ChannelOpeningTransaction') {
       return ChannelOpeningTransaction(
-        json["channel_opening_transaction_id"],
-        json["channel_opening_transaction_created_at"],
-        json["channel_opening_transaction_updated_at"],
+        json['channel_opening_transaction_id'],
+        json['channel_opening_transaction_created_at'],
+        json['channel_opening_transaction_updated_at'],
         TransactionStatus.values
                 .asNameMap()[json['channel_opening_transaction_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json["channel_opening_transaction_amount"]),
-        json["channel_opening_transaction_block_height"],
+        CurrencyAmount.fromJson(json['channel_opening_transaction_amount']),
+        json['channel_opening_transaction_block_height'],
         List<String>.from(
-            json["channel_opening_transaction_destination_addresses"]),
-        "ChannelOpeningTransaction",
-        json["channel_opening_transaction_resolved_at"],
-        json["channel_opening_transaction_transaction_hash"],
-        (json["channel_opening_transaction_fees"] != null
-            ? CurrencyAmount.fromJson(json["channel_opening_transaction_fees"])
+            json['channel_opening_transaction_destination_addresses']),
+        'ChannelOpeningTransaction',
+        json['channel_opening_transaction_resolved_at'],
+        json['channel_opening_transaction_transaction_hash'],
+        (json['channel_opening_transaction_fees'] != null
+            ? CurrencyAmount.fromJson(json['channel_opening_transaction_fees'])
             : null),
-        json["channel_opening_transaction_block_hash"],
-        json["channel_opening_transaction_num_confirmations"],
+        json['channel_opening_transaction_block_hash'],
+        json['channel_opening_transaction_num_confirmations'],
       );
     }
-    if (json["__typename"] == "Deposit") {
+    if (json['__typename'] == 'Deposit') {
       return Deposit(
-        json["deposit_id"],
-        json["deposit_created_at"],
-        json["deposit_updated_at"],
+        json['deposit_id'],
+        json['deposit_created_at'],
+        json['deposit_updated_at'],
         TransactionStatus.values.asNameMap()[json['deposit_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json["deposit_amount"]),
-        json["deposit_block_height"],
-        List<String>.from(json["deposit_destination_addresses"]),
-        "Deposit",
-        json["deposit_resolved_at"],
-        json["deposit_transaction_hash"],
-        (json["deposit_fees"] != null
-            ? CurrencyAmount.fromJson(json["deposit_fees"])
+        CurrencyAmount.fromJson(json['deposit_amount']),
+        json['deposit_block_height'],
+        List<String>.from(json['deposit_destination_addresses']),
+        'Deposit',
+        json['deposit_resolved_at'],
+        json['deposit_transaction_hash'],
+        (json['deposit_fees'] != null
+            ? CurrencyAmount.fromJson(json['deposit_fees'])
             : null),
-        json["deposit_block_hash"],
-        json["deposit_num_confirmations"],
+        json['deposit_block_hash'],
+        json['deposit_num_confirmations'],
       );
     }
-    if (json["__typename"] == "Withdrawal") {
+    if (json['__typename'] == 'Withdrawal') {
       return Withdrawal(
-        json["withdrawal_id"],
-        json["withdrawal_created_at"],
-        json["withdrawal_updated_at"],
+        json['withdrawal_id'],
+        json['withdrawal_created_at'],
+        json['withdrawal_updated_at'],
         TransactionStatus.values.asNameMap()[json['withdrawal_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json["withdrawal_amount"]),
-        json["withdrawal_block_height"],
-        List<String>.from(json["withdrawal_destination_addresses"]),
-        "Withdrawal",
-        json["withdrawal_resolved_at"],
-        json["withdrawal_transaction_hash"],
-        (json["withdrawal_fees"] != null
-            ? CurrencyAmount.fromJson(json["withdrawal_fees"])
+        CurrencyAmount.fromJson(json['withdrawal_amount']),
+        json['withdrawal_block_height'],
+        List<String>.from(json['withdrawal_destination_addresses']),
+        'Withdrawal',
+        json['withdrawal_resolved_at'],
+        json['withdrawal_transaction_hash'],
+        (json['withdrawal_fees'] != null
+            ? CurrencyAmount.fromJson(json['withdrawal_fees'])
             : null),
-        json["withdrawal_block_hash"],
-        json["withdrawal_num_confirmations"],
+        json['withdrawal_block_hash'],
+        json['withdrawal_num_confirmations'],
       );
     }
     throw LightsparkException('DeserializationError',

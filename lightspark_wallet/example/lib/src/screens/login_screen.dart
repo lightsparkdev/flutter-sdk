@@ -71,7 +71,7 @@ class LoginScreenState extends State<LoginScreen> {
               _accountTextController.text,
               _jwtTextController.text,
             );
-            print("Login result: $loggedIn");
+            print('Login result: $loggedIn');
           },
           child: const Text('Login with JWT'),
         ),

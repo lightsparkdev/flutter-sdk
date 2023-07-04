@@ -59,22 +59,22 @@ query GetInvoice(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => Invoice.fromJson(json["entity"]),
+      (json) => Invoice.fromJson(json['entity']),
       variables: {'id': id},
     );
   }
 
   static Invoice fromJson(Map<String, dynamic> json) {
     return Invoice(
-      json["invoice_id"],
-      json["invoice_created_at"],
-      json["invoice_updated_at"],
-      InvoiceData.fromJson(json["invoice_data"]),
+      json['invoice_id'],
+      json['invoice_created_at'],
+      json['invoice_updated_at'],
+      InvoiceData.fromJson(json['invoice_data']),
       PaymentRequestStatus.values.asNameMap()[json['invoice_status']] ??
           PaymentRequestStatus.FUTURE_VALUE,
-      "Invoice",
-      (json["invoice_amount_paid"] != null
-          ? CurrencyAmount.fromJson(json["invoice_amount_paid"])
+      'Invoice',
+      (json['invoice_amount_paid'] != null
+          ? CurrencyAmount.fromJson(json['invoice_amount_paid'])
           : null),
     );
   }
