@@ -282,8 +282,10 @@ class LightsparkWalletClient {
   ///
   /// [numTransactions] The max number of recent transactions to fetch. Defaults to 20.
   /// [numPaymentRequests] The max number of recent payment requests to fetch. Defaults to 20.
-  getWalletDashboard(
-      {int numTransactions = 20, int numPaymentRequests = 20}) async {
+  Future<WalletDashboard?> getWalletDashboard({
+    int numTransactions = 20,
+    int numPaymentRequests = 20,
+  }) async {
     await _requireValidAuth();
     return await executeRawQuery(Query(
       WalletDashboardQuery,
@@ -692,7 +694,7 @@ class LightsparkWalletClient {
 
   /// Returns true if the wallet is unlocked or false if it is locked.
   bool isWalletUnlocked() {
-    return false; //this.nodeKeyCache.hasKey(WALLET_NODE_ID_KEY);
+    return _nodeKeyCache.getKeyPair() != null;
   }
 
   _requireWalletUnlocked() {

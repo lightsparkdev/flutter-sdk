@@ -2,15 +2,15 @@
 
 import './transaction.dart';
 import './entity.dart';
-import '../requester/query.dart';
-import './currency_amount.dart';
 import './payment_failure_reason.dart';
+import './incoming_payment.dart';
+import './currency_amount.dart';
 import '../lightspark_exception.dart';
-import './transaction_status.dart';
-import './payment_request_data.dart';
 import './rich_text.dart';
 import './outgoing_payment.dart';
-import './incoming_payment.dart';
+import './payment_request_data.dart';
+import '../requester/query.dart';
+import './transaction_status.dart';
 
 class LightningTransaction implements Transaction, Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
@@ -107,7 +107,7 @@ $fragment
             ? PaymentRequestData.fromJson(
                 json["outgoing_payment_payment_request_data"])
             : null),
-        (!!json["outgoing_payment_failure_reason"])
+        (json["outgoing_payment_failure_reason"] != null)
             ? PaymentFailureReason.values
                     .asNameMap()[json['outgoing_payment_failure_reason']] ??
                 PaymentFailureReason.FUTURE_VALUE

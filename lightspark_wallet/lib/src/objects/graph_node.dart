@@ -2,10 +2,10 @@
 
 import './node.dart';
 import './entity.dart';
-import './node_to_addresses_connection.dart';
-import '../requester/query.dart';
 import "../lightspark_wallet_client.dart";
+import './node_to_addresses_connection.dart';
 import './bitcoin_network.dart';
+import '../requester/query.dart';
 import './node_address_type.dart';
 
 /// This is a node on the Lightning Network, managed by a third party. The information about this node is public data that has been obtained by observing the Lightning Network.

@@ -19,7 +19,7 @@ class CreateInvoiceInput {
     return CreateInvoiceInput(
       json["create_invoice_input_amount_msats"],
       json["create_invoice_input_memo"],
-      (!!json["create_invoice_input_invoice_type"])
+      (json["create_invoice_input_invoice_type"] != null)
           ? InvoiceType.values
                   .asNameMap()[json['create_invoice_input_invoice_type']] ??
               InvoiceType.FUTURE_VALUE

@@ -3,12 +3,12 @@
 import './lightning_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import '../requester/query.dart';
 import './payment_failure_reason.dart';
 import './currency_amount.dart';
-import './transaction_status.dart';
-import './rich_text.dart';
 import './payment_request_data.dart';
+import './rich_text.dart';
+import '../requester/query.dart';
+import './transaction_status.dart';
 
 /// A transaction that was sent from a Lightspark node on the Lightning Network.
 class OutgoingPayment implements LightningTransaction, Transaction, Entity {
@@ -107,7 +107,7 @@ $fragment
           ? PaymentRequestData.fromJson(
               json["outgoing_payment_payment_request_data"])
           : null),
-      (!!json["outgoing_payment_failure_reason"])
+      (json["outgoing_payment_failure_reason"] != null)
           ? PaymentFailureReason.values
                   .asNameMap()[json['outgoing_payment_failure_reason']] ??
               PaymentFailureReason.FUTURE_VALUE

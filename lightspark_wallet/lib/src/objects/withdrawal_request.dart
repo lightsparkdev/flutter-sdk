@@ -1,9 +1,9 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './entity.dart';
-import './withdrawal_request_status.dart';
-import '../requester/query.dart';
 import './currency_amount.dart';
+import '../requester/query.dart';
+import './withdrawal_request_status.dart';
 
 class WithdrawalRequest implements Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.

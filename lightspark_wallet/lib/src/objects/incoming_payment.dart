@@ -3,9 +3,9 @@
 import './lightning_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import './transaction_status.dart';
-import '../requester/query.dart';
 import './currency_amount.dart';
+import '../requester/query.dart';
+import './transaction_status.dart';
 
 /// A transaction that was sent to a Lightspark node on the Lightning Network.
 class IncomingPayment implements LightningTransaction, Transaction, Entity {

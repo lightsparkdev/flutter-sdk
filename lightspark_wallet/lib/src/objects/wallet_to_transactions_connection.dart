@@ -1,7 +1,7 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import './page_info.dart';
 import './transaction.dart';
+import './page_info.dart';
 
 class WalletToTransactionsConnection {
   /// An object that holds pagination information about the objects in this connection.

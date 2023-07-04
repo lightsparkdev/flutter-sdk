@@ -19,7 +19,7 @@ class CreateTestModeInvoiceInputWallet {
     return CreateTestModeInvoiceInputWallet(
       json["create_test_mode_invoice_input_wallet_amount_msats"],
       json["create_test_mode_invoice_input_wallet_memo"],
-      (!!json["create_test_mode_invoice_input_wallet_invoice_type"])
+      (json["create_test_mode_invoice_input_wallet_invoice_type"] != null)
           ? InvoiceType.values.asNameMap()[
                   json['create_test_mode_invoice_input_wallet_invoice_type']] ??
               InvoiceType.FUTURE_VALUE

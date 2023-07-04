@@ -2,10 +2,10 @@
 
 import './payment_request.dart';
 import './entity.dart';
-import '../requester/query.dart';
 import './invoice_data.dart';
 import './payment_request_status.dart';
 import './currency_amount.dart';
+import '../requester/query.dart';
 
 /// This object represents a BOLT #11 invoice (https://github.com/lightning/bolts/blob/master/11-payment-encoding.md) initiated by a Lightspark Node.
 class Invoice implements PaymentRequest, Entity {
