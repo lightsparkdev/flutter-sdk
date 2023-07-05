@@ -56,7 +56,7 @@ class SharedPreferencesJwtStorage implements JwtStorage {
 
 extension on JwtTokenInfo {
   String toJson() {
-    return '{ "accessToken": "$accessToken", "validUntil": "${validUntil.toIso8601String()}" }';
+    return '{ "accessToken": "$accessToken", "validUntil": "${validUntil.toUtc().toIso8601String()}" }';
   }
 }
 

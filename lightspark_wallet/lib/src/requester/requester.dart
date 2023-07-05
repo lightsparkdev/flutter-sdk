@@ -73,13 +73,8 @@ class Requester {
       throw Exception('Subscription queries should call subscribe instead');
     }
     // This is a bit weird, but for public endpoints, we need to avoid adding the __typename field to the query.
-    // This may break caching in graphql_flutter, so keep it when we can.
-    final document = query.skipAuth
-        ? transform(
-            parseString(query.queryPayload),
-            [],
-          )
-        : gql(query.queryPayload);
+    // This may break caching in graphql_flutter, but for now, we're not caching anyway.
+    final document = transform(parseString(query.queryPayload), []);
     final result = operationType == 'mutation'
         ? await _client.mutate(
             MutationOptions(
@@ -125,8 +120,9 @@ class Requester {
 
     return _client.subscribe<T>(
       SubscriptionOptions(
+        fetchPolicy: FetchPolicy.noCache,
         operationName: operationMatch[2],
-        document: gql(query.queryPayload),
+        document: transform(parseString(query.queryPayload), []),
         variables: query.variables,
         context: Context.fromList([
           NeedsSignature(query.isSignedOp),
@@ -204,7 +200,7 @@ class SigningLink extends Link {
       throw Exception('No key pair found for signing');
     }
     final expiration =
-        DateTime.now().add(const Duration(hours: 1)).toIso8601String();
+        DateTime.now().add(const Duration(hours: 1)).toUtc().toIso8601String();
 
     final body = const RequestSerializer().serializeRequest(request);
     final bodyWithNonce = {

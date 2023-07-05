@@ -157,9 +157,12 @@ class InvoiceScreen extends StatelessWidget {
             child: Column(children: [
               QrImageView(data: encodedInvoice, size: 200),
               Text(encodedInvoice.truncateMiddle(14)),
-              Text('$amountSats sats',
-                  style: Theme.of(context).textTheme.headlineSmall),
-              ElevatedButton(
+              Text(
+                '$amountSats sats',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              const SizedBox(height: 8),
+              OutlinedButton(
                 onPressed: () {
                   context.read<RequestPaymentBloc>().add(AddAmountTapped());
                 },
@@ -171,22 +174,31 @@ class InvoiceScreen extends StatelessWidget {
         const SizedBox(height: 24),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            ElevatedButton(
+            FilledButton.icon(
+              onPressed: () {
+                context.read<RequestPaymentBloc>().add(ShareTapped());
+              },
+              style: FilledButton.styleFrom().copyWith(
+                minimumSize: MaterialStateProperty.all(const Size(150, 48)),
+              ),
+              icon: const Icon(Icons.share_outlined, size: 12),
+              label: const Text('Share'),
+            ),
+            const SizedBox(width: 24),
+            FilledButton.icon(
+              style: FilledButton.styleFrom().copyWith(
+                minimumSize: MaterialStateProperty.all(const Size(150, 48)),
+              ),
               onPressed: () {
                 context.read<RequestPaymentBloc>().add(CopyTapped());
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Copied to clipboard')),
                 );
               },
-              child: const Text('Copy'),
-            ),
-            const SizedBox(width: 24),
-            ElevatedButton(
-              onPressed: () {
-                context.read<RequestPaymentBloc>().add(ShareTapped());
-              },
-              child: const Text('Share'),
+              icon: const Icon(Icons.copy, size: 12),
+              label: const Text('Copy'),
             ),
           ],
         )

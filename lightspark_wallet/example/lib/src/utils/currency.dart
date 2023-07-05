@@ -16,14 +16,27 @@ extension CurrencyDisplay on CurrencyUnit {
 
   String toTextValue(int amount) {
     return switch (this) {
-      CurrencyUnit.BITCOIN => '${amount.toStringAsFixed(8)} $shortName',
-      CurrencyUnit.MILLIBITCOIN => '${amount.toStringAsFixed(5)} $shortName',
-      CurrencyUnit.MICROBITCOIN => '${amount.toStringAsFixed(2)} $shortName',
-      CurrencyUnit.NANOBITCOIN => '${amount.toStringAsFixed(0)} $shortName',
-      CurrencyUnit.SATOSHI => '${amount.toStringAsFixed(3)} $shortName',
-      CurrencyUnit.MILLISATOSHI => '${amount.toStringAsFixed(0)} $shortName',
-      CurrencyUnit.USD => '\$${(amount / 100).toStringAsFixed(2)} $shortName',
+      CurrencyUnit.BITCOIN => '${amount.toStringAsFixed(6).addCommas()} $shortName',
+      CurrencyUnit.MILLIBITCOIN => '${amount.toStringAsFixed(0).addCommas()} $shortName',
+      CurrencyUnit.MICROBITCOIN => '${amount.toStringAsFixed(0).addCommas()} $shortName',
+      CurrencyUnit.NANOBITCOIN => '${amount.toStringAsFixed(0).addCommas()} $shortName',
+      CurrencyUnit.SATOSHI => '${amount.toStringAsFixed(0).addCommas()} $shortName',
+      CurrencyUnit.MILLISATOSHI => '${amount.toStringAsFixed(0).addCommas()} $shortName',
+      CurrencyUnit.USD => '\$${(amount / 100).toStringAsFixed(2).addCommas()} $shortName',
       CurrencyUnit.FUTURE_VALUE => '',
     };
+  }
+}
+
+extension on String {
+  String addCommas() {
+    final parts = split('.');
+    final whole = parts[0];
+    final decimal = parts.length > 1 ? parts[1] : '';
+    final wholeWithCommas = whole.replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (match) => '${match[1]},', 
+    );
+    return '$wholeWithCommas${decimal.isNotEmpty ? '.$decimal' : ''}';
   }
 }

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
 
 import 'package:lightspark_wallet/lightspark_wallet.dart';
 import 'package:lightspark_wallet_example/src/screens/login_screen.dart';
-import 'package:lightspark_wallet_example/src/screens/request_payment_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'src/model/lightspark_client_notifier.dart';
@@ -85,19 +83,17 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.from(
-        colorScheme: const ColorScheme.light(),
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blueGrey,
+          primary: Colors.black,
+        ),
       ).copyWith(
-        primaryColor: const Color.fromARGB(255, 0, 0, 0),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color.fromARGB(255, 0, 0, 0),
+          elevation: 1,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-          ),
+          style: ElevatedButton.styleFrom(minimumSize: const Size(60, 45)),
         ),
       ),
       home: _isLoggedIn

@@ -13,41 +13,53 @@ class TransactionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _transaction.typeString,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  Text(
-                    DateFormat('MMM dd, hh:mma').format(
-                      DateTime.parse(_transaction.createdAt).toLocal(),
-                    ),
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).colorScheme.primary.withAlpha(20),
+            width: 1,
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _transaction.amount.preferredCurrencyUnit.toTextValue(
-                    _transaction.amount.preferredCurrencyValueRounded,
-                  ),
+                  _transaction.typeString,
                   style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                Text(
+                  DateFormat('MMM dd, hh:mma').format(
+                    DateTime.parse(_transaction.createdAt).toLocal(),
+                  ),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                _transaction.amount.originalUnit.toTextValue(
+                  _transaction.amount.originalValue,
+                ),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Text(
+                _transaction.amount.preferredCurrencyUnit.toTextValue(
+                  _transaction.amount.preferredCurrencyValueRounded,
+                ),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

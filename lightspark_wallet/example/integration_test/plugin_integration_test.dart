@@ -190,7 +190,7 @@ void main() {
     final client = LightsparkWalletClient();
     await client.loginWithJwt(accountId, jwt, InMemoryJwtStorage());
     client.loadWalletSigningKey(signingPublicKey, signingPrivateKey);
-    final invoice = await client.createInvoice(100000, memo: 'test invoice');
+    final invoice = await client.createInvoice(100000000, memo: 'test invoice');
     expect(invoice, isNotNull);
     final payment = await client.createTestModePayment(invoice.encodedPaymentRequest);
     expect(payment, isNotNull);

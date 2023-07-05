@@ -1,0 +1,47 @@
+PODS:
+  - fast_rsa (0.6.0):
+    - Flutter
+  - Flutter (1.0.0)
+  - integration_test (0.0.1):
+    - Flutter
+  - lightspark_wallet (0.0.1):
+    - Flutter
+  - package_info_plus (0.4.5):
+    - Flutter
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - fast_rsa (from `.symlinks/plugins/fast_rsa/ios`)
+  - Flutter (from `Flutter`)
+  - integration_test (from `.symlinks/plugins/integration_test/ios`)
+  - lightspark_wallet (from `.symlinks/plugins/lightspark_wallet/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+
+EXTERNAL SOURCES:
+  fast_rsa:
+    :path: ".symlinks/plugins/fast_rsa/ios"
+  Flutter:
+    :path: Flutter
+  integration_test:
+    :path: ".symlinks/plugins/integration_test/ios"
+  lightspark_wallet:
+    :path: ".symlinks/plugins/lightspark_wallet/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+
+SPEC CHECKSUMS:
+  fast_rsa: fd45f4173fb2cfd4e34b536bef517fc5ca87995d
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  integration_test: 13825b8a9334a850581300559b8839134b124670
+  lightspark_wallet: 10d903a18d6fec09d929302a067d87c54f352862
+  package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
+  shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
+
+PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
+
+COCOAPODS: 1.11.2

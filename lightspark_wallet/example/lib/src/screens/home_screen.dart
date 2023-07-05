@@ -57,19 +57,29 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Lightspark wallet example app'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Logout',
-            onPressed: () async {
-              await widget.onLogout();
-            },
+      body: Center(child: _buildBody(context)),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.wallet),
+            label: 'Wallet',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Account',
           ),
         ],
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              break;
+            case 1:
+              Navigator.of(context).push(SendPaymentScreen.route());
+              break;
+          }
+        },
       ),
-      body: Center(child: _buildBody(context)),
     );
   }
 
@@ -82,65 +92,75 @@ class _HomeScreenState extends State<HomeScreen> {
       return _buildNotInitialized(context, _forcedStatus ?? _dashboard!.status);
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Text(
-            'Your wallet is ${_dashboard!.status.name}',
-            style: Theme.of(context).textTheme.bodyLarge,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Balance(
-                  balance: _dashboard!.balances?.ownedBalance,
-                  name: 'Owned Balance'),
-              Balance(
-                  balance: _dashboard!.balances?.availableToSendBalance,
-                  name: 'Available to Send'),
-              Balance(
-                  balance: _dashboard!.balances?.availableToWithdrawBalance,
-                  name: 'Available to Withdraw'),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(SendPaymentScreen.route());
-                  },
-                  child: const Text('Send'),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(RequestPaymentScreen.route());
-                  },
-                  child: const Text('Receive'),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _dashboard!.recentTransactions.count + 7,
-              itemBuilder: (context, index) {
-                final transaction = (_dashboard!.recentTransactions.entities +
-                    [testTransaction, testTransaction, testTransaction, testTransaction, testTransaction, testTransaction, testTransaction])[index];
-                return TransactionRow(transaction: transaction);
-              },
+    return Column(
+      children: [
+        Card(
+          margin: const EdgeInsets.all(0),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(16),
             ),
-          )
-        ],
-      ),
+          ),
+          child: Column(
+            children: [
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Balance(
+                      balance: _dashboard!.balances?.ownedBalance,
+                      name: 'Owned Balance'),
+                  Balance(
+                      balance: _dashboard!.balances?.availableToSendBalance,
+                      name: 'Available to Send'),
+                  Balance(
+                      balance: _dashboard!.balances?.availableToWithdrawBalance,
+                      name: 'Available to Withdraw'),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FilledButton(
+                    onPressed: () {
+                      Navigator.of(context).push(SendPaymentScreen.route());
+                    },
+                    child: const Text('Send'),
+                  ),
+                  const SizedBox(width: 16),
+                  FilledButton(
+                    onPressed: () {
+                      Navigator.of(context).push(RequestPaymentScreen.route());
+                    },
+                    child: const Text('Receive'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _dashboard!.recentTransactions.count + 7,
+            itemBuilder: (context, index) {
+              final transaction = (_dashboard!.recentTransactions.entities +
+                  [
+                    testTransaction,
+                    testTransaction,
+                    testTransaction,
+                    testTransaction,
+                    testTransaction,
+                    testTransaction,
+                    testTransaction
+                  ])[index];
+              return TransactionRow(transaction: transaction);
+            },
+          ),
+        )
+      ],
     );
   }
 
@@ -228,6 +248,7 @@ class Balance extends StatelessWidget {
       return const Spacer();
     }
     return Card(
+      elevation: 0,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

@@ -149,7 +149,7 @@ $fragment
         'IncomingPayment',
         json['incoming_payment_resolved_at'],
         json['incoming_payment_transaction_hash'],
-        json['incoming_payment_payment_request']?.id,
+        json['incoming_payment_payment_request']?['id'],
       );
     }
     if (json['__typename'] == 'OutgoingPayment') {
