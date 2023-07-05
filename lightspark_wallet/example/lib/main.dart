@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
 
 import 'package:lightspark_wallet/lightspark_wallet.dart';
 import 'package:lightspark_wallet_example/src/screens/login_screen.dart';
+import 'package:lightspark_wallet_example/src/screens/request_payment_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'src/model/lightspark_client_notifier.dart';
@@ -82,25 +84,25 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Lightspark wallet example app'),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.logout),
-              tooltip: 'Logout',
-              onPressed: () async {
-                await _logout();
-              },
-            ),
-          ],
+      theme: ThemeData.from(
+        colorScheme: const ColorScheme.light(),
+      ).copyWith(
+        primaryColor: const Color.fromARGB(255, 0, 0, 0),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromARGB(255, 0, 0, 0),
         ),
-        body: Center(
-          child: _isLoggedIn
-              ? const HomeScreen()
-              : LoginScreen(onLogin: _loginWithJwt),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
         ),
       ),
+      home: _isLoggedIn
+          ? HomeScreen(onLogout: _logout)
+          : LoginScreen(onLogin: _loginWithJwt),
     );
   }
 }

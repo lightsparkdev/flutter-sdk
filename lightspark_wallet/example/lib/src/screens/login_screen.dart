@@ -59,23 +59,28 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('Running on: $_platformVersion\n'),
-        LsTextInput(label: 'Account ID', controller: _accountTextController),
-        LsTextInput(label: 'JWT', controller: _jwtTextController),
-        ElevatedButton(
-          onPressed: () async {
-            final loggedIn = await _onLogin!(
-              _accountTextController.text,
-              _jwtTextController.text,
-            );
-            print('Login result: $loggedIn');
-          },
-          child: const Text('Login with JWT'),
-        ),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Lightspark wallet example app'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Running on: $_platformVersion\n'),
+          LsTextInput(label: 'Account ID', controller: _accountTextController),
+          LsTextInput(label: 'JWT', controller: _jwtTextController),
+          ElevatedButton(
+            onPressed: () async {
+              final loggedIn = await _onLogin!(
+                _accountTextController.text,
+                _jwtTextController.text,
+              );
+              print('Login result: $loggedIn');
+            },
+            child: const Text('Login with JWT'),
+          ),
+        ],
+      ),
     );
   }
 }

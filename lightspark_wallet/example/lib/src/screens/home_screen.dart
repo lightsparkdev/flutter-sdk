@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:lightspark_wallet/lightspark_wallet.dart';
 import 'package:lightspark_wallet_example/src/model/lightspark_client_notifier.dart';
+import 'package:lightspark_wallet_example/src/screens/request_payment_screen.dart';
+import 'package:lightspark_wallet_example/src/screens/send_payment_screen.dart';
 import 'package:provider/provider.dart';
 import '../components/transaction_row.dart';
 import '../utils/currency.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final Future<void> Function() onLogout;
+  const HomeScreen({super.key, required this.onLogout});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -53,6 +56,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Lightspark wallet example app'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Logout',
+            onPressed: () async {
+              await widget.onLogout();
+            },
+          ),
+        ],
+      ),
+      body: Center(child: _buildBody(context)),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
     if (_dashboard == null) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -86,12 +107,34 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(SendPaymentScreen.route());
+                  },
+                  child: const Text('Send'),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(RequestPaymentScreen.route());
+                  },
+                  child: const Text('Receive'),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
           Expanded(
             child: ListView.builder(
-              itemCount: _dashboard!.recentTransactions.count + 3,
+              itemCount: _dashboard!.recentTransactions.count + 7,
               itemBuilder: (context, index) {
                 final transaction = (_dashboard!.recentTransactions.entities +
-                    [testTransaction, testTransaction, testTransaction])[index];
+                    [testTransaction, testTransaction, testTransaction, testTransaction, testTransaction, testTransaction, testTransaction])[index];
                 return TransactionRow(transaction: transaction);
               },
             ),
