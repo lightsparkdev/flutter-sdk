@@ -7,8 +7,8 @@ extension CurrencyDisplay on CurrencyUnit {
       CurrencyUnit.MILLIBITCOIN => 'mBTC',
       CurrencyUnit.MICROBITCOIN => 'μBTC',
       CurrencyUnit.NANOBITCOIN => 'nBTC',
-      CurrencyUnit.SATOSHI => 'sat',
-      CurrencyUnit.MILLISATOSHI => 'msat',
+      CurrencyUnit.SATOSHI => 'SAT',
+      CurrencyUnit.MILLISATOSHI => 'mSAT',
       CurrencyUnit.USD => 'USD',
       CurrencyUnit.FUTURE_VALUE => '',
     };
@@ -24,6 +24,18 @@ extension CurrencyDisplay on CurrencyUnit {
       CurrencyUnit.MILLISATOSHI => '${amount.toStringAsFixed(0).addCommas()} $shortName',
       CurrencyUnit.USD => '\$${(amount / 100).toStringAsFixed(2).addCommas()} $shortName',
       CurrencyUnit.FUTURE_VALUE => '',
+    };
+  }
+
+  double toSats(int amount) {
+    return switch (this) {
+      CurrencyUnit.BITCOIN => amount * 100000000.0,
+      CurrencyUnit.MILLIBITCOIN => amount * 100000.0,
+      CurrencyUnit.MICROBITCOIN => amount * 100.0,
+      CurrencyUnit.NANOBITCOIN => amount * 0.1,
+      CurrencyUnit.SATOSHI => amount.toDouble(),
+      CurrencyUnit.MILLISATOSHI => amount / 1000,
+      _ => throw Exception('Cannot convert from $this to sats.'),
     };
   }
 }

@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       name: 'Available to Withdraw'),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 40),
             ],
           ),
         ),
@@ -249,12 +249,16 @@ class Balance extends StatelessWidget {
     }
     return Card(
       elevation: 0,
-      child: Padding(
+      child: Container(
+        width: 160,
+        height: 140,
         padding: const EdgeInsets.all(16),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               _name,
+              textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelLarge,
             ),
             const SizedBox(height: 16),
@@ -265,7 +269,9 @@ class Balance extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             Text(
-              _balance!.originalUnit.toTextValue(_balance!.originalValue),
+              CurrencyUnit.SATOSHI.toTextValue(_balance!.originalUnit
+                  .toSats(_balance!.originalValue)
+                  .round()),
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),

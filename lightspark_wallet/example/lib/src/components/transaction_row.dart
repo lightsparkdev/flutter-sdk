@@ -25,6 +25,21 @@ class TransactionRow extends StatelessWidget {
       ),
       child: Row(
         children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: _transaction.typeColor,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Center(
+              child: Icon(
+                _transaction.typeIcon,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,14 +61,16 @@ class TransactionRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                _transaction.amount.originalUnit.toTextValue(
-                  _transaction.amount.originalValue,
+                _transaction.amount.preferredCurrencyUnit.toTextValue(
+                  _transaction.amount.preferredCurrencyValueRounded,
                 ),
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Text(
-                _transaction.amount.preferredCurrencyUnit.toTextValue(
-                  _transaction.amount.preferredCurrencyValueRounded,
+                CurrencyUnit.SATOSHI.toTextValue(
+                  _transaction.amount.originalUnit
+                      .toSats(_transaction.amount.originalValue)
+                      .round(),
                 ),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
@@ -73,6 +90,26 @@ extension on Transaction {
       'Deposit' => 'Deposit',
       'Withdrawal' => 'Withdrawal',
       _ => 'Unknown',
+    };
+  }
+
+  IconData get typeIcon {
+    return switch (typename) {
+      'IncomingPayment' => Icons.arrow_back,
+      'OutgoingPayment' => Icons.arrow_forward,
+      'Deposit' => Icons.arrow_circle_down,
+      'Withdrawal' => Icons.arrow_circle_up,
+      _ => Icons.help,
+    };
+  }
+
+  Color get typeColor {
+    return switch (typename) {
+      'IncomingPayment' => const Color.fromARGB(0xFF, 0x17, 0xC2, 0x7C),
+      'OutgoingPayment' => const Color.fromARGB(0xFF, 0, 0x66, 0xFF),
+      'Deposit' => const Color.fromARGB(0xFF, 0x17, 0xC2, 0x7C),
+      'Withdrawal' => const Color.fromARGB(0xFF, 0, 0x66, 0xFF),
+      _ => Colors.grey,
     };
   }
 }
