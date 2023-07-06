@@ -1,10 +1,10 @@
 # lightspark_wallet
 
-The Lightspark Wallet Flutter SDK. See the example project for a demonstration of how to use it!
+This is the Lightspark Wallet Flutter SDK! See the example project for a demonstration of how to use it or read below to get started.
 
 ## Getting Started
 
-To use the SDK, first add it:
+To use the wallet SDK, first install it as a dependency in your app:
 
 ```bash
 flutter pub add lightspark_wallet
