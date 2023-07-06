@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lightspark_wallet/lightspark_wallet.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../model/lightspark_client_notifier.dart';
 import '../utils/lce.dart';
@@ -76,15 +77,8 @@ class RequestPaymentBloc
     });
 
     on<ShareTapped>((event, emit) {
-      // TODO: implement share
+      state.withData((state) => Share.share(state.encodedInvoice));
     });
-  }
-
-  @override
-  void onTransition(
-      Transition<RequestPaymentEvent, Lce<RequestPaymentState>> transition) {
-    super.onTransition(transition);
-    print(transition);
   }
 }
 

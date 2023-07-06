@@ -23,6 +23,13 @@ extension Mappers<T> on Lce<T> {
     }
     return null;
   }
+
+  R? withData<R>(R Function(T) fn) {
+    if (this is LceContent<T>) {
+      return fn((this as LceContent<T>).data);
+    }
+    return null;
+  }
 }
 
 class LceContent<T> implements Lce<T> {
