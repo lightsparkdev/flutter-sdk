@@ -157,11 +157,14 @@ class InvoiceScreen extends StatelessWidget {
             child: Column(children: [
               QrImageView(data: encodedInvoice, size: 200),
               Text(encodedInvoice.truncateMiddle(14)),
-              Text(
-                '$amountSats sats',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
               const SizedBox(height: 8),
+              if (amountSats > 0) ...[
+                Text(
+                  '$amountSats sats',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 8),
+              ],
               OutlinedButton(
                 onPressed: () {
                   context.read<RequestPaymentBloc>().add(AddAmountTapped());
