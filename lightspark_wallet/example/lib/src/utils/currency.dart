@@ -27,6 +27,13 @@ extension CurrencyDisplay on CurrencyUnit {
     };
   }
 
+  String toAbbreviatedValue(num amount) {
+    return switch (this) {
+      CurrencyUnit.USD => '\$${(amount / 100).abbreviated()} $shortName',
+      _ => '${amount.abbreviated()} $shortName',
+    };
+  }
+
   double toSats(int amount) {
     return switch (this) {
       CurrencyUnit.BITCOIN => amount * 100000000.0,
@@ -50,5 +57,31 @@ extension on String {
       (match) => '${match[1]},', 
     );
     return '$wholeWithCommas${decimal.isNotEmpty ? '.$decimal' : ''}';
+  }
+
+  String trimTrailingZeroDecimals() {
+    final parts = split('.');
+    final whole = parts[0];
+    final decimal = parts.length > 1 ? parts[1] : '';
+    final trimmedDecimal = decimal.replaceAll(RegExp(r'0*$'), '');
+    return '$whole${trimmedDecimal.isNotEmpty ? '.$trimmedDecimal' : ''}';
+  }
+}
+
+extension Abbreviated on num {
+  String abbreviated() {
+    if (this >= 1000000000) {
+      return '${(this / 1000000000).fixedTrimmingZeros(2)}B';
+    } else if (this >= 1000000) {
+      return '${(this / 1000000).fixedTrimmingZeros(2)}M';
+    } else if (this >= 1000) {
+      return '${(this / 1000).fixedTrimmingZeros(2)}K';
+    } else {
+      return toString();
+    }
+  }
+
+  String fixedTrimmingZeros(int decimals) {
+    return toStringAsFixed(decimals).trimTrailingZeroDecimals();
   }
 }

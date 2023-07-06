@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lightspark_wallet/lightspark_wallet.dart';
 import 'package:lightspark_wallet_example/src/model/lightspark_client_notifier.dart';
+import 'package:lightspark_wallet_example/src/screens/account_screen.dart';
 import 'package:lightspark_wallet_example/src/screens/request_payment_screen.dart';
 import 'package:lightspark_wallet_example/src/screens/send_payment_screen.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +10,8 @@ import '../utils/currency.dart';
 
 class HomeScreen extends StatefulWidget {
   final Future<void> Function() onLogout;
-  const HomeScreen({super.key, required this.onLogout});
+  final LoginCallback onLogin;
+  const HomeScreen({super.key, required this.onLogout, required this.onLogin});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -56,31 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: _buildBody(context)),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.wallet),
-            label: 'Wallet',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Account',
-          ),
-        ],
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              break;
-            case 1:
-              Navigator.of(context).push(SendPaymentScreen.route());
-              break;
-          }
-        },
-      ),
-    );
+    return Center(child: _buildBody(context));
   }
 
   Widget _buildBody(BuildContext context) {
@@ -104,20 +82,22 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: Column(
             children: [
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Balance(
-                      balance: _dashboard!.balances?.ownedBalance,
-                      name: 'Owned Balance'),
-                  Balance(
-                      balance: _dashboard!.balances?.availableToSendBalance,
-                      name: 'Available to Send'),
-                  Balance(
-                      balance: _dashboard!.balances?.availableToWithdrawBalance,
-                      name: 'Available to Withdraw'),
-                ],
+              const SizedBox(height: 40),
+              Text(
+                _dashboard!.balances!.ownedBalance.preferredCurrencyUnit
+                    .toTextValue(
+                  _dashboard!
+                      .balances!.ownedBalance.preferredCurrencyValueRounded,
+                ),
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+              Text(
+                CurrencyUnit.SATOSHI.toAbbreviatedValue(
+                  _dashboard!.balances!.ownedBalance.originalUnit
+                      .toSats(_dashboard!.balances!.ownedBalance.originalValue)
+                      .round(),
+                ),
+                style: Theme.of(context).textTheme.displaySmall,
               ),
               const SizedBox(height: 40),
               Row(
@@ -227,57 +207,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(buttonText[status] ?? 'Deploy Wallet'),
               ),
       ],
-    );
-  }
-}
-
-class Balance extends StatelessWidget {
-  const Balance({
-    super.key,
-    required CurrencyAmount? balance,
-    required String name,
-  })  : _balance = balance,
-        _name = name;
-
-  final CurrencyAmount? _balance;
-  final String _name;
-
-  @override
-  Widget build(BuildContext context) {
-    if (_balance == null) {
-      return const Spacer();
-    }
-    return Card(
-      elevation: 0,
-      child: Container(
-        width: 160,
-        height: 140,
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              _name,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              _balance!.preferredCurrencyUnit
-                  .toTextValue(_balance!.preferredCurrencyValueRounded),
-              style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              CurrencyUnit.SATOSHI.toTextValue(_balance!.originalUnit
-                  .toSats(_balance!.originalValue)
-                  .round()),
-              style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

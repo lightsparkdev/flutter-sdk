@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:lightspark_wallet/lightspark_wallet.dart';
+import 'package:lightspark_wallet_example/src/screens/account_screen.dart';
 import 'package:lightspark_wallet_example/src/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +31,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isLoggedIn = false;
+  int _selectedTabIndex = 0;
 
   @override
   void didChangeDependencies() {
@@ -93,12 +95,42 @@ class _MyAppState extends State<MyApp> {
           elevation: 1,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(minimumSize: const Size(60, 45)),
+          style: ElevatedButton.styleFrom(minimumSize: const Size(105, 45)),
+        ),
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(minimumSize: const Size(105, 45)),
         ),
       ),
       home: _isLoggedIn
-          ? HomeScreen(onLogout: _logout)
+          ? _buildHomeScreen()
           : LoginScreen(onLogin: _loginWithJwt),
+    );
+  }
+
+  Widget _buildHomeScreen() {
+    return Scaffold(
+      body: [
+        HomeScreen(onLogin: _loginWithJwt, onLogout: _logout),
+        AccountScreen(onLogin: _loginWithJwt, onLogout: _logout)
+      ][_selectedTabIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedTabIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.wallet),
+            label: 'Wallet',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Account',
+          ),
+        ],
+        onTap: (index) {
+          setState(() {
+            _selectedTabIndex = index;
+          });
+        },
+      ),
     );
   }
 }
