@@ -152,7 +152,7 @@ void main() {
   testWidgets('create a funding address', (widgetTester) async {
     final client = LightsparkWalletClient();
     await client.loginWithJwt(accountId, jwt, InMemoryJwtStorage());
-    client.loadWalletSigningKey(signingPublicKey, signingPrivateKey);
+    await client.loadWalletSigningKey(signingPrivateKey);
     final address = await client.createBitcoinFundingAddress();
     expect(address, isNotNull);
     print('Created funding address: $address');
@@ -179,7 +179,7 @@ void main() {
   testWidgets('test paying a test mode invoice', (widgetTester) async {
     final client = LightsparkWalletClient();
     await client.loginWithJwt(accountId, jwt, InMemoryJwtStorage());
-    client.loadWalletSigningKey(signingPublicKey, signingPrivateKey);
+    await client.loadWalletSigningKey(signingPrivateKey);
     final invoice = (await client.createTestModeInvoice(100000, memo: 'test invoice'))!;
     final outgoingPayment = await client.payInvoiceAndAwaitResult(invoice, 10000);
     expect(outgoingPayment, isNotNull);
@@ -189,7 +189,7 @@ void main() {
   testWidgets('test creating a test mode payment', (widgetTester) async {
     final client = LightsparkWalletClient();
     await client.loginWithJwt(accountId, jwt, InMemoryJwtStorage());
-    client.loadWalletSigningKey(signingPublicKey, signingPrivateKey);
+    await client.loadWalletSigningKey(signingPrivateKey);
     final invoice = await client.createInvoice(100000000, memo: 'test invoice');
     expect(invoice, isNotNull);
     final payment = await client.createTestModePayment(invoice.encodedPaymentRequest);

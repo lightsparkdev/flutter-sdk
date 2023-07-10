@@ -207,7 +207,7 @@ class LightsparkWalletClient {
     String signingPrivateKey,
   ) async {
     await _requireValidAuth();
-    loadWalletSigningKey(signingPublicKey, signingPrivateKey);
+    await loadWalletSigningKey(signingPrivateKey);
     return await executeRawQuery(Query(
       InitializeWallet,
       (responseJson) =>
@@ -259,7 +259,8 @@ class LightsparkWalletClient {
   /// This function is intended for use in cases where the wallet's private signing key is already saved by the
   /// application outside of the SDK. It is the responsibility of the application to ensure that the key is valid and
   /// that it is the correct key for the wallet. Otherwise signed requests will fail.
-  void loadWalletSigningKey(String publicKey, String privateKey) {
+  Future<void> loadWalletSigningKey(String privateKey) async {
+    final publicKey = await RSA.convertPrivateKeyToPublicKey(privateKey);
     _nodeKeyCache.setKeyPair(KeyPair(publicKey, privateKey));
   }
 
@@ -592,12 +593,10 @@ class LightsparkWalletClient {
   /// Creates an L1 Bitcoin wallet address which can be used to deposit funds to the Lightning wallet.
   Future<String> createBitcoinFundingAddress() async {
     await _requireValidAuth();
-    await _requireWalletUnlocked();
     return await executeRawQuery(Query(
       CreateBitcoinFundingAddress,
       (responseJson) => responseJson['create_bitcoin_funding_address']
           ['bitcoin_address'] as String,
-      isSignedOp: true,
     ));
   }
 

@@ -4,6 +4,7 @@ import 'package:lightspark_wallet_example/src/model/lightspark_client_notifier.d
 import 'package:lightspark_wallet_example/src/screens/account_screen.dart';
 import 'package:lightspark_wallet_example/src/screens/request_payment_screen.dart';
 import 'package:lightspark_wallet_example/src/screens/send_payment_screen.dart';
+import 'package:lightspark_wallet_example/src/screens/unlock_wallet_dialog.dart';
 import 'package:provider/provider.dart';
 import '../components/transaction_row.dart';
 import '../utils/currency.dart';
@@ -104,8 +105,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FilledButton(
-                    onPressed: () {
-                      Navigator.of(context).push(SendPaymentScreen.route());
+                    onPressed: () async {
+                      final client = Provider.of<LightsparkClientNotifier>(
+                        context,
+                        listen: false,
+                      ).value;
+                      if (!client.isWalletUnlocked()) {
+                        await showDialog<UnlockWalletDialog>(context: context, builder: (_) => UnlockWalletDialog(onUnlock: (key) async {
+                          await client.loadWalletSigningKey(key);
+                        },));
+                        return;
+                      }
+                      await Navigator.of(context).push(SendPaymentScreen.route());
                     },
                     child: const Text('Send'),
                   ),
@@ -186,6 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       _forcedStatus = WalletStatus.INITIALIZING;
                     });
                     final keyPair = await generateRsaKeyPair();
+                    // You probably want to store these keys somewhere for real:
                     print('Public Key: ${keyPair.publicKey}');
                     print('Private Key: ${keyPair.privateKey}');
                     await client.initializeWalletAndAwaitReady(
