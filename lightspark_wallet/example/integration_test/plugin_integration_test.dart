@@ -181,6 +181,7 @@ void main() {
     await client.loginWithJwt(accountId, jwt, InMemoryJwtStorage());
     await client.loadWalletSigningKey(signingPrivateKey);
     final invoice = (await client.createTestModeInvoice(100000, memo: 'test invoice'))!;
+    print(invoice);
     final outgoingPayment = await client.payInvoiceAndAwaitResult(invoice, 10000);
     expect(outgoingPayment, isNotNull);
     expect(outgoingPayment.status, TransactionStatus.SUCCESS);
