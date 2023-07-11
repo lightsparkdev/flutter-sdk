@@ -149,7 +149,23 @@ class InvoiceScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(children: [
-              QrImageView(data: encodedInvoice, size: 200),
+              QrImageView(
+                data: encodedInvoice,
+                size: 200,
+                eyeStyle: QrEyeStyle(
+                  eyeShape: QrEyeShape.circle,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                dataModuleStyle: QrDataModuleStyle(
+                  dataModuleShape: QrDataModuleShape.circle,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                embeddedImage:
+                    const AssetImage('assets/images/lightspark_circle.png'),
+                embeddedImageStyle: const QrEmbeddedImageStyle(
+                  size: Size(40, 40),
+                ),
+              ),
               Text(encodedInvoice.truncateMiddle(14)),
               const SizedBox(height: 8),
               if (amountSats > 0) ...[
