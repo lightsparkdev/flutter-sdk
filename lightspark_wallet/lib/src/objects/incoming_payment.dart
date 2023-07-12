@@ -3,9 +3,9 @@
 import './lightning_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import './currency_amount.dart';
 import '../requester/query.dart';
 import './transaction_status.dart';
+import './currency_amount.dart';
 
 /// A transaction that was sent to a Lightspark node on the Lightning Network.
 class IncomingPayment implements LightningTransaction, Transaction, Entity {
@@ -85,7 +85,7 @@ $fragment
       'IncomingPayment',
       json['incoming_payment_resolved_at'],
       json['incoming_payment_transaction_hash'],
-      json['incoming_payment_payment_request']?.id,
+      json['incoming_payment_payment_request']?['id'],
     );
   }
 

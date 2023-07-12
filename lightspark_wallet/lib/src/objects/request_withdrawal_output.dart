@@ -10,7 +10,7 @@ class RequestWithdrawalOutput {
 
   static RequestWithdrawalOutput fromJson(Map<String, dynamic> json) {
     return RequestWithdrawalOutput(
-      json['request_withdrawal_output_request']?.id,
+      json['request_withdrawal_output_request']?['id'],
     );
   }
 

@@ -10,7 +10,7 @@ class CreateTestModePaymentoutput {
 
   static CreateTestModePaymentoutput fromJson(Map<String, dynamic> json) {
     return CreateTestModePaymentoutput(
-      json['create_test_mode_paymentoutput_payment']?.id,
+      json['create_test_mode_paymentoutput_payment']?['id'],
     );
   }
 

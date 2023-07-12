@@ -7,6 +7,7 @@ import Foundation
 
 import fast_rsa
 import lightspark_wallet
+import mobile_scanner
 import package_info_plus
 import path_provider_foundation
 import share_plus
@@ -15,6 +16,7 @@ import shared_preferences_foundation
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   FastRsaPlugin.register(with: registry.registrar(forPlugin: "FastRsaPlugin"))
   LightsparkWalletPlugin.register(with: registry.registrar(forPlugin: "LightsparkWalletPlugin"))
+  MobileScannerPlugin.register(with: registry.registrar(forPlugin: "MobileScannerPlugin"))
   FLTPackageInfoPlusPlugin.register(with: registry.registrar(forPlugin: "FLTPackageInfoPlusPlugin"))
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
   SharePlusMacosPlugin.register(with: registry.registrar(forPlugin: "SharePlusMacosPlugin"))

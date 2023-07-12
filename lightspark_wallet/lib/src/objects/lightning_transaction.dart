@@ -2,15 +2,15 @@
 
 import './transaction.dart';
 import './entity.dart';
-import './payment_failure_reason.dart';
-import './incoming_payment.dart';
-import './currency_amount.dart';
-import '../lightspark_exception.dart';
-import './rich_text.dart';
 import './outgoing_payment.dart';
 import './payment_request_data.dart';
-import '../requester/query.dart';
+import './payment_failure_reason.dart';
+import './currency_amount.dart';
+import '../lightspark_exception.dart';
 import './transaction_status.dart';
+import '../requester/query.dart';
+import './rich_text.dart';
+import './incoming_payment.dart';
 
 class LightningTransaction implements Transaction, Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
@@ -86,7 +86,7 @@ $fragment
         'IncomingPayment',
         json['incoming_payment_resolved_at'],
         json['incoming_payment_transaction_hash'],
-        json['incoming_payment_payment_request']?.id,
+        json['incoming_payment_payment_request']?['id'],
       );
     }
     if (json['__typename'] == 'OutgoingPayment') {

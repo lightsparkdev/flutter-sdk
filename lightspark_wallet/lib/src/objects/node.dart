@@ -2,12 +2,12 @@
 
 import './entity.dart';
 import '../lightspark_wallet_client.dart';
-import './node_to_addresses_connection.dart';
-import '../lightspark_exception.dart';
-import './bitcoin_network.dart';
-import '../requester/query.dart';
 import './graph_node.dart';
+import './node_to_addresses_connection.dart';
+import './bitcoin_network.dart';
+import '../lightspark_exception.dart';
 import './node_address_type.dart';
+import '../requester/query.dart';
 
 /// This interface represents a lightning node that can be connected to the Lightning Network to send and receive transactions.
 class Node implements Entity {

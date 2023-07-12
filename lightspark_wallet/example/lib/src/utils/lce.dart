@@ -69,10 +69,9 @@ class LceLoading<T> implements Lce<T> {
 
   @override
   bool operator ==(dynamic other) => other is LceLoading<T>;
-  
+
   @override
   int get hashCode => true.hashCode;
-  
 }
 
 class LceError<T> implements Lce<T> {

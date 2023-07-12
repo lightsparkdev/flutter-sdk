@@ -1,13 +1,13 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './entity.dart';
-import './invoice_data.dart';
-import './currency_amount.dart';
-import './payment_request_status.dart';
-import '../lightspark_exception.dart';
-import './invoice.dart';
-import './payment_request_data.dart';
 import '../requester/query.dart';
+import './payment_request_data.dart';
+import './currency_amount.dart';
+import './invoice_data.dart';
+import '../lightspark_exception.dart';
+import './payment_request_status.dart';
+import './invoice.dart';
 
 class PaymentRequest implements Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.

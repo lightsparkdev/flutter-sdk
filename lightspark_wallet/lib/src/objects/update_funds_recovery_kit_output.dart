@@ -14,7 +14,7 @@ class UpdateFundsRecoveryKitOutput {
 
   static UpdateFundsRecoveryKitOutput fromJson(Map<String, dynamic> json) {
     return UpdateFundsRecoveryKitOutput(
-      json['update_funds_recovery_kit_output_wallet']?.id,
+      json['update_funds_recovery_kit_output_wallet']?['id'],
       FundsRecoveryKit.fromJson(
           json['update_funds_recovery_kit_output_funds_recovery_kit']),
     );

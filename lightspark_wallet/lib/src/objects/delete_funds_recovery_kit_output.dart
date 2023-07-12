@@ -9,7 +9,7 @@ class DeleteFundsRecoveryKitOutput {
 
   static DeleteFundsRecoveryKitOutput fromJson(Map<String, dynamic> json) {
     return DeleteFundsRecoveryKitOutput(
-      json['delete_funds_recovery_kit_output_wallet']?.id,
+      json['delete_funds_recovery_kit_output_wallet']?['id'],
     );
   }
 

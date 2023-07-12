@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:lightspark_wallet/lightspark_wallet.dart';
 import 'package:lightspark_wallet_example/src/utils/currency.dart';
 import 'package:lightspark_wallet_example/src/utils/lce.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 
 import '../model/lightspark_client_notifier.dart';
@@ -163,22 +164,40 @@ class _InvoiceEntryScreenState extends State<_InvoiceEntryScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text(
+            'Scan a QR code or enter an encoded invoice below',
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 40),
+          SizedBox(
+            height: 200,
+            width: 200,
+            child: MobileScanner(onDetect: (capture) {
+              final List<Barcode> barcodes = capture.barcodes;
+              final encodedInvoice = barcodes.first.rawValue ?? '';
+              _invoiceController.text = encodedInvoice;
+              _onDecodeRequested();
+            }),
+          ),
           TextField(
             controller: _invoiceController,
             decoration: const InputDecoration(labelText: 'Encoded invoice'),
           ),
           const SizedBox(height: 24),
           FilledButton(
-            onPressed: () {
-              context
-                  .read<SendPaymentBloc>()
-                  .add(DecodeInvoiceEvent(_invoiceController.text.trim()));
-            },
+            onPressed: _onDecodeRequested,
             child: const Text('Decode invoice'),
           ),
         ],
       ),
     );
+  }
+
+  void _onDecodeRequested() {
+    context
+        .read<SendPaymentBloc>()
+        .add(DecodeInvoiceEvent(_invoiceController.text.trim()));
   }
 }
 

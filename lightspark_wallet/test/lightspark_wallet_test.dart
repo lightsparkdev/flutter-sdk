@@ -7,13 +7,13 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockLightsparkWalletPlatform
     with MockPlatformInterfaceMixin
     implements LightsparkWalletPlatform {
-
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
 }
 
 void main() {
-  final LightsparkWalletPlatform initialPlatform = LightsparkWalletPlatform.instance;
+  final LightsparkWalletPlatform initialPlatform =
+      LightsparkWalletPlatform.instance;
 
   test('$MethodChannelLightsparkWallet is the default instance', () {
     expect(initialPlatform, isInstanceOf<MethodChannelLightsparkWallet>());

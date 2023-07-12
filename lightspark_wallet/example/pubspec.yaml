@@ -36,6 +36,7 @@ dependencies:
   equatable: ^2.0.5
   qr_flutter: ^4.1.0
   share_plus: ^7.0.2
+  mobile_scanner: ^3.3.0
 
 dev_dependencies:
   integration_test:

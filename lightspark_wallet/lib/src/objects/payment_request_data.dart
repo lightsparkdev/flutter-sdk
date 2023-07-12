@@ -1,10 +1,10 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import './invoice_data.dart';
-import './currency_amount.dart';
-import '../lightspark_exception.dart';
-import './bitcoin_network.dart';
 import './graph_node.dart';
+import './currency_amount.dart';
+import './bitcoin_network.dart';
+import './invoice_data.dart';
+import '../lightspark_exception.dart';
 
 /// The interface of a payment request on the Lightning Network (a.k.a. Lightning Invoice).
 class PaymentRequestData {

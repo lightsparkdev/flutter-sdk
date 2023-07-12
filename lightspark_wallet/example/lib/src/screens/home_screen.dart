@@ -111,12 +111,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         listen: false,
                       ).value;
                       if (!client.isWalletUnlocked()) {
-                        await showDialog<UnlockWalletDialog>(context: context, builder: (_) => UnlockWalletDialog(onUnlock: (key) async {
-                          await client.loadWalletSigningKey(key);
-                        },));
+                        await showDialog<UnlockWalletDialog>(
+                            context: context,
+                            builder: (_) => UnlockWalletDialog(
+                                  onUnlock: (key) async {
+                                    await client.loadWalletSigningKey(key);
+                                  },
+                                ));
                         return;
                       }
-                      await Navigator.of(context).push(SendPaymentScreen.route());
+                      await Navigator.of(context)
+                          .push(SendPaymentScreen.route());
                     },
                     child: const Text('Send'),
                   ),
