@@ -1,12 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:graphql/client.dart';
 import 'package:gql/ast.dart';
 import 'package:gql/language.dart';
 import 'package:lightspark_wallet/src/crypto/crypto.dart';
 import 'package:lightspark_wallet/src/crypto/node_key_cache.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:pubspec_parse/pubspec_parse.dart';
 
 import '../auth/auth_provider.dart';
 import './query.dart';
@@ -17,10 +18,15 @@ const _defaultHeaders = {
   'X-Lightspark-Beta': 'z2h0BBYxTA83cjW7fi8QwWtBPCzkQKiemcuhKY08LOo',
 };
 
-PackageInfo? _packageInfo;
-Future<PackageInfo> _getPackageInfo() async {
-  _packageInfo ??= await PackageInfo.fromPlatform();
-  return _packageInfo!;
+String? _packageVersion;
+Future<String> _getPackageVersion() async {
+  if (_packageVersion != null) {
+    return _packageVersion!;
+  }
+  final pubspecString = await rootBundle.loadString('packages/lightspark_wallet/pubspec.yaml');
+  final pubspec = Pubspec.parse(pubspecString);
+  _packageVersion = pubspec.version?.toString() ?? 'unknown';
+  return _packageVersion!;
 }
 
 class Requester {
@@ -171,13 +177,13 @@ class SigningLink extends Link {
 
   @override
   Stream<Response> request(Request request, [forward]) async* {
-    final packageInfo = await _getPackageInfo();
+    final packageVersion = await _getPackageVersion();
     final skipAuth = request.context.entry<SkipAuth>()?.skipAuth ?? false;
 
     request = request.updateContextEntry<HttpLinkHeaders>((entry) {
       final newHeaders = {
-        'X-Lightspark-SDK': 'flutter-wallet-sdk/${packageInfo.version}',
-        'User-Agent': 'flutter-wallet-sdk/${packageInfo.version}',
+        'X-Lightspark-SDK': 'flutter-wallet-sdk/$packageVersion',
+        'User-Agent': 'flutter-wallet-sdk/$packageVersion',
       };
       var currentHeaders = entry?.headers ?? <String, String>{};
       if (skipAuth) {

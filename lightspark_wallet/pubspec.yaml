@@ -14,8 +14,8 @@ dependencies:
     sdk: flutter
   gql: ^0.14.0
   graphql: ^5.1.3
-  package_info_plus: ^4.0.2
   plugin_platform_interface: ^2.0.2
+  pubspec_parse: ^1.2.3
   shared_preferences: ^2.1.2
 
 dev_dependencies:
@@ -47,6 +47,10 @@ flutter:
         pluginClass: LightsparkWalletPlugin
       macos:
         pluginClass: LightsparkWalletPlugin
+
+  assets:
+    # Needed to read out the package version from the pubspec.
+    - pubspec.yaml
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
