@@ -1,0 +1,6 @@
+version: 3
+
+project:
+  id: lightspark/flutter_wallet_sdk
+  name: flutter-wallet-sdk
+  url: https://github.com/lightsparkdev/flutter-sdk
