@@ -1,5 +1,5 @@
 name: lightspark_crypto
-description: A new Flutter package project.
+description: A shared library for crypto operations in the Lightspark Wallet SDK.
 version: 0.0.1
 homepage:
 
