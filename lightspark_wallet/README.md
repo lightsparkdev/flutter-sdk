@@ -12,10 +12,12 @@ __NOTE__: This won't work until the first release of the SDK is published! It's 
 flutter pub add lightspark_wallet
 ```
 
-Then, import it:
+Then, import it and construct a wallet client:
 
 ```dart
 import 'package:lightspark_wallet/lightspark_wallet.dart';
+
+final client = LightsparkWalletClient();
 ```
 
 ### Authentication via JWT
