@@ -5,9 +5,12 @@ import 'package:lightspark_wallet_example/src/screens/account_screen.dart';
 import 'package:lightspark_wallet_example/src/screens/request_payment_screen.dart';
 import 'package:lightspark_wallet_example/src/screens/send_payment_screen.dart';
 import 'package:lightspark_wallet_example/src/screens/unlock_wallet_dialog.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../components/transaction_row.dart';
 import '../utils/currency.dart';
+
+final _logger = Logger(printer: PrettyPrinter());
 
 class HomeScreen extends StatefulWidget {
   final Future<void> Function() onLogout;
@@ -203,8 +206,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     });
                     final keyPair = await generateRsaKeyPair();
                     // You probably want to store these keys somewhere for real:
-                    print('Public Key: ${keyPair.publicKey}');
-                    print('Private Key: ${keyPair.privateKey}');
+                    _logger.i('Public Key: ${keyPair.publicKey}');
+                    _logger.i('Private Key: ${keyPair.privateKey}');
                     await client.initializeWalletAndAwaitReady(
                       KeyType.RSA_OAEP,
                       keyPair.publicKey,

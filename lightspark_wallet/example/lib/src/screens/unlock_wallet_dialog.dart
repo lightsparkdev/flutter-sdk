@@ -55,7 +55,7 @@ class UnlockWalletDialogState extends State<UnlockWalletDialog> {
               ));
             });
           },
-          child: const Text('unlock'),
+          child: Text(_isUnlocking ? 'unlocking...' : 'unlock'),
         ),
       ],
     );

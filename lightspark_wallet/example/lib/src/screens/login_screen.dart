@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lightspark_wallet/lightspark_wallet.dart';
+import 'package:logger/logger.dart';
 import '../components/text_input.dart';
 
 typedef LoginCallback = Future<bool> Function(String, String);
+
+final _logger = Logger(printer: PrettyPrinter());
 
 class LoginScreen extends StatefulWidget {
   final LoginCallback? _onLogin;
   const LoginScreen({super.key, LoginCallback? onLogin}) : _onLogin = onLogin;
 
   @override
-  State<StatefulWidget> createState() => LoginScreenState(_onLogin);
+  State<StatefulWidget> createState() => LoginScreenState();
 }
 
 class LoginScreenState extends State<LoginScreen> {
@@ -18,9 +21,8 @@ class LoginScreenState extends State<LoginScreen> {
   final _lightsparkWalletPlugin = LightsparkWallet();
   final _accountTextController = TextEditingController();
   final _jwtTextController = TextEditingController();
-  final LoginCallback? _onLogin;
 
-  LoginScreenState(this._onLogin);
+  LoginScreenState();
 
   @override
   void initState() {
@@ -71,11 +73,11 @@ class LoginScreenState extends State<LoginScreen> {
           LsTextInput(label: 'JWT', controller: _jwtTextController),
           ElevatedButton(
             onPressed: () async {
-              final loggedIn = await _onLogin!(
+              final loggedIn = await widget._onLogin!(
                 _accountTextController.text,
                 _jwtTextController.text,
               );
-              print('Login result: $loggedIn');
+              _logger.d('Login result: $loggedIn');
             },
             child: const Text('Login with JWT'),
           ),

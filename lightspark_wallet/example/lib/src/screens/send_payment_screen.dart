@@ -38,13 +38,13 @@ class SendPaymentScreen extends StatelessWidget {
     return BlocBuilder<SendPaymentBloc, Lce<SendPaymentState>>(
         builder: (context, lce) {
       return lce.maybeMap(content: (state) {
-        return state.paymentStatus == PaymentStatus.NOT_STARTED
+        return state.paymentStatus == PaymentStatus.notStarted
             ? (state.decodedInvoice == null
                 ? const _InvoiceEntryScreen()
                 : _ConfirmInvoiceScreen())
-            : state.paymentStatus == PaymentStatus.SUCCESS
+            : state.paymentStatus == PaymentStatus.success
                 ? _PaymentSuccessScreen()
-                : state.paymentStatus == PaymentStatus.FAILURE
+                : state.paymentStatus == PaymentStatus.failure
                     ? _PaymentFailedScreen()
                     : _ConfirmInvoiceScreen();
       }, loading: () {
@@ -57,10 +57,10 @@ class SendPaymentScreen extends StatelessWidget {
 }
 
 enum PaymentStatus {
-  NOT_STARTED,
-  SUCCESS,
-  FAILURE,
-  PENDING,
+  notStarted,
+  success,
+  failure,
+  pending,
 }
 
 sealed class SendPaymentScreenEvent {}
@@ -83,7 +83,7 @@ class SendPaymentState extends Equatable {
   const SendPaymentState({
     this.decodedInvoice,
     this.errorMessage,
-    this.paymentStatus = PaymentStatus.NOT_STARTED,
+    this.paymentStatus = PaymentStatus.notStarted,
   });
 
   factory SendPaymentState.initial() => const SendPaymentState();
@@ -125,8 +125,8 @@ class SendPaymentBloc
           emit(Lce.content(SendPaymentState(
             decodedInvoice: state.decodedInvoice,
             paymentStatus: payment.status == TransactionStatus.SUCCESS
-                ? PaymentStatus.SUCCESS
-                : PaymentStatus.FAILURE,
+                ? PaymentStatus.success
+                : PaymentStatus.failure,
             errorMessage: payment.status == TransactionStatus.FAILED
                 ? 'Failed to send the payment. Try again.'
                 : null,
@@ -134,7 +134,7 @@ class SendPaymentBloc
         } catch (e) {
           emit(Lce.content(SendPaymentState(
             decodedInvoice: state.decodedInvoice,
-            paymentStatus: PaymentStatus.FAILURE,
+            paymentStatus: PaymentStatus.failure,
             errorMessage: 'Failed to send the payment. Try again.',
           )));
         }
