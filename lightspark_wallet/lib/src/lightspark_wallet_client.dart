@@ -31,6 +31,27 @@ import 'lightspark_exception.dart';
 import 'requester/query.dart';
 import 'requester/requester.dart';
 
+/// The main entrypoint for interacting with the Lightspark Wallet SDK.
+///
+/// ```dart
+/// final lightsparkClient = LightsparkWalletClient(
+///    authProvider: JwtAuthProvider(SharedPreferencesJwtStorage()),
+/// );
+/// final invoice = await client.createInvoice(
+///   /* amountMsats */ 42000,
+///   memo: "Pizza!",
+///   type: InvoiceType.STANDARD,
+/// );
+/// print(invoice.encodedPaymentRequest);
+///
+/// final payment = await client.payInvoice(
+///   encodedInvoice,
+///   /* maxFeesMsats */ 500000,
+///   amountMsats: null,
+///   timeoutSecs: 60,
+/// );
+/// print(payment);
+/// ```
 class LightsparkWalletClient {
   late Requester _requester;
   AuthProvider _authProvider;
@@ -703,6 +724,7 @@ class LightsparkWalletClient {
     }
   }
 
+  /// Execute a raw graphql query and parse the response manually.
   Future<T> executeRawQuery<T>(
     Query<T> query,
   ) async {
