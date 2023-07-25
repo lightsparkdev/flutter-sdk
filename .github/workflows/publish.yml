@@ -43,11 +43,11 @@ jobs:
         run: flutter analyze
         working-directory: lightspark_wallet
       - name: Build android
-        run: flutter build aar
-        working-directory: lightspark_wallet
+        run: flutter build apk
+        working-directory: lightspark_wallet/example
       - name: Build ios
         run: flutter build ios --no-codesign
-        working-directory: lightspark_wallet
+        working-directory: lightspark_wallet/example
       - name: Publish to pub.dev
         run: flutter pub publish
         working-directory: lightspark_wallet
