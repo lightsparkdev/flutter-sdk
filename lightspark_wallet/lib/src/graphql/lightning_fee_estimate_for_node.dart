@@ -2,7 +2,7 @@
 
 import '../objects/lightning_fee_estimate_output.dart';
 
-const LightningFeeEstimateForNodeQuery = '''
+const lightningFeeEstimateForNodeQuery = '''
   query LightningFeeEstimateForNode(
     \$destination_node_public_key: String!
     \$amount_msats: Long!

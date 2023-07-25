@@ -2,7 +2,7 @@
 
 import '../objects/deploy_wallet_output.dart';
 
-const DeployWallet = '''
+const deployWalletQuery = '''
   mutation DeployWallet {
     deploy_wallet {
       ...DeployWalletOutputFragment

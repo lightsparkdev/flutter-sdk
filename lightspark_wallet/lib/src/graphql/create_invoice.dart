@@ -2,7 +2,7 @@
 
 import '../objects/invoice_data.dart';
 
-const CreateInvoiceMutation = '''
+const createInvoiceMutation = '''
   mutation CreateInvoice(
     \$amountMsats: Long!
     \$memo: String

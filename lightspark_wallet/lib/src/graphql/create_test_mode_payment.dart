@@ -2,7 +2,7 @@
 
 import '../objects/outgoing_payment.dart';
 
-const CreateTestModePayment = '''
+const createTestModePaymentMutation = '''
 mutation CreateTestModePayment(
   \$encoded_invoice: String!
   \$amount_msats: Long

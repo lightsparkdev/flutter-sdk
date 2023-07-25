@@ -2,7 +2,7 @@
 
 import '../objects/withdrawal_request.dart';
 
-const RequestWithdrawalMutation = '''
+const requestWithdrawalMutation = '''
   mutation RequestWithdrawal(
     \$amount_sats: Long!
     \$bitcoin_address: String!

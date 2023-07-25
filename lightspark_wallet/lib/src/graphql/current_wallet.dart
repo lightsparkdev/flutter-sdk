@@ -2,7 +2,7 @@
 
 import '../objects/wallet.dart';
 
-const CurrentWalletQuery = '''
+const currentWalletQuery = '''
 query CurrentWallet {
     current_wallet {
         id

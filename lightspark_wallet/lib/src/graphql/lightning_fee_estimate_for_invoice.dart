@@ -2,7 +2,7 @@
 
 import '../objects/lightning_fee_estimate_output.dart';
 
-const LightningFeeEstimateForInvoiceQuery = '''
+const lightningFeeEstimateForInvoiceQuery = '''
   query LightningFeeEstimateForInvoice(
     \$encoded_payment_request: String!
     \$amount_msats: Long

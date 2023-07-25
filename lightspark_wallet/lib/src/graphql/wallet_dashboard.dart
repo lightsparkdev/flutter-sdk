@@ -4,7 +4,7 @@ import '../objects/balances.dart';
 import '../objects/payment_request.dart';
 import '../objects/transaction.dart';
 
-const WalletDashboardQuery = '''
+const walletDashboardQuery = '''
 query WalletDashboard(
     \$numTransactions: Int,
     \$numPaymentRequests: Int,

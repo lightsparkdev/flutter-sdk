@@ -2,7 +2,7 @@
 
 import '../objects/outgoing_payment.dart';
 
-const PayInvoiceMutation = '''
+const payInvoiceMutation = '''
   mutation PayInvoice(
     \$encoded_invoice: String!
     \$timeout_secs: Int!

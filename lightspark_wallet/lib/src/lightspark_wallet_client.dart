@@ -100,7 +100,7 @@ class LightsparkWalletClient {
   ) async {
     final response = await _requester.executeQuery(
       Query(
-        LoginWithJwt,
+        loginWithJwtMutation,
         (json) => LoginWithJWTOutput.fromJson(json['login_with_jwt']),
         variables: {
           'account_id': accountId,
@@ -123,7 +123,7 @@ class LightsparkWalletClient {
   Future<Wallet?> getCurrentWallet() async {
     await _requireValidAuth();
     return await executeRawQuery(Query(
-      CurrentWalletQuery,
+      currentWalletQuery,
       (responseJson) {
         if (responseJson['current_wallet'] == null) {
           return null;
@@ -141,7 +141,7 @@ class LightsparkWalletClient {
   Future<Wallet> deployWallet() async {
     await _requireValidAuth();
     return await executeRawQuery(Query(
-      DeployWallet,
+      deployWalletQuery,
       (responseJson) =>
           DeployWalletOutput.fromJson(responseJson['deploy_wallet']).wallet,
     ));
@@ -230,7 +230,7 @@ class LightsparkWalletClient {
     await _requireValidAuth();
     await loadWalletSigningKey(signingPrivateKey);
     return await executeRawQuery(Query(
-      InitializeWallet,
+      initializeWalletQuery,
       (responseJson) =>
           InitializeWalletOutput.fromJson(responseJson['initialize_wallet'])
               .wallet,
@@ -292,7 +292,7 @@ class LightsparkWalletClient {
   Future<Wallet> terminateWallet() async {
     await _requireValidAuth();
     return await executeRawQuery(Query(
-      TerminateWallet,
+      terminateWalletQuery,
       (responseJson) =>
           TerminateWalletOutput.fromJson(responseJson['terminate_wallet'])
               .wallet,
@@ -310,7 +310,7 @@ class LightsparkWalletClient {
   }) async {
     await _requireValidAuth();
     return await executeRawQuery(Query(
-      WalletDashboardQuery,
+      walletDashboardQuery,
       (responseJson) {
         final currentWallet = responseJson['current_wallet'];
         if (currentWallet == null) {
@@ -349,7 +349,7 @@ class LightsparkWalletClient {
       {String? memo, InvoiceType type = InvoiceType.STANDARD}) async {
     await _requireValidAuth();
     return await executeRawQuery(Query(
-      CreateInvoiceMutation,
+      createInvoiceMutation,
       (responseJson) => InvoiceData.fromJson(
           responseJson['create_invoice']['invoice']['data']),
       variables: {
@@ -365,7 +365,7 @@ class LightsparkWalletClient {
   /// [encodedInvoice] An encoded string representation of the invoice to decode.
   Future<InvoiceData> decodeInvoice(String encodedInvoice) async {
     return await executeRawQuery(Query(
-      DecodeInvoiceQuery,
+      decodeInvoiceQuery,
       (responseJson) =>
           InvoiceData.fromJson(responseJson['decoded_payment_request']),
       variables: {
@@ -409,7 +409,7 @@ class LightsparkWalletClient {
       variables['amount_msats'] = amountMsats;
     }
     final payment = await executeRawQuery(Query(
-      PayInvoiceMutation,
+      payInvoiceMutation,
       (responseJson) {
         final paymentJson = responseJson['pay_invoice']?['payment'];
         if (paymentJson == null) {
@@ -480,7 +480,7 @@ class LightsparkWalletClient {
     await _requireValidAuth();
     await _requireWalletUnlocked();
     final payment = await executeRawQuery(Query(
-      SendPaymentMutation,
+      sendPaymentMutation,
       (responseJson) {
         final paymentJson = responseJson['send_payment']?['payment'];
         if (paymentJson == null) {
@@ -563,7 +563,7 @@ class LightsparkWalletClient {
   /// minimum fee rate, and a max-speed fee rate.
   Future<FeeEstimate> getBitcoinFeeEstimate() async {
     return await executeRawQuery(Query(
-      BitcoinFeeEstimateQuery,
+      bitcoinFeeEstimateQuery,
       (responseJson) =>
           FeeEstimate.fromJson(responseJson['bitcoin_fee_estimate']),
     ));
@@ -580,7 +580,7 @@ class LightsparkWalletClient {
     await _requireValidAuth();
     return await executeRawQuery(
       Query(
-        LightningFeeEstimateForInvoiceQuery,
+        lightningFeeEstimateForInvoiceQuery,
         (json) => CurrencyAmount.fromJson(
             json['lightning_fee_estimate_for_invoice']['fee_estimate']),
         variables: {
@@ -600,7 +600,7 @@ class LightsparkWalletClient {
     await _requireValidAuth();
     return await executeRawQuery(
       Query(
-        LightningFeeEstimateForNodeQuery,
+        lightningFeeEstimateForNodeQuery,
         (json) => CurrencyAmount.fromJson(
             json['lightning_fee_estimate_for_node']['fee_estimate']),
         variables: {
@@ -615,7 +615,7 @@ class LightsparkWalletClient {
   Future<String> createBitcoinFundingAddress() async {
     await _requireValidAuth();
     return await executeRawQuery(Query(
-      CreateBitcoinFundingAddress,
+      createBitcoinFundingAddressQuery,
       (responseJson) => responseJson['create_bitcoin_funding_address']
           ['bitcoin_address'] as String,
     ));
@@ -635,7 +635,7 @@ class LightsparkWalletClient {
     await _requireValidAuth();
     await _requireWalletUnlocked();
     return await executeRawQuery(Query(
-      RequestWithdrawalMutation,
+      requestWithdrawalMutation,
       (responseJson) {
         final request = responseJson['request_withdrawal']?['request'];
         if (request == null) {
@@ -664,7 +664,7 @@ class LightsparkWalletClient {
   }) async {
     await _requireValidAuth();
     return await executeRawQuery(Query(
-      CreateTestModeInvoice,
+      createTestModeInvoiceMutation,
       (responseJson) {
         final encodedPaymentRequest = responseJson['create_test_mode_invoice']
             ?['encoded_payment_request'];
@@ -695,7 +695,7 @@ class LightsparkWalletClient {
     await _requireValidAuth();
     _requireWalletUnlocked();
     return await executeRawQuery(Query(
-      CreateTestModePayment,
+      createTestModePaymentMutation,
       (responseJson) {
         final paymentJson =
             responseJson['create_test_mode_payment']?['payment'];

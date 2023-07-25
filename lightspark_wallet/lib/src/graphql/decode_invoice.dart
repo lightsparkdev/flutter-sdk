@@ -2,7 +2,7 @@
 
 import '../objects/invoice_data.dart';
 
-const DecodeInvoiceQuery = '''
+const decodeInvoiceQuery = '''
   query DecodeInvoice(\$encoded_payment_request: String!) {
     decoded_payment_request(encoded_payment_request: \$encoded_payment_request) {
       __typename

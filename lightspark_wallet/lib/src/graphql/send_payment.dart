@@ -2,7 +2,7 @@
 
 import '../objects/outgoing_payment.dart';
 
-const SendPaymentMutation = '''
+const sendPaymentMutation = '''
   mutation SendPayment(
     \$destination_public_key: String!
     \$timeout_secs: Int!

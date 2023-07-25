@@ -2,7 +2,7 @@
 
 import '../objects/fee_estimate.dart';
 
-const BitcoinFeeEstimateQuery = '''
+const bitcoinFeeEstimateQuery = '''
   query BitcoinFeeEstimate {
     bitcoin_fee_estimate {
       ...FeeEstimateFragment

@@ -1,6 +1,6 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-const CreateTestModeInvoice = '''
+const createTestModeInvoiceMutation = '''
 mutation CreateTestModeInvoice(
   \$amount_msats: Long!
   \$memo: String

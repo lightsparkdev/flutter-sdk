@@ -2,7 +2,7 @@
 
 import '../objects/terminate_wallet_output.dart';
 
-const TerminateWallet = '''
+const terminateWalletQuery = '''
   mutation TerminateWallet {
     terminate_wallet {
       ...TerminateWalletOutputFragment
