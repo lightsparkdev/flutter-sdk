@@ -345,8 +345,13 @@ class LightsparkWalletClient {
   /// [amountMsats] The amount of the invoice in milli-satoshis.
   /// [memo] Optional memo to include in the invoice.
   /// [type] The type of invoice to create. Defaults to [InvoiceType.STANDARD].
-  Future<InvoiceData> createInvoice(int amountMsats,
-      {String? memo, InvoiceType type = InvoiceType.STANDARD}) async {
+  /// [expirySecs] The number of seconds until the invoice expires. Defaults to 1 day.
+  Future<InvoiceData> createInvoice(
+    int amountMsats, {
+    String? memo,
+    InvoiceType type = InvoiceType.STANDARD,
+    int? expirySecs,
+  }) async {
     await _requireValidAuth();
     return await executeRawQuery(Query(
       createInvoiceMutation,
@@ -356,6 +361,7 @@ class LightsparkWalletClient {
         'amountMsats': amountMsats,
         'memo': memo,
         'type': type.name,
+        'expirySecs': expirySecs,
       },
     ));
   }
