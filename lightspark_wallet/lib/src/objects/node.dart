@@ -1,15 +1,15 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './entity.dart';
-import '../lightspark_wallet_client.dart';
-import './graph_node.dart';
-import './node_to_addresses_connection.dart';
-import './bitcoin_network.dart';
-import '../lightspark_exception.dart';
 import './node_address_type.dart';
+import './bitcoin_network.dart';
+import './node_to_addresses_connection.dart';
+import '../lightspark_wallet_client.dart';
+import '../lightspark_exception.dart';
 import '../requester/query.dart';
+import './graph_node.dart';
 
-/// This interface represents a lightning node that can be connected to the Lightning Network to send and receive transactions.
+/// This object is an interface representing a Lightning Node on the Lightning Network, and could either be a Lightspark node or a node managed by a third party.
 class Node implements Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
   @override

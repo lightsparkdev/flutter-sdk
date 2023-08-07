@@ -2,13 +2,13 @@
 
 import './node.dart';
 import './entity.dart';
-import '../lightspark_wallet_client.dart';
-import './node_to_addresses_connection.dart';
-import './bitcoin_network.dart';
 import './node_address_type.dart';
+import './bitcoin_network.dart';
+import './node_to_addresses_connection.dart';
+import '../lightspark_wallet_client.dart';
 import '../requester/query.dart';
 
-/// This is a node on the Lightning Network, managed by a third party. The information about this node is public data that has been obtained by observing the Lightning Network.
+/// This object represents a node that exists on the Lightning Network, including nodes not managed by Lightspark. You can retrieve this object to get publicly available information about any node on the Lightning Network.
 class GraphNode implements Node, Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
   @override

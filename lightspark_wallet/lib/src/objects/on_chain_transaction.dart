@@ -2,16 +2,16 @@
 
 import './transaction.dart';
 import './entity.dart';
-import './channel_opening_transaction.dart';
-import './withdrawal.dart';
-import './deposit.dart';
 import './currency_amount.dart';
-import '../lightspark_exception.dart';
-import './transaction_status.dart';
 import './channel_closing_transaction.dart';
+import './channel_opening_transaction.dart';
+import './deposit.dart';
+import './transaction_status.dart';
+import '../lightspark_exception.dart';
 import '../requester/query.dart';
+import './withdrawal.dart';
 
-/// Transaction happened on Bitcoin blockchain.
+/// This object represents an L1 transaction that occurred on the Bitcoin Network. You can retrieve this object to receive information about a specific on-chain transaction made on the Lightning Network associated with your Lightspark Node.
 class OnChainTransaction implements Transaction, Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
   @override

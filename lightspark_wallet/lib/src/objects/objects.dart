@@ -17,6 +17,8 @@ export './deploy_wallet_output.dart';
 export './deposit.dart';
 export './entity.dart';
 export './fee_estimate.dart';
+export './fund_wallet_input.dart';
+export './fund_wallet_output.dart';
 export './funds_recovery_kit.dart';
 export './graph_node.dart';
 export './incoming_payment.dart';

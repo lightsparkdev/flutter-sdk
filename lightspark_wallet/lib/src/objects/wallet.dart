@@ -1,14 +1,14 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './entity.dart';
-import '../lightspark_wallet_client.dart';
 import './balances.dart';
-import './transaction_status.dart';
-import './wallet_status.dart';
-import '../requester/query.dart';
 import './wallet_to_payment_requests_connection.dart';
-import './wallet_to_transactions_connection.dart';
 import './transaction_type.dart';
+import './wallet_to_transactions_connection.dart';
+import './wallet_status.dart';
+import './transaction_status.dart';
+import '../lightspark_wallet_client.dart';
+import '../requester/query.dart';
 
 class Wallet implements Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.

@@ -3,11 +3,11 @@
 import './on_chain_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import '../requester/query.dart';
 import './transaction_status.dart';
 import './currency_amount.dart';
+import '../requester/query.dart';
 
-/// The transaction on Bitcoin blockchain to close a channel on Lightning Network where the balances are allocated back to local and remote nodes.
+/// This is an object representing a transaction which closes a channel on the Lightning Network. This operation allocates balances back to the local and remote nodes.
 class ChannelClosingTransaction
     implements OnChainTransaction, Transaction, Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.

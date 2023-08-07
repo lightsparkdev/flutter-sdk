@@ -2,7 +2,7 @@
 
 import './currency_unit.dart';
 
-/// Represents the value and unit for an amount of currency.
+/// This object represents the value and unit for an amount of currency.
 class CurrencyAmount {
   /// The original numeric value for this CurrencyAmount.
   final int originalValue;

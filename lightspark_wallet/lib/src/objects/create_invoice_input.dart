@@ -9,10 +9,13 @@ class CreateInvoiceInput {
 
   final InvoiceType? invoiceType;
 
+  final int? expirySecs;
+
   CreateInvoiceInput(
     this.amountMsats,
     this.memo,
     this.invoiceType,
+    this.expirySecs,
   );
 
   static CreateInvoiceInput fromJson(Map<String, dynamic> json) {
@@ -24,6 +27,7 @@ class CreateInvoiceInput {
                   .asNameMap()[json['create_invoice_input_invoice_type']] ??
               InvoiceType.FUTURE_VALUE
           : null,
+      json['create_invoice_input_expiry_secs'],
     );
   }
 }

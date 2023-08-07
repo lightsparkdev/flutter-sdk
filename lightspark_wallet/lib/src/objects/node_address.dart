@@ -2,7 +2,7 @@
 
 import './node_address_type.dart';
 
-/// An object that represents the address of a node on the Lightning Network.
+/// This object represents the address of a node on the Lightning Network.
 class NodeAddress {
   /// The string representation of the address.
   final String address;

@@ -23,7 +23,8 @@ Future<String> _getPackageVersion() async {
   if (_packageVersion != null) {
     return _packageVersion!;
   }
-  final pubspecString = await rootBundle.loadString('packages/lightspark_wallet/pubspec.yaml');
+  final pubspecString =
+      await rootBundle.loadString('packages/lightspark_wallet/pubspec.yaml');
   final pubspec = Pubspec.parse(pubspecString);
   _packageVersion = pubspec.version?.toString() ?? 'unknown';
   return _packageVersion!;

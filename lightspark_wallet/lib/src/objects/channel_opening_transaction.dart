@@ -3,11 +3,11 @@
 import './on_chain_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import '../requester/query.dart';
 import './transaction_status.dart';
 import './currency_amount.dart';
+import '../requester/query.dart';
 
-/// The transaction on Bitcoin blockchain to open a channel on Lightning Network funded by the local Lightspark node.
+/// This is an object representing a transaction which opens a channel on the Lightning Network. This object occurs only for channels funded by the local Lightspark node.
 class ChannelOpeningTransaction
     implements OnChainTransaction, Transaction, Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.

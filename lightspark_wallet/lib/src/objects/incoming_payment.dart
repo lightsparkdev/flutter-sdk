@@ -3,11 +3,11 @@
 import './lightning_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import '../requester/query.dart';
 import './transaction_status.dart';
 import './currency_amount.dart';
+import '../requester/query.dart';
 
-/// A transaction that was sent to a Lightspark node on the Lightning Network.
+/// This object represents any payment sent to a Lightspark node on the Lightning Network. You can retrieve this object to receive payment related information about a specific payment received by a Lightspark node.
 class IncomingPayment implements LightningTransaction, Transaction, Entity {
   /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
   @override

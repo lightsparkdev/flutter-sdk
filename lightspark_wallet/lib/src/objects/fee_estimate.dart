@@ -2,6 +2,7 @@
 
 import './currency_amount.dart';
 
+/// This object represents the estimated L1 transaction fees for the Bitcoin network. Fee estimates are separated by potential confirmation speeds for settlement.
 class FeeEstimate {
   final CurrencyAmount feeFast;
 
