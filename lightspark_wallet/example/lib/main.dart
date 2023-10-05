@@ -14,7 +14,7 @@ void main() {
     ChangeNotifierProvider(
       create: (context) => LightsparkClientNotifier(
         LightsparkWalletClient(
-          authProvider: JwtAuthProvider(SharedPreferencesJwtStorage()),
+          authProvider: JwtAuthProvider(SecureStorageJwtStorage()),
         ),
       ),
       child: const MyApp(),
@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
       context,
       listen: false,
     ).value;
-    final jwtAuthStorage = SharedPreferencesJwtStorage();
+    final jwtAuthStorage = SecureStorageJwtStorage();
     await client.loginWithJwt(
       accountId,
       jwt,
@@ -71,7 +71,7 @@ class _MyAppState extends State<MyApp> {
       listen: false,
     ).value;
     final authProvider = JwtAuthProvider(
-      SharedPreferencesJwtStorage(),
+      SecureStorageJwtStorage(),
     );
     await authProvider.logout();
     client.setAuthProvider(authProvider);

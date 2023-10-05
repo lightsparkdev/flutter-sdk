@@ -6,7 +6,7 @@ export 'src/requester/query.dart' show Query;
 export 'src/auth/auth_provider.dart' show AuthProvider;
 export 'src/auth/jwt/jwt_auth_provider.dart' show JwtAuthProvider;
 export 'src/auth/jwt/jwt_storage.dart'
-    show JwtStorage, InMemoryJwtStorage, SharedPreferencesJwtStorage;
+    show JwtStorage, InMemoryJwtStorage, SecureStorageJwtStorage;
 export 'src/crypto/crypto.dart' show getNonce, generateRsaKeyPair;
 export 'src/objects/objects.dart';
 

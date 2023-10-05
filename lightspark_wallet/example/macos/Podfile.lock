@@ -1,6 +1,8 @@
 PODS:
   - fast_rsa (0.6.0):
     - FlutterMacOS
+  - flutter_secure_storage_macos (6.1.1):
+    - FlutterMacOS
   - FlutterMacOS (1.0.0)
   - lightspark_wallet (0.0.1):
     - FlutterMacOS
@@ -17,6 +19,7 @@ PODS:
 
 DEPENDENCIES:
   - fast_rsa (from `Flutter/ephemeral/.symlinks/plugins/fast_rsa/macos`)
+  - flutter_secure_storage_macos (from `Flutter/ephemeral/.symlinks/plugins/flutter_secure_storage_macos/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - lightspark_wallet (from `Flutter/ephemeral/.symlinks/plugins/lightspark_wallet/macos`)
   - mobile_scanner (from `Flutter/ephemeral/.symlinks/plugins/mobile_scanner/macos`)
@@ -27,6 +30,8 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   fast_rsa:
     :path: Flutter/ephemeral/.symlinks/plugins/fast_rsa/macos
+  flutter_secure_storage_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/flutter_secure_storage_macos/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
   lightspark_wallet:
@@ -42,6 +47,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   fast_rsa: 87a964a26439f5b8a603949463525110ab025944
+  flutter_secure_storage_macos: d56e2d218c1130b262bef8b4a7d64f88d7f9c9ea
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   lightspark_wallet: 975ee550033e2eb634881510001e5ccd0b62b929
   mobile_scanner: ed7618fb749adc6574563e053f3b8e5002c13994
