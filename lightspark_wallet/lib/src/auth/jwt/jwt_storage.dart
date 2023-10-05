@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:lightspark_wallet/src/auth/jwt/jwt_token_info.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 abstract class JwtStorage {
   Future<void> saveToken(JwtTokenInfo token);
@@ -30,18 +30,19 @@ class InMemoryJwtStorage implements JwtStorage {
   }
 }
 
-class SharedPreferencesJwtStorage implements JwtStorage {
-  late final Future<SharedPreferences> _sharedPreferences =
-      SharedPreferences.getInstance();
+class SecureStorageJwtStorage implements JwtStorage {
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage(
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+  );
 
   @override
   Future<void> deleteToken() async {
-    await (await _sharedPreferences).remove('jwt_token');
+    await _secureStorage.delete(key: 'jwt_token');
   }
 
   @override
   Future<JwtTokenInfo?> getToken() async {
-    final tokenStr = (await _sharedPreferences).getString('jwt_token');
+    final tokenStr = await _secureStorage.read(key: 'jwt_token');
     if (tokenStr == null) {
       return null;
     }
@@ -50,7 +51,7 @@ class SharedPreferencesJwtStorage implements JwtStorage {
 
   @override
   Future<void> saveToken(JwtTokenInfo token) async {
-    await (await _sharedPreferences).setString('jwt_token', token.toJson());
+    await _secureStorage.write(key: 'jwt_token', value: token.toJson());
   }
 }
 
