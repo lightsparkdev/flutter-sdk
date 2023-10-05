@@ -1,3 +1,7 @@
+## 0.1.0
+
+* Replace SharedPrefs with SecureStorage for token storage.
+
 ## 0.0.4
 
 * Expose an expirySecs parameter for the `createInvoice` method.
