@@ -10,7 +10,7 @@ class PayInvoiceOutput {
 
   static PayInvoiceOutput fromJson(Map<String, dynamic> json) {
     return PayInvoiceOutput(
-      json['pay_invoice_output_payment']?['id'],
+      json["pay_invoice_output_payment"]?["id"],
     );
   }
 

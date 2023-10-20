@@ -31,14 +31,14 @@ class CurrencyAmount {
 
   static CurrencyAmount fromJson(Map<String, dynamic> json) {
     return CurrencyAmount(
-      json['currency_amount_original_value'],
+      json["currency_amount_original_value"],
       CurrencyUnit.values.asNameMap()[json['currency_amount_original_unit']] ??
           CurrencyUnit.FUTURE_VALUE,
       CurrencyUnit.values
               .asNameMap()[json['currency_amount_preferred_currency_unit']] ??
           CurrencyUnit.FUTURE_VALUE,
-      json['currency_amount_preferred_currency_value_rounded'],
-      json['currency_amount_preferred_currency_value_approx'],
+      json["currency_amount_preferred_currency_value_rounded"],
+      json["currency_amount_preferred_currency_value_approx"],
     );
   }
 

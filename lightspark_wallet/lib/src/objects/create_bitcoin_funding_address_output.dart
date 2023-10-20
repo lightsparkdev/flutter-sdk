@@ -9,7 +9,7 @@ class CreateBitcoinFundingAddressOutput {
 
   static CreateBitcoinFundingAddressOutput fromJson(Map<String, dynamic> json) {
     return CreateBitcoinFundingAddressOutput(
-      json['create_bitcoin_funding_address_output_bitcoin_address'],
+      json["create_bitcoin_funding_address_output_bitcoin_address"],
     );
   }
 

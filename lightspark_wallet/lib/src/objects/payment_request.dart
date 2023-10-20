@@ -1,13 +1,13 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './entity.dart';
-import './payment_request_data.dart';
-import './invoice_data.dart';
-import './currency_amount.dart';
-import './invoice.dart';
-import '../lightspark_exception.dart';
-import './payment_request_status.dart';
 import '../requester/query.dart';
+import './payment_request_status.dart';
+import './payment_request_data.dart';
+import './invoice.dart';
+import './currency_amount.dart';
+import '../lightspark_exception.dart';
+import './invoice_data.dart';
 
 /// This object contains information related to a payment request generated or received by a LightsparkNode. You can retrieve this object to receive payment information about a specific invoice.
 class PaymentRequest implements Entity {
@@ -55,21 +55,21 @@ query GetPaymentRequest(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => PaymentRequest.fromJson(json['entity']),
+      (json) => PaymentRequest.fromJson(json["entity"]),
       variables: {'id': id},
     );
   }
 
   static PaymentRequest fromJson(Map<String, dynamic> json) {
-    if (json['__typename'] == 'Invoice') {
+    if (json["__typename"] == "Invoice") {
       return Invoice(
-        json['invoice_id'],
-        json['invoice_created_at'],
-        json['invoice_updated_at'],
-        InvoiceData.fromJson(json['invoice_data']),
+        json["invoice_id"],
+        json["invoice_created_at"],
+        json["invoice_updated_at"],
+        InvoiceData.fromJson(json["invoice_data"]),
         PaymentRequestStatus.values.asNameMap()[json['invoice_status']] ??
             PaymentRequestStatus.FUTURE_VALUE,
-        'Invoice',
+        "Invoice",
         (json['invoice_amount_paid'] != null
             ? CurrencyAmount.fromJson(json['invoice_amount_paid'])
             : null),

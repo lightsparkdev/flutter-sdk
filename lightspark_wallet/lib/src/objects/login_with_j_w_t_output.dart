@@ -17,9 +17,9 @@ class LoginWithJWTOutput {
 
   static LoginWithJWTOutput fromJson(Map<String, dynamic> json) {
     return LoginWithJWTOutput(
-      json['login_with_j_w_t_output_access_token'],
-      Wallet.fromJson(json['login_with_j_w_t_output_wallet']),
-      json['login_with_j_w_t_output_valid_until'],
+      json["login_with_j_w_t_output_access_token"],
+      Wallet.fromJson(json["login_with_j_w_t_output_wallet"]),
+      json["login_with_j_w_t_output_valid_until"],
     );
   }
 

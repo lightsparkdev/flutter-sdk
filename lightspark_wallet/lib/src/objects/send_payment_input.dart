@@ -22,10 +22,10 @@ class SendPaymentInput {
 
   static SendPaymentInput fromJson(Map<String, dynamic> json) {
     return SendPaymentInput(
-      json['send_payment_input_destination_public_key'],
-      json['send_payment_input_timeout_secs'],
-      json['send_payment_input_amount_msats'],
-      json['send_payment_input_maximum_fees_msats'],
+      json["send_payment_input_destination_public_key"],
+      json["send_payment_input_timeout_secs"],
+      json["send_payment_input_amount_msats"],
+      json["send_payment_input_maximum_fees_msats"],
     );
   }
 }

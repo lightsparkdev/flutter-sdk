@@ -15,8 +15,8 @@ class RequestWithdrawalInput {
 
   static RequestWithdrawalInput fromJson(Map<String, dynamic> json) {
     return RequestWithdrawalInput(
-      json['request_withdrawal_input_bitcoin_address'],
-      json['request_withdrawal_input_amount_sats'],
+      json["request_withdrawal_input_bitcoin_address"],
+      json["request_withdrawal_input_amount_sats"],
     );
   }
 }

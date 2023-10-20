@@ -27,9 +27,9 @@ class Balances {
 
   static Balances fromJson(Map<String, dynamic> json) {
     return Balances(
-      CurrencyAmount.fromJson(json['balances_owned_balance']),
-      CurrencyAmount.fromJson(json['balances_available_to_send_balance']),
-      CurrencyAmount.fromJson(json['balances_available_to_withdraw_balance']),
+      CurrencyAmount.fromJson(json["balances_owned_balance"]),
+      CurrencyAmount.fromJson(json["balances_available_to_send_balance"]),
+      CurrencyAmount.fromJson(json["balances_available_to_withdraw_balance"]),
     );
   }
 

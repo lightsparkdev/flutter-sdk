@@ -11,7 +11,7 @@ class TerminateWalletOutput {
 
   static TerminateWalletOutput fromJson(Map<String, dynamic> json) {
     return TerminateWalletOutput(
-      Wallet.fromJson(json['terminate_wallet_output_wallet']),
+      Wallet.fromJson(json["terminate_wallet_output_wallet"]),
     );
   }
 

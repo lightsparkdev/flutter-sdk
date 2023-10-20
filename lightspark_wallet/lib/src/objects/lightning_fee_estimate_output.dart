@@ -13,7 +13,7 @@ class LightningFeeEstimateOutput {
   static LightningFeeEstimateOutput fromJson(Map<String, dynamic> json) {
     return LightningFeeEstimateOutput(
       CurrencyAmount.fromJson(
-          json['lightning_fee_estimate_output_fee_estimate']),
+          json["lightning_fee_estimate_output_fee_estimate"]),
     );
   }
 

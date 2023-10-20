@@ -2,11 +2,11 @@
 
 import './node.dart';
 import './entity.dart';
-import './node_address_type.dart';
-import './bitcoin_network.dart';
-import './node_to_addresses_connection.dart';
-import '../lightspark_wallet_client.dart';
 import '../requester/query.dart';
+import './bitcoin_network.dart';
+import "../lightspark_wallet_client.dart";
+import './node_address_type.dart';
+import './node_to_addresses_connection.dart';
 
 /// This object represents a node that exists on the Lightning Network, including nodes not managed by Lightspark. You can retrieve this object to get publicly available information about any node on the Lightning Network.
 class GraphNode implements Node, Entity {
@@ -97,7 +97,7 @@ query FetchNodeToAddressesConnection($entity_id: ID!, $first: Int, $types: [Node
         final connection = json['entity']['addresses'];
         return NodeToAddressesConnection.fromJson(connection);
       },
-      variables: {'entity_id': id, 'first': first, 'types': types},
+      variables: {"entity_id": id, "first": first, "types": types},
     )));
   }
 
@@ -114,24 +114,24 @@ query GetGraphNode(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => GraphNode.fromJson(json['entity']),
+      (json) => GraphNode.fromJson(json["entity"]),
       variables: {'id': id},
     );
   }
 
   static GraphNode fromJson(Map<String, dynamic> json) {
     return GraphNode(
-      json['graph_node_id'],
-      json['graph_node_created_at'],
-      json['graph_node_updated_at'],
+      json["graph_node_id"],
+      json["graph_node_created_at"],
+      json["graph_node_updated_at"],
       BitcoinNetwork.values.asNameMap()[json['graph_node_bitcoin_network']] ??
           BitcoinNetwork.FUTURE_VALUE,
-      json['graph_node_display_name'],
-      'GraphNode',
-      json['graph_node_alias'],
-      json['graph_node_color'],
-      json['graph_node_conductivity'],
-      json['graph_node_public_key'],
+      json["graph_node_display_name"],
+      "GraphNode",
+      json["graph_node_alias"],
+      json["graph_node_color"],
+      json["graph_node_conductivity"],
+      json["graph_node_public_key"],
     );
   }
 

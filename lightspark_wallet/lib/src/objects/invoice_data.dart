@@ -1,8 +1,8 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './payment_request_data.dart';
-import './bitcoin_network.dart';
 import './currency_amount.dart';
+import './bitcoin_network.dart';
 import './graph_node.dart';
 
 /// This object represents the data associated with a BOLT #11 invoice. You can retrieve this object to receive the relevant data associated with a specific invoice.
@@ -49,16 +49,16 @@ class InvoiceData implements PaymentRequestData {
 
   static InvoiceData fromJson(Map<String, dynamic> json) {
     return InvoiceData(
-      json['invoice_data_encoded_payment_request'],
+      json["invoice_data_encoded_payment_request"],
       BitcoinNetwork.values.asNameMap()[json['invoice_data_bitcoin_network']] ??
           BitcoinNetwork.FUTURE_VALUE,
-      json['invoice_data_payment_hash'],
-      CurrencyAmount.fromJson(json['invoice_data_amount']),
-      json['invoice_data_created_at'],
-      json['invoice_data_expires_at'],
-      GraphNode.fromJson(json['invoice_data_destination']),
-      'InvoiceData',
-      json['invoice_data_memo'],
+      json["invoice_data_payment_hash"],
+      CurrencyAmount.fromJson(json["invoice_data_amount"]),
+      json["invoice_data_created_at"],
+      json["invoice_data_expires_at"],
+      GraphNode.fromJson(json["invoice_data_destination"]),
+      "InvoiceData",
+      json["invoice_data_memo"],
     );
   }
 

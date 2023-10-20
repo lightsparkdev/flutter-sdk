@@ -16,7 +16,7 @@ class KeyInput {
     return KeyInput(
       KeyType.values.asNameMap()[json['key_input_type']] ??
           KeyType.FUTURE_VALUE,
-      json['key_input_public_key'],
+      json["key_input_public_key"],
     );
   }
 }

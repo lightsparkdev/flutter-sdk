@@ -11,7 +11,7 @@ class InitializeWalletInput {
 
   static InitializeWalletInput fromJson(Map<String, dynamic> json) {
     return InitializeWalletInput(
-      KeyInput.fromJson(json['initialize_wallet_input_signing_public_key']),
+      KeyInput.fromJson(json["initialize_wallet_input_signing_public_key"]),
     );
   }
 }

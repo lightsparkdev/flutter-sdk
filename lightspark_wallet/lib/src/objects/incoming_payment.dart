@@ -3,8 +3,8 @@
 import './lightning_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import './transaction_status.dart';
 import './currency_amount.dart';
+import './transaction_status.dart';
 import '../requester/query.dart';
 
 /// This object represents any payment sent to a Lightspark node on the Lightning Network. You can retrieve this object to receive payment related information about a specific payment received by a Lightspark node.
@@ -69,23 +69,23 @@ query GetIncomingPayment(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => IncomingPayment.fromJson(json['entity']),
+      (json) => IncomingPayment.fromJson(json["entity"]),
       variables: {'id': id},
     );
   }
 
   static IncomingPayment fromJson(Map<String, dynamic> json) {
     return IncomingPayment(
-      json['incoming_payment_id'],
-      json['incoming_payment_created_at'],
-      json['incoming_payment_updated_at'],
+      json["incoming_payment_id"],
+      json["incoming_payment_created_at"],
+      json["incoming_payment_updated_at"],
       TransactionStatus.values.asNameMap()[json['incoming_payment_status']] ??
           TransactionStatus.FUTURE_VALUE,
-      CurrencyAmount.fromJson(json['incoming_payment_amount']),
-      'IncomingPayment',
-      json['incoming_payment_resolved_at'],
-      json['incoming_payment_transaction_hash'],
-      json['incoming_payment_payment_request']?['id'],
+      CurrencyAmount.fromJson(json["incoming_payment_amount"]),
+      "IncomingPayment",
+      json["incoming_payment_resolved_at"],
+      json["incoming_payment_transaction_hash"],
+      json["incoming_payment_payment_request"]?["id"],
     );
   }
 

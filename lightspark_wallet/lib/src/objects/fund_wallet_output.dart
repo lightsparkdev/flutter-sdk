@@ -11,7 +11,7 @@ class FundWalletOutput {
 
   static FundWalletOutput fromJson(Map<String, dynamic> json) {
     return FundWalletOutput(
-      CurrencyAmount.fromJson(json['fund_wallet_output_amount']),
+      CurrencyAmount.fromJson(json["fund_wallet_output_amount"]),
     );
   }
 

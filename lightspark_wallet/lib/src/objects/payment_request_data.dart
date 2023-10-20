@@ -1,10 +1,10 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import './invoice_data.dart';
 import './bitcoin_network.dart';
+import './graph_node.dart';
 import './currency_amount.dart';
 import '../lightspark_exception.dart';
-import './graph_node.dart';
+import './invoice_data.dart';
 
 /// This object is an interface of a payment request on the Lightning Network (i.e., a Lightning Invoice). It contains data related to parsing the payment details of a Lightning Invoice.
 class PaymentRequestData {
@@ -22,19 +22,19 @@ class PaymentRequestData {
   );
 
   static PaymentRequestData fromJson(Map<String, dynamic> json) {
-    if (json['__typename'] == 'InvoiceData') {
+    if (json["__typename"] == "InvoiceData") {
       return InvoiceData(
-        json['invoice_data_encoded_payment_request'],
+        json["invoice_data_encoded_payment_request"],
         BitcoinNetwork.values
                 .asNameMap()[json['invoice_data_bitcoin_network']] ??
             BitcoinNetwork.FUTURE_VALUE,
-        json['invoice_data_payment_hash'],
-        CurrencyAmount.fromJson(json['invoice_data_amount']),
-        json['invoice_data_created_at'],
-        json['invoice_data_expires_at'],
-        GraphNode.fromJson(json['invoice_data_destination']),
-        'InvoiceData',
-        json['invoice_data_memo'],
+        json["invoice_data_payment_hash"],
+        CurrencyAmount.fromJson(json["invoice_data_amount"]),
+        json["invoice_data_created_at"],
+        json["invoice_data_expires_at"],
+        GraphNode.fromJson(json["invoice_data_destination"]),
+        "InvoiceData",
+        json["invoice_data_memo"],
       );
     }
     throw LightsparkException('DeserializationError',

@@ -3,8 +3,8 @@
 import './on_chain_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import './transaction_status.dart';
 import './currency_amount.dart';
+import './transaction_status.dart';
 import '../requester/query.dart';
 
 /// This object represents a Deposit made to a Lightspark node wallet. This operation occurs for any L1 funding transaction to the wallet. You can retrieve this object to receive detailed information about the deposit.
@@ -90,29 +90,29 @@ query GetDeposit(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => Deposit.fromJson(json['entity']),
+      (json) => Deposit.fromJson(json["entity"]),
       variables: {'id': id},
     );
   }
 
   static Deposit fromJson(Map<String, dynamic> json) {
     return Deposit(
-      json['deposit_id'],
-      json['deposit_created_at'],
-      json['deposit_updated_at'],
+      json["deposit_id"],
+      json["deposit_created_at"],
+      json["deposit_updated_at"],
       TransactionStatus.values.asNameMap()[json['deposit_status']] ??
           TransactionStatus.FUTURE_VALUE,
-      CurrencyAmount.fromJson(json['deposit_amount']),
-      json['deposit_block_height'],
+      CurrencyAmount.fromJson(json["deposit_amount"]),
+      json["deposit_block_height"],
       List<String>.from(json['deposit_destination_addresses']),
-      'Deposit',
-      json['deposit_resolved_at'],
-      json['deposit_transaction_hash'],
+      "Deposit",
+      json["deposit_resolved_at"],
+      json["deposit_transaction_hash"],
       (json['deposit_fees'] != null
           ? CurrencyAmount.fromJson(json['deposit_fees'])
           : null),
-      json['deposit_block_hash'],
-      json['deposit_num_confirmations'],
+      json["deposit_block_hash"],
+      json["deposit_num_confirmations"],
     );
   }
 

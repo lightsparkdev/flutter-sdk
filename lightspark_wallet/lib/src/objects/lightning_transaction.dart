@@ -2,14 +2,14 @@
 
 import './transaction.dart';
 import './entity.dart';
-import './payment_request_data.dart';
-import './outgoing_payment.dart';
+import '../requester/query.dart';
 import './rich_text.dart';
+import './outgoing_payment.dart';
+import './payment_request_data.dart';
 import './payment_failure_reason.dart';
 import './currency_amount.dart';
 import './transaction_status.dart';
 import '../lightspark_exception.dart';
-import '../requester/query.dart';
 import './incoming_payment.dart';
 
 /// This is an object representing a transaction made over the Lightning Network. You can retrieve this object to receive information about a specific transaction made over Lightning for a Lightspark node.
@@ -70,37 +70,37 @@ query GetLightningTransaction(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => LightningTransaction.fromJson(json['entity']),
+      (json) => LightningTransaction.fromJson(json["entity"]),
       variables: {'id': id},
     );
   }
 
   static LightningTransaction fromJson(Map<String, dynamic> json) {
-    if (json['__typename'] == 'IncomingPayment') {
+    if (json["__typename"] == "IncomingPayment") {
       return IncomingPayment(
-        json['incoming_payment_id'],
-        json['incoming_payment_created_at'],
-        json['incoming_payment_updated_at'],
+        json["incoming_payment_id"],
+        json["incoming_payment_created_at"],
+        json["incoming_payment_updated_at"],
         TransactionStatus.values.asNameMap()[json['incoming_payment_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json['incoming_payment_amount']),
-        'IncomingPayment',
-        json['incoming_payment_resolved_at'],
-        json['incoming_payment_transaction_hash'],
-        json['incoming_payment_payment_request']?['id'],
+        CurrencyAmount.fromJson(json["incoming_payment_amount"]),
+        "IncomingPayment",
+        json["incoming_payment_resolved_at"],
+        json["incoming_payment_transaction_hash"],
+        json["incoming_payment_payment_request"]?["id"],
       );
     }
-    if (json['__typename'] == 'OutgoingPayment') {
+    if (json["__typename"] == "OutgoingPayment") {
       return OutgoingPayment(
-        json['outgoing_payment_id'],
-        json['outgoing_payment_created_at'],
-        json['outgoing_payment_updated_at'],
+        json["outgoing_payment_id"],
+        json["outgoing_payment_created_at"],
+        json["outgoing_payment_updated_at"],
         TransactionStatus.values.asNameMap()[json['outgoing_payment_status']] ??
             TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json['outgoing_payment_amount']),
-        'OutgoingPayment',
-        json['outgoing_payment_resolved_at'],
-        json['outgoing_payment_transaction_hash'],
+        CurrencyAmount.fromJson(json["outgoing_payment_amount"]),
+        "OutgoingPayment",
+        json["outgoing_payment_resolved_at"],
+        json["outgoing_payment_transaction_hash"],
         (json['outgoing_payment_fees'] != null
             ? CurrencyAmount.fromJson(json['outgoing_payment_fees'])
             : null),
@@ -116,6 +116,7 @@ $fragment
         (json['outgoing_payment_failure_message'] != null
             ? RichText.fromJson(json['outgoing_payment_failure_message'])
             : null),
+        json["outgoing_payment_payment_preimage"],
       );
     }
     throw LightsparkException('DeserializationError',
@@ -206,6 +207,7 @@ fragment LightningTransactionFragment on LightningTransaction {
             __typename
             rich_text_text: text
         }
+        outgoing_payment_payment_preimage: payment_preimage
     }
 }''';
 }

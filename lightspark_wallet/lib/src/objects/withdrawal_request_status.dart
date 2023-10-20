@@ -7,6 +7,8 @@ enum WithdrawalRequestStatus {
   /// Clients should support unknown values as more of them could be added without notice.
   FUTURE_VALUE,
 
+  CREATED,
+
   FAILED,
 
   IN_PROGRESS,

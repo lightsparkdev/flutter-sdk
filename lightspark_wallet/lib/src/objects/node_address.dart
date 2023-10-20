@@ -17,7 +17,7 @@ class NodeAddress {
 
   static NodeAddress fromJson(Map<String, dynamic> json) {
     return NodeAddress(
-      json['node_address_address'],
+      json["node_address_address"],
       NodeAddressType.values.asNameMap()[json['node_address_type']] ??
           NodeAddressType.FUTURE_VALUE,
     );

@@ -9,7 +9,7 @@ class RichText {
 
   static RichText fromJson(Map<String, dynamic> json) {
     return RichText(
-      json['rich_text_text'],
+      json["rich_text_text"],
     );
   }
 

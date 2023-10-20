@@ -9,7 +9,7 @@ class FundWalletInput {
 
   static FundWalletInput fromJson(Map<String, dynamic> json) {
     return FundWalletInput(
-      json['fund_wallet_input_amount_sats'],
+      json["fund_wallet_input_amount_sats"],
     );
   }
 }

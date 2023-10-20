@@ -12,8 +12,8 @@ class LoginWithJWTInput {
 
   static LoginWithJWTInput fromJson(Map<String, dynamic> json) {
     return LoginWithJWTInput(
-      json['login_with_j_w_t_input_account_id'],
-      json['login_with_j_w_t_input_jwt'],
+      json["login_with_j_w_t_input_account_id"],
+      json["login_with_j_w_t_input_jwt"],
     );
   }
 }

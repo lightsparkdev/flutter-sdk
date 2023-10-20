@@ -22,9 +22,9 @@ class AmazonS3FundsRecoveryKit implements FundsRecoveryKit {
 
   static AmazonS3FundsRecoveryKit fromJson(Map<String, dynamic> json) {
     return AmazonS3FundsRecoveryKit(
-      json['amazon_s3_funds_recovery_kit_bitcoin_wallet_address'],
-      json['amazon_s3_funds_recovery_kit_s3_bucket_url'],
-      'AmazonS3FundsRecoveryKit',
+      json["amazon_s3_funds_recovery_kit_bitcoin_wallet_address"],
+      json["amazon_s3_funds_recovery_kit_s3_bucket_url"],
+      "AmazonS3FundsRecoveryKit",
     );
   }
 
