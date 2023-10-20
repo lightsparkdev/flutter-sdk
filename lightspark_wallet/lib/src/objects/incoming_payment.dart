@@ -3,8 +3,8 @@
 import './lightning_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import './transaction_status.dart';
 import './currency_amount.dart';
+import './transaction_status.dart';
 import '../requester/query.dart';
 
 /// This object represents any payment sent to a Lightspark node on the Lightning Network. You can retrieve this object to receive payment related information about a specific payment received by a Lightspark node.

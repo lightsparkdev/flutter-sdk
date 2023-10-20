@@ -1,13 +1,13 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './entity.dart';
-import './payment_request_data.dart';
-import './invoice_data.dart';
-import './currency_amount.dart';
-import './invoice.dart';
-import '../lightspark_exception.dart';
-import './payment_request_status.dart';
 import '../requester/query.dart';
+import './payment_request_status.dart';
+import './payment_request_data.dart';
+import './invoice.dart';
+import './currency_amount.dart';
+import '../lightspark_exception.dart';
+import './invoice_data.dart';
 
 /// This object contains information related to a payment request generated or received by a LightsparkNode. You can retrieve this object to receive payment information about a specific invoice.
 class PaymentRequest implements Entity {

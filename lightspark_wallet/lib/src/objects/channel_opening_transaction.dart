@@ -3,8 +3,8 @@
 import './on_chain_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import './transaction_status.dart';
 import './currency_amount.dart';
+import './transaction_status.dart';
 import '../requester/query.dart';
 
 /// This is an object representing a transaction which opens a channel on the Lightning Network. This object occurs only for channels funded by the local Lightspark node.

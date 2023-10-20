@@ -3,6 +3,7 @@ export './balances.dart';
 export './bitcoin_network.dart';
 export './channel_closing_transaction.dart';
 export './channel_opening_transaction.dart';
+export './connection.dart';
 export './create_bitcoin_funding_address_output.dart';
 export './create_invoice_input.dart';
 export './create_invoice_output.dart';

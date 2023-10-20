@@ -1,19 +1,19 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './entity.dart';
-import './payment_request_data.dart';
-import './outgoing_payment.dart';
+import '../requester/query.dart';
+import './channel_opening_transaction.dart';
 import './rich_text.dart';
+import './outgoing_payment.dart';
+import './payment_request_data.dart';
+import './deposit.dart';
 import './payment_failure_reason.dart';
 import './currency_amount.dart';
-import './channel_closing_transaction.dart';
-import './channel_opening_transaction.dart';
-import './deposit.dart';
 import './transaction_status.dart';
 import '../lightspark_exception.dart';
-import '../requester/query.dart';
 import './incoming_payment.dart';
 import './withdrawal.dart';
+import './channel_closing_transaction.dart';
 
 /// This object represents a payment transaction. The transaction can occur either on a Bitcoin Network, or over the Lightning Network. You can retrieve this object to receive specific information about a particular transaction tied to your Lightspark Node.
 class Transaction implements Entity {
@@ -179,6 +179,7 @@ $fragment
         (json['outgoing_payment_failure_message'] != null
             ? RichText.fromJson(json['outgoing_payment_failure_message'])
             : null),
+        json['outgoing_payment_payment_preimage'],
       );
     }
     if (json['__typename'] == 'Withdrawal') {
@@ -376,6 +377,7 @@ fragment TransactionFragment on Transaction {
             __typename
             rich_text_text: text
         }
+        outgoing_payment_payment_preimage: payment_preimage
     }
     ... on Withdrawal {
         __typename

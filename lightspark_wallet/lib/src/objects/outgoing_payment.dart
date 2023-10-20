@@ -3,12 +3,12 @@
 import './lightning_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import './payment_request_data.dart';
+import '../requester/query.dart';
 import './rich_text.dart';
+import './payment_request_data.dart';
 import './payment_failure_reason.dart';
 import './currency_amount.dart';
 import './transaction_status.dart';
-import '../requester/query.dart';
 
 /// This object represents a Lightning Network payment sent from a Lightspark Node. You can retrieve this object to receive payment related information about any payment sent from your Lightspark Node on the Lightning Network.
 class OutgoingPayment implements LightningTransaction, Transaction, Entity {
@@ -56,6 +56,9 @@ class OutgoingPayment implements LightningTransaction, Transaction, Entity {
   /// If applicable, user-facing error message describing why the payment failed.
   final RichText? failureMessage;
 
+  /// The preimage of the payment.
+  final String? paymentPreimage;
+
   OutgoingPayment(
     this.id,
     this.createdAt,
@@ -69,6 +72,7 @@ class OutgoingPayment implements LightningTransaction, Transaction, Entity {
     this.paymentRequestData,
     this.failureReason,
     this.failureMessage,
+    this.paymentPreimage,
   );
 
   static Query<OutgoingPayment> getOutgoingPaymentQuery(String id) {
@@ -115,6 +119,7 @@ $fragment
       (json['outgoing_payment_failure_message'] != null
           ? RichText.fromJson(json['outgoing_payment_failure_message'])
           : null),
+      json['outgoing_payment_payment_preimage'],
     );
   }
 
@@ -180,5 +185,6 @@ fragment OutgoingPaymentFragment on OutgoingPayment {
         __typename
         rich_text_text: text
     }
+    outgoing_payment_payment_preimage: payment_preimage
 }''';
 }

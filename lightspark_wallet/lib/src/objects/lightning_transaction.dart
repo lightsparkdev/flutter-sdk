@@ -2,14 +2,14 @@
 
 import './transaction.dart';
 import './entity.dart';
-import './payment_request_data.dart';
-import './outgoing_payment.dart';
+import '../requester/query.dart';
 import './rich_text.dart';
+import './outgoing_payment.dart';
+import './payment_request_data.dart';
 import './payment_failure_reason.dart';
 import './currency_amount.dart';
 import './transaction_status.dart';
 import '../lightspark_exception.dart';
-import '../requester/query.dart';
 import './incoming_payment.dart';
 
 /// This is an object representing a transaction made over the Lightning Network. You can retrieve this object to receive information about a specific transaction made over Lightning for a Lightspark node.
@@ -116,6 +116,7 @@ $fragment
         (json['outgoing_payment_failure_message'] != null
             ? RichText.fromJson(json['outgoing_payment_failure_message'])
             : null),
+        json['outgoing_payment_payment_preimage'],
       );
     }
     throw LightsparkException('DeserializationError',
@@ -206,6 +207,7 @@ fragment LightningTransactionFragment on LightningTransaction {
             __typename
             rich_text_text: text
         }
+        outgoing_payment_payment_preimage: payment_preimage
     }
 }''';
 }

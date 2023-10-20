@@ -16,6 +16,6 @@ enum BitcoinNetwork {
   /// A test version of the Bitcoin Blockchain, maintained by a centralized organization. Not in use at Lightspark.
   SIGNET,
 
-  /// A test version of the Bitcoin Blockchain, publically available.
+  /// A test version of the Bitcoin Blockchain, publicly available.
   TESTNET,
 }
