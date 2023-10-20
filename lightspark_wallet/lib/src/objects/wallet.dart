@@ -4,7 +4,7 @@ import './entity.dart';
 import './wallet_status.dart';
 import '../requester/query.dart';
 import './balances.dart';
-import "../lightspark_wallet_client.dart";
+import '../lightspark_wallet_client.dart';
 import './transaction_type.dart';
 import './transaction_status.dart';
 import './wallet_to_transactions_connection.dart';
@@ -278,12 +278,12 @@ query FetchWalletToTransactionsConnection($first: Int, $after: ID, $created_afte
         return WalletToTransactionsConnection.fromJson(connection);
       },
       variables: {
-        "first": first,
-        "after": after,
-        "created_after_date": createdAfterDate,
-        "created_before_date": createdBeforeDate,
-        "statuses": statuses,
-        "types": types
+        'first': first,
+        'after': after,
+        'created_after_date': createdAfterDate,
+        'created_before_date': createdBeforeDate,
+        'statuses': statuses,
+        'types': types
       },
     )));
   }
@@ -367,10 +367,10 @@ query FetchWalletToPaymentRequestsConnection($first: Int, $after: ID, $created_a
         return WalletToPaymentRequestsConnection.fromJson(connection);
       },
       variables: {
-        "first": first,
-        "after": after,
-        "created_after_date": createdAfterDate,
-        "created_before_date": createdBeforeDate
+        'first': first,
+        'after': after,
+        'created_after_date': createdAfterDate,
+        'created_before_date': createdBeforeDate
       },
     )));
   }
@@ -388,19 +388,19 @@ query GetWallet {
 
 $fragment  
 ''',
-      (json) => Wallet.fromJson(json["current_wallet"]),
+      (json) => Wallet.fromJson(json['current_wallet']),
       variables: {},
     );
   }
 
   static Wallet fromJson(Map<String, dynamic> json) {
     return Wallet(
-      json["wallet_id"],
-      json["wallet_created_at"],
-      json["wallet_updated_at"],
+      json['wallet_id'],
+      json['wallet_created_at'],
+      json['wallet_updated_at'],
       WalletStatus.values.asNameMap()[json['wallet_status']] ??
           WalletStatus.FUTURE_VALUE,
-      "Wallet",
+      'Wallet',
       (json['wallet_balances'] != null
           ? Balances.fromJson(json['wallet_balances'])
           : null),

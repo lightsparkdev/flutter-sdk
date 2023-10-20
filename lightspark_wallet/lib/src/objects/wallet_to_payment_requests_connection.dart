@@ -30,13 +30,13 @@ class WalletToPaymentRequestsConnection implements Connection {
 
   static WalletToPaymentRequestsConnection fromJson(Map<String, dynamic> json) {
     return WalletToPaymentRequestsConnection(
-      json["wallet_to_payment_requests_connection_count"],
+      json['wallet_to_payment_requests_connection_count'],
       PageInfo.fromJson(
-          json["wallet_to_payment_requests_connection_page_info"]),
-      json["wallet_to_payment_requests_connection_entities"]
+          json['wallet_to_payment_requests_connection_page_info']),
+      json['wallet_to_payment_requests_connection_entities']
           .map<PaymentRequest>((e) => PaymentRequest.fromJson(e))
           .toList(),
-      "WalletToPaymentRequestsConnection",
+      'WalletToPaymentRequestsConnection',
     );
   }
 

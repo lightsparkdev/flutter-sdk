@@ -90,29 +90,29 @@ query GetWithdrawal(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => Withdrawal.fromJson(json["entity"]),
+      (json) => Withdrawal.fromJson(json['entity']),
       variables: {'id': id},
     );
   }
 
   static Withdrawal fromJson(Map<String, dynamic> json) {
     return Withdrawal(
-      json["withdrawal_id"],
-      json["withdrawal_created_at"],
-      json["withdrawal_updated_at"],
+      json['withdrawal_id'],
+      json['withdrawal_created_at'],
+      json['withdrawal_updated_at'],
       TransactionStatus.values.asNameMap()[json['withdrawal_status']] ??
           TransactionStatus.FUTURE_VALUE,
-      CurrencyAmount.fromJson(json["withdrawal_amount"]),
-      json["withdrawal_block_height"],
+      CurrencyAmount.fromJson(json['withdrawal_amount']),
+      json['withdrawal_block_height'],
       List<String>.from(json['withdrawal_destination_addresses']),
-      "Withdrawal",
-      json["withdrawal_resolved_at"],
-      json["withdrawal_transaction_hash"],
+      'Withdrawal',
+      json['withdrawal_resolved_at'],
+      json['withdrawal_transaction_hash'],
       (json['withdrawal_fees'] != null
           ? CurrencyAmount.fromJson(json['withdrawal_fees'])
           : null),
-      json["withdrawal_block_hash"],
-      json["withdrawal_num_confirmations"],
+      json['withdrawal_block_hash'],
+      json['withdrawal_num_confirmations'],
     );
   }
 

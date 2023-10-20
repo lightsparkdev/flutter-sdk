@@ -25,25 +25,25 @@ class Connection {
   );
 
   static Connection fromJson(Map<String, dynamic> json) {
-    if (json["__typename"] == "WalletToPaymentRequestsConnection") {
+    if (json['__typename'] == 'WalletToPaymentRequestsConnection') {
       return WalletToPaymentRequestsConnection(
-        json["wallet_to_payment_requests_connection_count"],
+        json['wallet_to_payment_requests_connection_count'],
         PageInfo.fromJson(
-            json["wallet_to_payment_requests_connection_page_info"]),
-        json["wallet_to_payment_requests_connection_entities"]
+            json['wallet_to_payment_requests_connection_page_info']),
+        json['wallet_to_payment_requests_connection_entities']
             .map<PaymentRequest>((e) => PaymentRequest.fromJson(e))
             .toList(),
-        "WalletToPaymentRequestsConnection",
+        'WalletToPaymentRequestsConnection',
       );
     }
-    if (json["__typename"] == "WalletToTransactionsConnection") {
+    if (json['__typename'] == 'WalletToTransactionsConnection') {
       return WalletToTransactionsConnection(
-        json["wallet_to_transactions_connection_count"],
-        PageInfo.fromJson(json["wallet_to_transactions_connection_page_info"]),
-        json["wallet_to_transactions_connection_entities"]
+        json['wallet_to_transactions_connection_count'],
+        PageInfo.fromJson(json['wallet_to_transactions_connection_page_info']),
+        json['wallet_to_transactions_connection_entities']
             .map<Transaction>((e) => Transaction.fromJson(e))
             .toList(),
-        "WalletToTransactionsConnection",
+        'WalletToTransactionsConnection',
       );
     }
     throw LightsparkException('DeserializationError',

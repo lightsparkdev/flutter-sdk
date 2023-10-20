@@ -15,8 +15,8 @@ class CreateTestModePaymentInputWallet {
 
   static CreateTestModePaymentInputWallet fromJson(Map<String, dynamic> json) {
     return CreateTestModePaymentInputWallet(
-      json["create_test_mode_payment_input_wallet_encoded_invoice"],
-      json["create_test_mode_payment_input_wallet_amount_msats"],
+      json['create_test_mode_payment_input_wallet_encoded_invoice'],
+      json['create_test_mode_payment_input_wallet_amount_msats'],
     );
   }
 }

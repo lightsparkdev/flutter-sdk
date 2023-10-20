@@ -55,21 +55,21 @@ query GetPaymentRequest(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => PaymentRequest.fromJson(json["entity"]),
+      (json) => PaymentRequest.fromJson(json['entity']),
       variables: {'id': id},
     );
   }
 
   static PaymentRequest fromJson(Map<String, dynamic> json) {
-    if (json["__typename"] == "Invoice") {
+    if (json['__typename'] == 'Invoice') {
       return Invoice(
-        json["invoice_id"],
-        json["invoice_created_at"],
-        json["invoice_updated_at"],
-        InvoiceData.fromJson(json["invoice_data"]),
+        json['invoice_id'],
+        json['invoice_created_at'],
+        json['invoice_updated_at'],
+        InvoiceData.fromJson(json['invoice_data']),
         PaymentRequestStatus.values.asNameMap()[json['invoice_status']] ??
             PaymentRequestStatus.FUTURE_VALUE,
-        "Invoice",
+        'Invoice',
         (json['invoice_amount_paid'] != null
             ? CurrencyAmount.fromJson(json['invoice_amount_paid'])
             : null),

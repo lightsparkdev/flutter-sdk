@@ -15,8 +15,8 @@ class FeeEstimate {
 
   static FeeEstimate fromJson(Map<String, dynamic> json) {
     return FeeEstimate(
-      CurrencyAmount.fromJson(json["fee_estimate_fee_fast"]),
-      CurrencyAmount.fromJson(json["fee_estimate_fee_min"]),
+      CurrencyAmount.fromJson(json['fee_estimate_fee_fast']),
+      CurrencyAmount.fromJson(json['fee_estimate_fee_min']),
     );
   }
 

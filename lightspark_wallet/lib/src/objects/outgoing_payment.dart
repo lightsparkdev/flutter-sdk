@@ -88,22 +88,22 @@ query GetOutgoingPayment(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => OutgoingPayment.fromJson(json["entity"]),
+      (json) => OutgoingPayment.fromJson(json['entity']),
       variables: {'id': id},
     );
   }
 
   static OutgoingPayment fromJson(Map<String, dynamic> json) {
     return OutgoingPayment(
-      json["outgoing_payment_id"],
-      json["outgoing_payment_created_at"],
-      json["outgoing_payment_updated_at"],
+      json['outgoing_payment_id'],
+      json['outgoing_payment_created_at'],
+      json['outgoing_payment_updated_at'],
       TransactionStatus.values.asNameMap()[json['outgoing_payment_status']] ??
           TransactionStatus.FUTURE_VALUE,
-      CurrencyAmount.fromJson(json["outgoing_payment_amount"]),
-      "OutgoingPayment",
-      json["outgoing_payment_resolved_at"],
-      json["outgoing_payment_transaction_hash"],
+      CurrencyAmount.fromJson(json['outgoing_payment_amount']),
+      'OutgoingPayment',
+      json['outgoing_payment_resolved_at'],
+      json['outgoing_payment_transaction_hash'],
       (json['outgoing_payment_fees'] != null
           ? CurrencyAmount.fromJson(json['outgoing_payment_fees'])
           : null),
@@ -119,7 +119,7 @@ $fragment
       (json['outgoing_payment_failure_message'] != null
           ? RichText.fromJson(json['outgoing_payment_failure_message'])
           : null),
-      json["outgoing_payment_payment_preimage"],
+      json['outgoing_payment_payment_preimage'],
     );
   }
 

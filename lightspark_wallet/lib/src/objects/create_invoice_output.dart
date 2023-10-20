@@ -9,7 +9,7 @@ class CreateInvoiceOutput {
 
   static CreateInvoiceOutput fromJson(Map<String, dynamic> json) {
     return CreateInvoiceOutput(
-      json["create_invoice_output_invoice"]?["id"],
+      json['create_invoice_output_invoice']?['id'],
     );
   }
 

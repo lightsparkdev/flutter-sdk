@@ -10,7 +10,7 @@ class SendPaymentOutput {
 
   static SendPaymentOutput fromJson(Map<String, dynamic> json) {
     return SendPaymentOutput(
-      json["send_payment_output_payment"]?["id"],
+      json['send_payment_output_payment']?['id'],
     );
   }
 

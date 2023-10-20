@@ -15,8 +15,8 @@ class LightningFeeEstimateForInvoiceInput {
   static LightningFeeEstimateForInvoiceInput fromJson(
       Map<String, dynamic> json) {
     return LightningFeeEstimateForInvoiceInput(
-      json["lightning_fee_estimate_for_invoice_input_encoded_payment_request"],
-      json["lightning_fee_estimate_for_invoice_input_amount_msats"],
+      json['lightning_fee_estimate_for_invoice_input_encoded_payment_request'],
+      json['lightning_fee_estimate_for_invoice_input_amount_msats'],
     );
   }
 }

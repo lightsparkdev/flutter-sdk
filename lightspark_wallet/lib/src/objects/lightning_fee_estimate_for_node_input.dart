@@ -14,8 +14,8 @@ class LightningFeeEstimateForNodeInput {
 
   static LightningFeeEstimateForNodeInput fromJson(Map<String, dynamic> json) {
     return LightningFeeEstimateForNodeInput(
-      json["lightning_fee_estimate_for_node_input_destination_node_public_key"],
-      json["lightning_fee_estimate_for_node_input_amount_msats"],
+      json['lightning_fee_estimate_for_node_input_destination_node_public_key'],
+      json['lightning_fee_estimate_for_node_input_amount_msats'],
     );
   }
 }

@@ -19,10 +19,10 @@ class PageInfo {
 
   static PageInfo fromJson(Map<String, dynamic> json) {
     return PageInfo(
-      json["page_info_has_next_page"],
-      json["page_info_has_previous_page"],
-      json["page_info_start_cursor"],
-      json["page_info_end_cursor"],
+      json['page_info_has_next_page'],
+      json['page_info_has_previous_page'],
+      json['page_info_start_cursor'],
+      json['page_info_end_cursor'],
     );
   }
 

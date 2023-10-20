@@ -92,31 +92,31 @@ query GetChannelOpeningTransaction(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => ChannelOpeningTransaction.fromJson(json["entity"]),
+      (json) => ChannelOpeningTransaction.fromJson(json['entity']),
       variables: {'id': id},
     );
   }
 
   static ChannelOpeningTransaction fromJson(Map<String, dynamic> json) {
     return ChannelOpeningTransaction(
-      json["channel_opening_transaction_id"],
-      json["channel_opening_transaction_created_at"],
-      json["channel_opening_transaction_updated_at"],
+      json['channel_opening_transaction_id'],
+      json['channel_opening_transaction_created_at'],
+      json['channel_opening_transaction_updated_at'],
       TransactionStatus.values
               .asNameMap()[json['channel_opening_transaction_status']] ??
           TransactionStatus.FUTURE_VALUE,
-      CurrencyAmount.fromJson(json["channel_opening_transaction_amount"]),
-      json["channel_opening_transaction_block_height"],
+      CurrencyAmount.fromJson(json['channel_opening_transaction_amount']),
+      json['channel_opening_transaction_block_height'],
       List<String>.from(
           json['channel_opening_transaction_destination_addresses']),
-      "ChannelOpeningTransaction",
-      json["channel_opening_transaction_resolved_at"],
-      json["channel_opening_transaction_transaction_hash"],
+      'ChannelOpeningTransaction',
+      json['channel_opening_transaction_resolved_at'],
+      json['channel_opening_transaction_transaction_hash'],
       (json['channel_opening_transaction_fees'] != null
           ? CurrencyAmount.fromJson(json['channel_opening_transaction_fees'])
           : null),
-      json["channel_opening_transaction_block_hash"],
-      json["channel_opening_transaction_num_confirmations"],
+      json['channel_opening_transaction_block_hash'],
+      json['channel_opening_transaction_num_confirmations'],
     );
   }
 

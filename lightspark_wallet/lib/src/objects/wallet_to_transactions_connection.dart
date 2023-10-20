@@ -30,12 +30,12 @@ class WalletToTransactionsConnection implements Connection {
 
   static WalletToTransactionsConnection fromJson(Map<String, dynamic> json) {
     return WalletToTransactionsConnection(
-      json["wallet_to_transactions_connection_count"],
-      PageInfo.fromJson(json["wallet_to_transactions_connection_page_info"]),
-      json["wallet_to_transactions_connection_entities"]
+      json['wallet_to_transactions_connection_count'],
+      PageInfo.fromJson(json['wallet_to_transactions_connection_page_info']),
+      json['wallet_to_transactions_connection_entities']
           .map<Transaction>((e) => Transaction.fromJson(e))
           .toList(),
-      "WalletToTransactionsConnection",
+      'WalletToTransactionsConnection',
     );
   }
 

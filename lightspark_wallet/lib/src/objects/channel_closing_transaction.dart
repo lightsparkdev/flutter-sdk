@@ -92,31 +92,31 @@ query GetChannelClosingTransaction(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => ChannelClosingTransaction.fromJson(json["entity"]),
+      (json) => ChannelClosingTransaction.fromJson(json['entity']),
       variables: {'id': id},
     );
   }
 
   static ChannelClosingTransaction fromJson(Map<String, dynamic> json) {
     return ChannelClosingTransaction(
-      json["channel_closing_transaction_id"],
-      json["channel_closing_transaction_created_at"],
-      json["channel_closing_transaction_updated_at"],
+      json['channel_closing_transaction_id'],
+      json['channel_closing_transaction_created_at'],
+      json['channel_closing_transaction_updated_at'],
       TransactionStatus.values
               .asNameMap()[json['channel_closing_transaction_status']] ??
           TransactionStatus.FUTURE_VALUE,
-      CurrencyAmount.fromJson(json["channel_closing_transaction_amount"]),
-      json["channel_closing_transaction_block_height"],
+      CurrencyAmount.fromJson(json['channel_closing_transaction_amount']),
+      json['channel_closing_transaction_block_height'],
       List<String>.from(
           json['channel_closing_transaction_destination_addresses']),
-      "ChannelClosingTransaction",
-      json["channel_closing_transaction_resolved_at"],
-      json["channel_closing_transaction_transaction_hash"],
+      'ChannelClosingTransaction',
+      json['channel_closing_transaction_resolved_at'],
+      json['channel_closing_transaction_transaction_hash'],
       (json['channel_closing_transaction_fees'] != null
           ? CurrencyAmount.fromJson(json['channel_closing_transaction_fees'])
           : null),
-      json["channel_closing_transaction_block_hash"],
-      json["channel_closing_transaction_num_confirmations"],
+      json['channel_closing_transaction_block_hash'],
+      json['channel_closing_transaction_num_confirmations'],
     );
   }
 

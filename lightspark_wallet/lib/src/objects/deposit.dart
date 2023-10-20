@@ -90,29 +90,29 @@ query GetDeposit(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => Deposit.fromJson(json["entity"]),
+      (json) => Deposit.fromJson(json['entity']),
       variables: {'id': id},
     );
   }
 
   static Deposit fromJson(Map<String, dynamic> json) {
     return Deposit(
-      json["deposit_id"],
-      json["deposit_created_at"],
-      json["deposit_updated_at"],
+      json['deposit_id'],
+      json['deposit_created_at'],
+      json['deposit_updated_at'],
       TransactionStatus.values.asNameMap()[json['deposit_status']] ??
           TransactionStatus.FUTURE_VALUE,
-      CurrencyAmount.fromJson(json["deposit_amount"]),
-      json["deposit_block_height"],
+      CurrencyAmount.fromJson(json['deposit_amount']),
+      json['deposit_block_height'],
       List<String>.from(json['deposit_destination_addresses']),
-      "Deposit",
-      json["deposit_resolved_at"],
-      json["deposit_transaction_hash"],
+      'Deposit',
+      json['deposit_resolved_at'],
+      json['deposit_transaction_hash'],
       (json['deposit_fees'] != null
           ? CurrencyAmount.fromJson(json['deposit_fees'])
           : null),
-      json["deposit_block_hash"],
-      json["deposit_num_confirmations"],
+      json['deposit_block_hash'],
+      json['deposit_num_confirmations'],
     );
   }
 

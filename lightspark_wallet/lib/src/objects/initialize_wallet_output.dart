@@ -11,7 +11,7 @@ class InitializeWalletOutput {
 
   static InitializeWalletOutput fromJson(Map<String, dynamic> json) {
     return InitializeWalletOutput(
-      Wallet.fromJson(json["initialize_wallet_output_wallet"]),
+      Wallet.fromJson(json['initialize_wallet_output_wallet']),
     );
   }
 
