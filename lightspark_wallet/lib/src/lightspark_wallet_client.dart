@@ -13,6 +13,7 @@ import 'auth/jwt/jwt_auth_provider.dart';
 import 'auth/jwt/jwt_storage.dart';
 import 'auth/lightspark_auth_exception.dart';
 import 'graphql/bitcoin_fee_estimate.dart';
+import 'graphql/cancel_invoice.dart';
 import 'graphql/create_bitcoin_funding_address.dart';
 import 'graphql/create_invoice.dart';
 import 'graphql/create_test_mode_invoice.dart';
@@ -42,7 +43,7 @@ import 'requester/requester.dart';
 ///   memo: "Pizza!",
 ///   type: InvoiceType.STANDARD,
 /// );
-/// print(invoice.encodedPaymentRequest);
+/// print(invoice.data.encodedPaymentRequest);
 ///
 /// final payment = await client.payInvoice(
 ///   encodedInvoice,
@@ -346,7 +347,7 @@ class LightsparkWalletClient {
   /// [memo] Optional memo to include in the invoice.
   /// [type] The type of invoice to create. Defaults to [InvoiceType.STANDARD].
   /// [expirySecs] The number of seconds until the invoice expires. Defaults to 1 day.
-  Future<InvoiceData> createInvoice(
+  Future<Invoice> createInvoice(
     int amountMsats, {
     String? memo,
     InvoiceType type = InvoiceType.STANDARD,
@@ -355,8 +356,8 @@ class LightsparkWalletClient {
     await _requireValidAuth();
     return await executeRawQuery(Query(
       createInvoiceMutation,
-      (responseJson) => InvoiceData.fromJson(
-          responseJson['create_invoice']['invoice']['data']),
+      (responseJson) =>
+          Invoice.fromJson(responseJson['create_invoice']['invoice']),
       variables: {
         'amountMsats': amountMsats,
         'memo': memo,
@@ -378,6 +379,20 @@ class LightsparkWalletClient {
         'encoded_payment_request': encodedInvoice,
       },
     ));
+  }
+
+  /// Cancels an existing unpaid invoice and returns that invoice. Cancelled invoices cannot be paid.
+  ///
+  /// [invoiceId] The ID of the invoice to cancel.
+  Future<Invoice> cancelInvoice(String invoiceId) async {
+    await _requireValidAuth();
+    return await executeRawQuery(Query(
+        cancelInvoiceMutation,
+        (responseJson) =>
+            Invoice.fromJson(responseJson['cancel_invoice']['invoice']),
+        variables: {
+          'invoiceId': invoiceId,
+        }));
   }
 
   /// Pay a lightning invoice from the current wallet. This function will return immediately with the payment details,

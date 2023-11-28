@@ -147,13 +147,13 @@ void main() {
     await client.loginWithJwt(accountId, jwt, InMemoryJwtStorage());
     final invoice = await client.createInvoice(42000, memo: 'Pizza!');
     expect(invoice, isNotNull);
-    print('Encoded invoice: ${invoice.encodedPaymentRequest}');
+    print('Encoded invoice: ${invoice.data.encodedPaymentRequest}');
 
     final decodedInvoice =
-        await client.decodeInvoice(invoice.encodedPaymentRequest);
+        await client.decodeInvoice(invoice.data.encodedPaymentRequest);
     expect(decodedInvoice, isNotNull);
-    expect(decodedInvoice.amount, invoice.amount);
-    expect(decodedInvoice.memo, invoice.memo);
+    expect(decodedInvoice.amount, invoice.data.amount);
+    expect(decodedInvoice.memo, invoice.data.memo);
   });
 
   testWidgets('create a funding address', (widgetTester) async {
@@ -209,7 +209,7 @@ void main() {
     final invoice = await client.createInvoice(100000000, memo: 'test invoice');
     expect(invoice, isNotNull);
     final payment =
-        await client.createTestModePayment(invoice.encodedPaymentRequest);
+        await client.createTestModePayment(invoice.data.encodedPaymentRequest);
     expect(payment, isNotNull);
     expect(payment!.status,
         isIn({TransactionStatus.SUCCESS, TransactionStatus.PENDING}));

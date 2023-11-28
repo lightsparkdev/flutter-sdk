@@ -1,7 +1,7 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import '../lightspark_exception.dart';
 import './amazon_s3_funds_recovery_kit.dart';
+import '../lightspark_exception.dart';
 
 class FundsRecoveryKit {
   /// The bitcoin address where the funds should be sent if the recovery kit is used.
