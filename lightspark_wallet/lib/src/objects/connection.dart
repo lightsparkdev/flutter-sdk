@@ -1,11 +1,11 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import './page_info.dart';
 import '../lightspark_exception.dart';
-import './wallet_to_transactions_connection.dart';
 import './payment_request.dart';
-import './transaction.dart';
 import './wallet_to_payment_requests_connection.dart';
+import './page_info.dart';
+import './transaction.dart';
+import './wallet_to_transactions_connection.dart';
 
 class Connection {
   /// The total count of objects in this connection, using the current filters. It is different from the number of objects

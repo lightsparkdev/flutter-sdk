@@ -1,8 +1,8 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './payment_request_data.dart';
-import './currency_amount.dart';
 import './bitcoin_network.dart';
+import './currency_amount.dart';
 import './graph_node.dart';
 
 /// This object represents the data associated with a BOLT #11 invoice. You can retrieve this object to receive the relevant data associated with a specific invoice.

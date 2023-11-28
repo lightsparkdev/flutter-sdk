@@ -1,6 +1,6 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import '../objects/invoice_data.dart';
+import '../objects/invoice.dart';
 
 const createInvoiceMutation = '''
   mutation CreateInvoice(
@@ -11,12 +11,10 @@ const createInvoiceMutation = '''
     ) {
     create_invoice(input: { amount_msats: \$amountMsats, memo: \$memo, invoice_type: \$type, expiry_secs: \$expirySecs }) {
       invoice {
-        data {
-          ...InvoiceDataFragment
-        }
+        ...InvoiceFragment
       }
     }
   }
   
-  ${InvoiceData.fragment}
+  ${Invoice.fragment}
 ''';

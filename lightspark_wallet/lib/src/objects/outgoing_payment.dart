@@ -3,12 +3,12 @@
 import './lightning_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import '../requester/query.dart';
-import './rich_text.dart';
+import './transaction_status.dart';
 import './payment_request_data.dart';
 import './payment_failure_reason.dart';
 import './currency_amount.dart';
-import './transaction_status.dart';
+import './rich_text.dart';
+import '../requester/query.dart';
 
 /// This object represents a Lightning Network payment sent from a Lightspark Node. You can retrieve this object to receive payment related information about any payment sent from your Lightspark Node on the Lightning Network.
 class OutgoingPayment implements LightningTransaction, Transaction, Entity {

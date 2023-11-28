@@ -187,7 +187,7 @@ await client.loadWalletSigningKey(serializedPublicKey, serializedPrivateKey);
 Now you can make requests! For example, to create an invoice:
 
 ```dart
-final invoiceData = await client.createInvoice(
+final invoice = await client.createInvoice(
     100_000,
     memo: "mmmmm pizza",
 );
@@ -197,7 +197,7 @@ or pay an invoice:
 
 ```dart
 final payment = await client.payInvoice(
-  /* encodedInvoice */ invoiceData.encodedPaymentRequest,
+  /* encodedInvoice */ invoice.data.encodedPaymentRequest,
   /* maxFeesMsats */ 50_000
 );
 ```

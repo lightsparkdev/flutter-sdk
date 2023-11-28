@@ -1,6 +1,8 @@
 export './amazon_s3_funds_recovery_kit.dart';
 export './balances.dart';
 export './bitcoin_network.dart';
+export './cancel_invoice_input.dart';
+export './cancel_invoice_output.dart';
 export './channel_closing_transaction.dart';
 export './channel_opening_transaction.dart';
 export './connection.dart';

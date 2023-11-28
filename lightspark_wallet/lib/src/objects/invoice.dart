@@ -2,8 +2,8 @@
 
 import './payment_request.dart';
 import './entity.dart';
-import './invoice_data.dart';
 import './payment_request_status.dart';
+import './invoice_data.dart';
 import '../requester/query.dart';
 import './currency_amount.dart';
 
