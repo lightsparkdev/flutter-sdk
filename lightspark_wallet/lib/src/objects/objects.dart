@@ -66,6 +66,7 @@ export './wallet.dart';
 export './wallet_status.dart';
 export './wallet_to_payment_requests_connection.dart';
 export './wallet_to_transactions_connection.dart';
+export './wallet_to_withdrawal_requests_connection.dart';
 export './withdrawal.dart';
 export './withdrawal_request.dart';
 export './withdrawal_request_status.dart';

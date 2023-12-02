@@ -2,8 +2,8 @@
 
 import './entity.dart';
 import './withdrawal_request_status.dart';
-import '../requester/query.dart';
 import './currency_amount.dart';
+import '../requester/query.dart';
 
 /// This object represents a request made for an L1 withdrawal from your Lightspark Node to any Bitcoin wallet. You can retrieve this object to receive detailed information about any withdrawal request made from your Lightspark account.
 class WithdrawalRequest implements Entity {
@@ -19,7 +19,11 @@ class WithdrawalRequest implements Entity {
   @override
   final String updatedAt;
 
+  /// The requested amount of money to be withdrawn. If the requested amount is -1, it means to withdraw all.
+  final CurrencyAmount requestedAmount;
+
   /// The amount of money that should be withdrawn in this request.
+  /// @deprecated Use `requested_amount` instead
   final CurrencyAmount amount;
 
   /// The bitcoin address where the funds should be sent.
@@ -35,6 +39,9 @@ class WithdrawalRequest implements Entity {
   /// If the requested amount is `-1` (i.e. everything), this field may contain an estimate of the amount for the withdrawal.
   final CurrencyAmount? estimatedAmount;
 
+  /// The actual amount that is withdrawn. It will be set once the request is completed.
+  final CurrencyAmount? amountWithdrawn;
+
   /// The time at which this request was completed.
   final String? completedAt;
 
@@ -45,11 +52,13 @@ class WithdrawalRequest implements Entity {
     this.id,
     this.createdAt,
     this.updatedAt,
+    this.requestedAmount,
     this.amount,
     this.bitcoinAddress,
     this.status,
     this.typename,
     this.estimatedAmount,
+    this.amountWithdrawn,
     this.completedAt,
     this.withdrawalId,
   );
@@ -77,6 +86,7 @@ $fragment
       json['withdrawal_request_id'],
       json['withdrawal_request_created_at'],
       json['withdrawal_request_updated_at'],
+      CurrencyAmount.fromJson(json['withdrawal_request_requested_amount']),
       CurrencyAmount.fromJson(json['withdrawal_request_amount']),
       json['withdrawal_request_bitcoin_address'],
       WithdrawalRequestStatus.values
@@ -85,6 +95,9 @@ $fragment
       'WithdrawalRequest',
       (json['withdrawal_request_estimated_amount'] != null
           ? CurrencyAmount.fromJson(json['withdrawal_request_estimated_amount'])
+          : null),
+      (json['withdrawal_request_amount_withdrawn'] != null
+          ? CurrencyAmount.fromJson(json['withdrawal_request_amount_withdrawn'])
           : null),
       json['withdrawal_request_completed_at'],
       json['withdrawal_request_withdrawal']?['id'],
@@ -97,6 +110,14 @@ fragment WithdrawalRequestFragment on WithdrawalRequest {
     withdrawal_request_id: id
     withdrawal_request_created_at: created_at
     withdrawal_request_updated_at: updated_at
+    withdrawal_request_requested_amount: requested_amount {
+        __typename
+        currency_amount_original_value: original_value
+        currency_amount_original_unit: original_unit
+        currency_amount_preferred_currency_unit: preferred_currency_unit
+        currency_amount_preferred_currency_value_rounded: preferred_currency_value_rounded
+        currency_amount_preferred_currency_value_approx: preferred_currency_value_approx
+    }
     withdrawal_request_amount: amount {
         __typename
         currency_amount_original_value: original_value
@@ -106,6 +127,14 @@ fragment WithdrawalRequestFragment on WithdrawalRequest {
         currency_amount_preferred_currency_value_approx: preferred_currency_value_approx
     }
     withdrawal_request_estimated_amount: estimated_amount {
+        __typename
+        currency_amount_original_value: original_value
+        currency_amount_original_unit: original_unit
+        currency_amount_preferred_currency_unit: preferred_currency_unit
+        currency_amount_preferred_currency_value_rounded: preferred_currency_value_rounded
+        currency_amount_preferred_currency_value_approx: preferred_currency_value_approx
+    }
+    withdrawal_request_amount_withdrawn: amount_withdrawn {
         __typename
         currency_amount_original_value: original_value
         currency_amount_original_unit: original_unit

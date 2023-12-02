@@ -1,10 +1,10 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './bitcoin_network.dart';
-import '../lightspark_exception.dart';
 import './graph_node.dart';
-import './invoice_data.dart';
+import '../lightspark_exception.dart';
 import './currency_amount.dart';
+import './invoice_data.dart';
 
 /// This object is an interface of a payment request on the Lightning Network (i.e., a Lightning Invoice). It contains data related to parsing the payment details of a Lightning Invoice.
 class PaymentRequestData {

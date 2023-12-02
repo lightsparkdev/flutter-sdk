@@ -4,8 +4,8 @@ import './node.dart';
 import './entity.dart';
 import './bitcoin_network.dart';
 import './node_to_addresses_connection.dart';
-import '../lightspark_wallet_client.dart';
 import './node_address_type.dart';
+import '../lightspark_wallet_client.dart';
 import '../requester/query.dart';
 
 /// This object represents a node that exists on the Lightning Network, including nodes not managed by Lightspark. You can retrieve this object to get publicly available information about any node on the Lightning Network.
