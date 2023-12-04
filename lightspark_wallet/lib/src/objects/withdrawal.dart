@@ -3,9 +3,9 @@
 import './on_chain_transaction.dart';
 import './transaction.dart';
 import './entity.dart';
-import './transaction_status.dart';
 import '../requester/query.dart';
 import './currency_amount.dart';
+import './transaction_status.dart';
 
 /// This object represents an L1 withdrawal from your Lightspark Node to any Bitcoin wallet. You can retrieve this object to receive detailed information about any L1 withdrawal associated with your Lightspark Node or account.
 class Withdrawal implements OnChainTransaction, Transaction, Entity {

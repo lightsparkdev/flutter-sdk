@@ -1,10 +1,12 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import '../lightspark_exception.dart';
 import './payment_request.dart';
-import './wallet_to_payment_requests_connection.dart';
-import './page_info.dart';
 import './transaction.dart';
+import './page_info.dart';
+import './wallet_to_withdrawal_requests_connection.dart';
+import './withdrawal_request.dart';
+import './wallet_to_payment_requests_connection.dart';
+import '../lightspark_exception.dart';
 import './wallet_to_transactions_connection.dart';
 
 class Connection {
@@ -46,6 +48,17 @@ class Connection {
         'WalletToTransactionsConnection',
       );
     }
+    if (json['__typename'] == 'WalletToWithdrawalRequestsConnection') {
+      return WalletToWithdrawalRequestsConnection(
+        json['wallet_to_withdrawal_requests_connection_count'],
+        PageInfo.fromJson(
+            json['wallet_to_withdrawal_requests_connection_page_info']),
+        json['wallet_to_withdrawal_requests_connection_entities']
+            .map<WithdrawalRequest>((e) => WithdrawalRequest.fromJson(e))
+            .toList(),
+        'WalletToWithdrawalRequestsConnection',
+      );
+    }
     throw LightsparkException('DeserializationError',
         'Couldn\'t find a concrete type for interface Connection corresponding to the typename=${json['__typename']}');
   }
@@ -78,6 +91,20 @@ fragment ConnectionFragment on Connection {
             page_info_end_cursor: end_cursor
         }
         wallet_to_transactions_connection_entities: entities {
+            id
+        }
+    }
+    ... on WalletToWithdrawalRequestsConnection {
+        __typename
+        wallet_to_withdrawal_requests_connection_count: count
+        wallet_to_withdrawal_requests_connection_page_info: page_info {
+            __typename
+            page_info_has_next_page: has_next_page
+            page_info_has_previous_page: has_previous_page
+            page_info_start_cursor: start_cursor
+            page_info_end_cursor: end_cursor
+        }
+        wallet_to_withdrawal_requests_connection_entities: entities {
             id
         }
     }

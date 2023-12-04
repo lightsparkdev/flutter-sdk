@@ -2,11 +2,11 @@
 
 import './entity.dart';
 import './bitcoin_network.dart';
-import '../lightspark_exception.dart';
 import './graph_node.dart';
+import '../lightspark_exception.dart';
 import './node_to_addresses_connection.dart';
-import '../lightspark_wallet_client.dart';
 import './node_address_type.dart';
+import '../lightspark_wallet_client.dart';
 import '../requester/query.dart';
 
 /// This object is an interface representing a Lightning Node on the Lightning Network, and could either be a Lightspark node or a node managed by a third party.

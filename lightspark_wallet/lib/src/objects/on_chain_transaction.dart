@@ -2,11 +2,11 @@
 
 import './transaction.dart';
 import './entity.dart';
-import './transaction_status.dart';
-import '../lightspark_exception.dart';
-import './deposit.dart';
 import './channel_closing_transaction.dart';
 import './channel_opening_transaction.dart';
+import './deposit.dart';
+import './transaction_status.dart';
+import '../lightspark_exception.dart';
 import './currency_amount.dart';
 import './withdrawal.dart';
 import '../requester/query.dart';
