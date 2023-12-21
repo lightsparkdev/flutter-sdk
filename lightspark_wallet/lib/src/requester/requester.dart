@@ -14,9 +14,6 @@ import './query.dart';
 
 const defaultBaseUrl = 'api.lightspark.com';
 const walletSdkEndpoint = 'graphql/wallet/2023-05-05';
-const _defaultHeaders = {
-  'X-Lightspark-Beta': 'z2h0BBYxTA83cjW7fi8QwWtBPCzkQKiemcuhKY08LOo',
-};
 
 String? _packageVersion;
 Future<String> _getPackageVersion() async {
@@ -44,7 +41,6 @@ class Requester {
     AuthProvider? authProvider,
   })  : _httpLink = HttpLink(
           'https://$baseUrl/$walletSdkEndpoint',
-          defaultHeaders: _defaultHeaders,
           serializer: SigningSerializer(),
         ),
         _authProvider = authProvider ?? StubAuthProvider() {
@@ -308,7 +304,7 @@ class SocketCustomLink extends Link {
         protocol: GraphQLProtocol.graphqlTransportWs,
         config: SocketClientConfig(
           autoReconnect: true,
-          headers: kIsWeb ? null : _defaultHeaders,
+          headers: kIsWeb ? null : {},
           inactivityTimeout: const Duration(seconds: 30),
           initialPayload: connectionParams,
         ),
