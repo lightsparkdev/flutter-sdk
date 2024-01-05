@@ -1,9 +1,9 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
+import '../requester/query.dart';
+import './currency_amount.dart';
 import './entity.dart';
 import './withdrawal_request_status.dart';
-import './currency_amount.dart';
-import '../requester/query.dart';
 
 /// This object represents a request made for an L1 withdrawal from your Lightspark Node to any Bitcoin wallet. You can retrieve this object to receive detailed information about any withdrawal request made from your Lightspark account.
 class WithdrawalRequest implements Entity {

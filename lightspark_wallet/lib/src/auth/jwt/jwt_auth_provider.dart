@@ -1,6 +1,5 @@
 import 'package:lightspark_wallet/src/auth/jwt/jwt_storage.dart';
 import 'package:lightspark_wallet/src/auth/jwt/jwt_token_info.dart';
-
 import '../auth_provider.dart';
 
 class JwtAuthProvider implements AuthProvider {

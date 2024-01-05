@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:fast_rsa/fast_rsa.dart';
 import 'package:graphql/client.dart';
+
 import 'package:lightspark_wallet/src/crypto/crypto.dart';
 import 'package:lightspark_wallet/src/crypto/node_key_cache.dart';
 import 'package:lightspark_wallet/src/graphql/lightning_fee_estimate_for_invoice.dart';
 import 'package:lightspark_wallet/src/graphql/lightning_fee_estimate_for_node.dart';
 import 'package:lightspark_wallet/src/objects/objects.dart';
-
 import 'auth/auth_provider.dart';
 import 'auth/jwt/jwt_auth_provider.dart';
 import 'auth/jwt/jwt_storage.dart';

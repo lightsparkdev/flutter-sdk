@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:lightspark_wallet/src/auth/jwt/jwt_token_info.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import 'package:lightspark_wallet/src/auth/jwt/jwt_token_info.dart';
 
 abstract class JwtStorage {
   Future<void> saveToken(JwtTokenInfo token);

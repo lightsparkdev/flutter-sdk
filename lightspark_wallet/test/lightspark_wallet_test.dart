@@ -1,8 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lightspark_wallet/lightspark_wallet.dart';
-import 'package:lightspark_wallet/lightspark_wallet_platform_interface.dart';
-import 'package:lightspark_wallet/lightspark_wallet_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
+import 'package:lightspark_wallet/lightspark_wallet.dart';
+import 'package:lightspark_wallet/lightspark_wallet_method_channel.dart';
+import 'package:lightspark_wallet/lightspark_wallet_platform_interface.dart';
 
 class MockLightsparkWalletPlatform
     with MockPlatformInterfaceMixin
