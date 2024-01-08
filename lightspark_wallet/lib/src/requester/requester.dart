@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:graphql/client.dart';
+
 import 'package:gql/ast.dart';
 import 'package:gql/language.dart';
-import 'package:lightspark_wallet/src/crypto/crypto.dart';
-import 'package:lightspark_wallet/src/crypto/node_key_cache.dart';
+import 'package:graphql/client.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
 
+import 'package:lightspark_wallet/src/crypto/crypto.dart';
+import 'package:lightspark_wallet/src/crypto/node_key_cache.dart';
 import '../auth/auth_provider.dart';
 import './query.dart';
 
