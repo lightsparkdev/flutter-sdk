@@ -1,85 +1,78 @@
+
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import '../requester/query.dart';
-import './currency_amount.dart';
-import './entity.dart';
 import './on_chain_transaction.dart';
 import './transaction.dart';
+import './entity.dart';
+import '../requester/query.dart';
 import './transaction_status.dart';
+import './currency_amount.dart';
 
 /// This object represents a Deposit made to a Lightspark node wallet. This operation occurs for any L1 funding transaction to the wallet. You can retrieve this object to receive detailed information about the deposit.
 class Deposit implements OnChainTransaction, Transaction, Entity {
-  /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
-  @override
-  final String id;
 
-  /// The date and time when this transaction was initiated.
-  @override
-  final String createdAt;
+    /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
+@override
+final String id;
 
-  /// The date and time when the entity was last updated.
-  @override
-  final String updatedAt;
+    /// The date and time when this transaction was initiated.
+@override
+final String createdAt;
 
-  /// The current status of this transaction.
-  @override
-  final TransactionStatus status;
+    /// The date and time when the entity was last updated.
+@override
+final String updatedAt;
 
-  /// The amount of money involved in this transaction.
-  @override
-  final CurrencyAmount amount;
+    /// The current status of this transaction.
+@override
+final TransactionStatus status;
 
-  /// The height of the block that included this transaction. This will be zero for unconfirmed transactions.
-  @override
-  final int blockHeight;
+    /// The amount of money involved in this transaction.
+@override
+final CurrencyAmount amount;
 
-  /// The Bitcoin blockchain addresses this transaction was sent to.
-  @override
-  final List<String> destinationAddresses;
+    /// The height of the block that included this transaction. This will be zero for unconfirmed transactions.
+@override
+final int blockHeight;
 
-  /// The typename of the object
-  @override
-  final String typename;
+    /// The Bitcoin blockchain addresses this transaction was sent to.
+@override
+final List<String> destinationAddresses;
 
-  /// The date and time when this transaction was completed or failed.
-  @override
-  final String? resolvedAt;
+    /// The typename of the object
+@override
+final String typename;
 
-  /// The hash of this transaction, so it can be uniquely identified on the Lightning Network.
-  @override
-  final String? transactionHash;
+    /// The date and time when this transaction was completed or failed.
+@override
+final String? resolvedAt;
 
-  /// The fees that were paid by the wallet sending the transaction to commit it to the Bitcoin blockchain.
-  @override
-  final CurrencyAmount? fees;
+    /// The hash of this transaction, so it can be uniquely identified on the Lightning Network.
+@override
+final String? transactionHash;
 
-  /// The hash of the block that included this transaction. This will be null for unconfirmed transactions.
-  @override
-  final String? blockHash;
+    /// The fees that were paid by the wallet sending the transaction to commit it to the Bitcoin blockchain.
+@override
+final CurrencyAmount? fees;
 
-  /// The number of blockchain confirmations for this transaction in real time.
-  @override
-  final int? numConfirmations;
+    /// The hash of the block that included this transaction. This will be null for unconfirmed transactions.
+@override
+final String? blockHash;
 
-  Deposit(
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.status,
-    this.amount,
-    this.blockHeight,
-    this.destinationAddresses,
-    this.typename,
-    this.resolvedAt,
-    this.transactionHash,
-    this.fees,
-    this.blockHash,
-    this.numConfirmations,
-  );
+    /// The number of blockchain confirmations for this transaction in real time.
+@override
+final int? numConfirmations;
 
-  static Query<Deposit> getDepositQuery(String id) {
-    return Query(
-      '''
+
+    Deposit(
+        this.id, this.createdAt, this.updatedAt, this.status, this.amount, this.blockHeight, this.destinationAddresses, this.typename, this.resolvedAt, this.transactionHash, this.fees, this.blockHash, this.numConfirmations, 
+    );
+
+
+
+    static Query<Deposit> getDepositQuery(String id) {
+        return Query(
+            '''
 query GetDeposit(\$id: ID!) {
     entity(id: \$id) {
         ... on Deposit {
@@ -90,33 +83,31 @@ query GetDeposit(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => Deposit.fromJson(json['entity']),
-      variables: {'id': id},
-    );
-  }
+            (json) => Deposit.fromJson(json["entity"]),
+            variables: {'id': id},
+        );
+    }
 
-  static Deposit fromJson(Map<String, dynamic> json) {
+static Deposit fromJson(Map<String, dynamic> json) {
     return Deposit(
-      json['deposit_id'],
-      json['deposit_created_at'],
-      json['deposit_updated_at'],
-      TransactionStatus.values.asNameMap()[json['deposit_status']] ??
-          TransactionStatus.FUTURE_VALUE,
-      CurrencyAmount.fromJson(json['deposit_amount']),
-      json['deposit_block_height'],
-      List<String>.from(json['deposit_destination_addresses']),
-      'Deposit',
-      json['deposit_resolved_at'],
-      json['deposit_transaction_hash'],
-      (json['deposit_fees'] != null
-          ? CurrencyAmount.fromJson(json['deposit_fees'])
-          : null),
-      json['deposit_block_hash'],
-      json['deposit_num_confirmations'],
-    );
-  }
+        json["deposit_id"],
+        json["deposit_created_at"],
+        json["deposit_updated_at"],
+        TransactionStatus.values.asNameMap()[json['deposit_status']] ?? TransactionStatus.FUTURE_VALUE,
+        CurrencyAmount.fromJson(json["deposit_amount"]),
+        json["deposit_block_height"],
+        List<String>.from(json['deposit_destination_addresses']),
+"Deposit",        json["deposit_resolved_at"],
+        json["deposit_transaction_hash"],
+        (json['deposit_fees'] != null ? CurrencyAmount.fromJson(json['deposit_fees']) : null),
+        json["deposit_block_hash"],
+        json["deposit_num_confirmations"],
 
-  static const fragment = r'''
+        );
+
+}
+
+    static const fragment = r'''
 fragment DepositFragment on Deposit {
     __typename
     deposit_id: id
@@ -146,4 +137,5 @@ fragment DepositFragment on Deposit {
     deposit_destination_addresses: destination_addresses
     deposit_num_confirmations: num_confirmations
 }''';
+
 }
