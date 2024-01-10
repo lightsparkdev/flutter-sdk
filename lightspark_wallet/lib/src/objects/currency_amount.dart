@@ -1,48 +1,49 @@
+
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
+
 
 import './currency_unit.dart';
 
 /// This object represents the value and unit for an amount of currency.
 class CurrencyAmount {
-  /// The original numeric value for this CurrencyAmount.
-  final int originalValue;
 
-  /// The original unit of currency for this CurrencyAmount.
-  final CurrencyUnit originalUnit;
+    /// The original numeric value for this CurrencyAmount.
+final int originalValue;
 
-  /// The unit of user's preferred currency.
-  final CurrencyUnit preferredCurrencyUnit;
+    /// The original unit of currency for this CurrencyAmount.
+final CurrencyUnit originalUnit;
 
-  /// The rounded numeric value for this CurrencyAmount in the very base level of user's preferred currency. For example, for
-  /// USD, the value will be in cents.
-  final int preferredCurrencyValueRounded;
+    /// The unit of user's preferred currency.
+final CurrencyUnit preferredCurrencyUnit;
 
-  /// The approximate float value for this CurrencyAmount in the very base level of user's preferred currency. For example,
-  /// for USD, the value will be in cents.
-  final double preferredCurrencyValueApprox;
+    /// The rounded numeric value for this CurrencyAmount in the very base level of user's preferred currency. For example, for
+/// USD, the value will be in cents.
+final int preferredCurrencyValueRounded;
 
-  CurrencyAmount(
-    this.originalValue,
-    this.originalUnit,
-    this.preferredCurrencyUnit,
-    this.preferredCurrencyValueRounded,
-    this.preferredCurrencyValueApprox,
-  );
+    /// The approximate float value for this CurrencyAmount in the very base level of user's preferred currency. For example,
+/// for USD, the value will be in cents.
+final double preferredCurrencyValueApprox;
 
-  static CurrencyAmount fromJson(Map<String, dynamic> json) {
-    return CurrencyAmount(
-      json['currency_amount_original_value'],
-      CurrencyUnit.values.asNameMap()[json['currency_amount_original_unit']] ??
-          CurrencyUnit.FUTURE_VALUE,
-      CurrencyUnit.values
-              .asNameMap()[json['currency_amount_preferred_currency_unit']] ??
-          CurrencyUnit.FUTURE_VALUE,
-      json['currency_amount_preferred_currency_value_rounded'],
-      json['currency_amount_preferred_currency_value_approx'],
+
+    CurrencyAmount(
+        this.originalValue, this.originalUnit, this.preferredCurrencyUnit, this.preferredCurrencyValueRounded, this.preferredCurrencyValueApprox, 
     );
-  }
 
-  static const fragment = r'''
+
+
+static CurrencyAmount fromJson(Map<String, dynamic> json) {
+    return CurrencyAmount(
+        json["currency_amount_original_value"],
+        CurrencyUnit.values.asNameMap()[json['currency_amount_original_unit']] ?? CurrencyUnit.FUTURE_VALUE,
+        CurrencyUnit.values.asNameMap()[json['currency_amount_preferred_currency_unit']] ?? CurrencyUnit.FUTURE_VALUE,
+        json["currency_amount_preferred_currency_value_rounded"],
+        json["currency_amount_preferred_currency_value_approx"],
+
+        );
+
+}
+
+    static const fragment = r'''
 fragment CurrencyAmountFragment on CurrencyAmount {
     __typename
     currency_amount_original_value: original_value
@@ -51,4 +52,5 @@ fragment CurrencyAmountFragment on CurrencyAmount {
     currency_amount_preferred_currency_value_rounded: preferred_currency_value_rounded
     currency_amount_preferred_currency_value_approx: preferred_currency_value_approx
 }''';
+
 }

@@ -1,27 +1,34 @@
+
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
+
+
+
 
 /// This interface is used by all the entities in the Lightspark system. It defines a few core fields that are available everywhere. Any object that implements this interface can be queried using the `entity` query and its ID.
 class Entity {
-  /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
-  final String id;
 
-  /// The date and time when the entity was first created.
-  final String createdAt;
+    /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
+final String id;
 
-  /// The date and time when the entity was last updated.
-  final String updatedAt;
+    /// The date and time when the entity was first created.
+final String createdAt;
 
-  /// The typename of the object
-  final String typename;
+    /// The date and time when the entity was last updated.
+final String updatedAt;
 
-  Entity(
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.typename,
-  );
+    /// The typename of the object
+final String typename;
 
-  static const fragment = r'''
+
+    Entity(
+        this.id, this.createdAt, this.updatedAt, this.typename, 
+    );
+
+
+
+
+
+    static const fragment = r'''
 fragment EntityFragment on Entity {
     __typename
     ... on ChannelClosingTransaction {
@@ -358,4 +365,5 @@ fragment EntityFragment on Entity {
         }
     }
 }''';
+
 }
