@@ -1,45 +1,47 @@
+
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
 import './connection.dart';
-import './page_info.dart';
 import './transaction.dart';
+import './page_info.dart';
+
 
 class WalletToTransactionsConnection implements Connection {
-  /// The total count of objects in this connection, using the current filters. It is different from the number of objects
-  /// returned in the current page (in the `entities` field).
-  @override
-  final int count;
 
-  /// An object that holds pagination information about the objects in this connection.
-  @override
-  final PageInfo pageInfo;
+    /// The total count of objects in this connection, using the current filters. It is different from the number of objects
+/// returned in the current page (in the `entities` field).
+@override
+final int count;
 
-  /// The transactions for the current page of this connection.
-  final List<Transaction> entities;
+    /// An object that holds pagination information about the objects in this connection.
+@override
+final PageInfo pageInfo;
 
-  /// The typename of the object
-  @override
-  final String typename;
+    /// The transactions for the current page of this connection.
+final List<Transaction> entities;
 
-  WalletToTransactionsConnection(
-    this.count,
-    this.pageInfo,
-    this.entities,
-    this.typename,
-  );
+    /// The typename of the object
+@override
+final String typename;
 
-  static WalletToTransactionsConnection fromJson(Map<String, dynamic> json) {
-    return WalletToTransactionsConnection(
-      json['wallet_to_transactions_connection_count'],
-      PageInfo.fromJson(json['wallet_to_transactions_connection_page_info']),
-      json['wallet_to_transactions_connection_entities']
-          .map<Transaction>((e) => Transaction.fromJson(e))
-          .toList(),
-      'WalletToTransactionsConnection',
+
+    WalletToTransactionsConnection(
+        this.count, this.pageInfo, this.entities, this.typename, 
     );
-  }
 
-  static const fragment = r'''
+
+
+static WalletToTransactionsConnection fromJson(Map<String, dynamic> json) {
+    return WalletToTransactionsConnection(
+        json["wallet_to_transactions_connection_count"],
+        PageInfo.fromJson(json["wallet_to_transactions_connection_page_info"]),
+        json["wallet_to_transactions_connection_entities"].map<Transaction>((e) => Transaction.fromJson(e)).toList(),
+"WalletToTransactionsConnection",
+        );
+
+}
+
+    static const fragment = r'''
 fragment WalletToTransactionsConnectionFragment on WalletToTransactionsConnection {
     __typename
     wallet_to_transactions_connection_count: count
@@ -54,4 +56,5 @@ fragment WalletToTransactionsConnectionFragment on WalletToTransactionsConnectio
         id
     }
 }''';
+
 }
