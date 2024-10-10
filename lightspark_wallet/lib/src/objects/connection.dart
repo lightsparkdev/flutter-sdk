@@ -1,65 +1,69 @@
-
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-
-import './payment_request.dart';
-import './withdrawal_request.dart';
-import './wallet_to_withdrawal_requests_connection.dart';
-import './wallet_to_transactions_connection.dart';
-import './page_info.dart';
 import '../lightspark_exception.dart';
-import './wallet_to_payment_requests_connection.dart';
+import './page_info.dart';
+import './payment_request.dart';
 import './transaction.dart';
-
+import './wallet_to_payment_requests_connection.dart';
+import './wallet_to_transactions_connection.dart';
+import './wallet_to_withdrawal_requests_connection.dart';
+import './withdrawal_request.dart';
 
 class Connection {
+  /// The total count of objects in this connection, using the current filters. It is different from the number of objects
+  /// returned in the current page (in the `entities` field).
+  final int count;
 
-    /// The total count of objects in this connection, using the current filters. It is different from the number of objects
-/// returned in the current page (in the `entities` field).
-final int count;
+  /// An object that holds pagination information about the objects in this connection.
+  final PageInfo pageInfo;
 
-    /// An object that holds pagination information about the objects in this connection.
-final PageInfo pageInfo;
+  /// The typename of the object
+  final String typename;
 
-    /// The typename of the object
-final String typename;
+  Connection(
+    this.count,
+    this.pageInfo,
+    this.typename,
+  );
 
+  static Connection fromJson(Map<String, dynamic> json) {
+    if (json['__typename'] == 'WalletToPaymentRequestsConnection') {
+      return WalletToPaymentRequestsConnection(
+        json['wallet_to_payment_requests_connection_count'],
+        PageInfo.fromJson(
+            json['wallet_to_payment_requests_connection_page_info']),
+        json['wallet_to_payment_requests_connection_entities']
+            .map<PaymentRequest>((e) => PaymentRequest.fromJson(e))
+            .toList(),
+        'WalletToPaymentRequestsConnection',
+      );
+    }
+    if (json['__typename'] == 'WalletToTransactionsConnection') {
+      return WalletToTransactionsConnection(
+        json['wallet_to_transactions_connection_count'],
+        PageInfo.fromJson(json['wallet_to_transactions_connection_page_info']),
+        json['wallet_to_transactions_connection_entities']
+            .map<Transaction>((e) => Transaction.fromJson(e))
+            .toList(),
+        'WalletToTransactionsConnection',
+      );
+    }
+    if (json['__typename'] == 'WalletToWithdrawalRequestsConnection') {
+      return WalletToWithdrawalRequestsConnection(
+        json['wallet_to_withdrawal_requests_connection_count'],
+        PageInfo.fromJson(
+            json['wallet_to_withdrawal_requests_connection_page_info']),
+        json['wallet_to_withdrawal_requests_connection_entities']
+            .map<WithdrawalRequest>((e) => WithdrawalRequest.fromJson(e))
+            .toList(),
+        'WalletToWithdrawalRequestsConnection',
+      );
+    }
+    throw LightsparkException('DeserializationError',
+        'Couldn\'t find a concrete type for interface Connection corresponding to the typename=${json['__typename']}');
+  }
 
-    Connection(
-        this.count, this.pageInfo, this.typename, 
-    );
-
-
-
-static Connection fromJson(Map<String, dynamic> json) {
-    if (json["__typename"] == "WalletToPaymentRequestsConnection") {
-        return WalletToPaymentRequestsConnection(
-            json["wallet_to_payment_requests_connection_count"],
-            PageInfo.fromJson(json["wallet_to_payment_requests_connection_page_info"]),
-            json["wallet_to_payment_requests_connection_entities"].map<PaymentRequest>((e) => PaymentRequest.fromJson(e)).toList(),
-"WalletToPaymentRequestsConnection",
-        );
-
-}    if (json["__typename"] == "WalletToTransactionsConnection") {
-        return WalletToTransactionsConnection(
-            json["wallet_to_transactions_connection_count"],
-            PageInfo.fromJson(json["wallet_to_transactions_connection_page_info"]),
-            json["wallet_to_transactions_connection_entities"].map<Transaction>((e) => Transaction.fromJson(e)).toList(),
-"WalletToTransactionsConnection",
-        );
-
-}    if (json["__typename"] == "WalletToWithdrawalRequestsConnection") {
-        return WalletToWithdrawalRequestsConnection(
-            json["wallet_to_withdrawal_requests_connection_count"],
-            PageInfo.fromJson(json["wallet_to_withdrawal_requests_connection_page_info"]),
-            json["wallet_to_withdrawal_requests_connection_entities"].map<WithdrawalRequest>((e) => WithdrawalRequest.fromJson(e)).toList(),
-"WalletToWithdrawalRequestsConnection",
-        );
-
-}    throw LightsparkException('DeserializationError', 'Couldn\'t find a concrete type for interface Connection corresponding to the typename=${json['__typename']}');
-}
-
-    static const fragment = r'''
+  static const fragment = r'''
 fragment ConnectionFragment on Connection {
     __typename
     ... on WalletToPaymentRequestsConnection {
@@ -105,5 +109,4 @@ fragment ConnectionFragment on Connection {
         }
     }
 }''';
-
 }

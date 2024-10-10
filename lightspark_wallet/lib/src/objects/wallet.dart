@@ -1,52 +1,60 @@
-
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import './entity.dart';
-import './transaction_type.dart';
-import './wallet_to_withdrawal_requests_connection.dart';
-import './wallet_to_transactions_connection.dart';
-import './balances.dart';
-import './transaction_status.dart';
+import '../lightspark_wallet_client.dart';
 import '../requester/query.dart';
-import "../lightspark_wallet_client.dart";
-import './withdrawal_request_status.dart';
-import './wallet_to_payment_requests_connection.dart';
+import './balances.dart';
+import './entity.dart';
+import './transaction_status.dart';
+import './transaction_type.dart';
 import './wallet_status.dart';
-
+import './wallet_to_payment_requests_connection.dart';
+import './wallet_to_transactions_connection.dart';
+import './wallet_to_withdrawal_requests_connection.dart';
+import './withdrawal_request_status.dart';
 
 class Wallet implements Entity {
+  /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
+  @override
+  final String id;
 
-    /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
-@override
-final String id;
+  /// The date and time when the entity was first created.
+  @override
+  final String createdAt;
 
-    /// The date and time when the entity was first created.
-@override
-final String createdAt;
+  /// The date and time when the entity was last updated.
+  @override
+  final String updatedAt;
 
-    /// The date and time when the entity was last updated.
-@override
-final String updatedAt;
+  /// The status of this wallet.
+  final WalletStatus status;
 
-    /// The status of this wallet.
-final WalletStatus status;
+  /// The typename of the object
+  @override
+  final String typename;
 
-    /// The typename of the object
-@override
-final String typename;
+  /// The balances that describe the funds in this wallet.
+  final Balances? balances;
 
-    /// The balances that describe the funds in this wallet.
-final Balances? balances;
+  Wallet(
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.status,
+    this.typename,
+    this.balances,
+  );
 
-
-    Wallet(
-        this.id, this.createdAt, this.updatedAt, this.status, this.typename, this.balances, 
-    );
-
-
-     Future<WalletToTransactionsConnection> getTransactions(LightsparkWalletClient client, { int? first, String? after, String? createdAfterDate, String? createdBeforeDate, List<TransactionStatus>? statuses, List<TransactionType>? types, }) async {
-        return (await client.executeRawQuery(Query(
-            r''' 
+  Future<WalletToTransactionsConnection> getTransactions(
+    LightsparkWalletClient client, {
+    int? first,
+    String? after,
+    String? createdAfterDate,
+    String? createdBeforeDate,
+    List<TransactionStatus>? statuses,
+    List<TransactionType>? types,
+  }) async {
+    return (await client.executeRawQuery(Query(
+      r''' 
 query FetchWalletToTransactionsConnection($first: Int, $after: ID, $created_after_date: DateTime, $created_before_date: DateTime, $statuses: [TransactionStatus!], $types: [TransactionType!]) {
     current_wallet {
         ... on Wallet {
@@ -267,17 +275,30 @@ query FetchWalletToTransactionsConnection($first: Int, $after: ID, $created_afte
     }
 }
 ''',
-            (json) {
-                final connection = json['current_wallet']['transactions'];
-                return WalletToTransactionsConnection.fromJson(connection);
-            },
-            variables: {"first": first, "after": after, "created_after_date": createdAfterDate, "created_before_date": createdBeforeDate, "statuses": statuses, "types": types},
-        )));
-    }
+      (json) {
+        final connection = json['current_wallet']['transactions'];
+        return WalletToTransactionsConnection.fromJson(connection);
+      },
+      variables: {
+        'first': first,
+        'after': after,
+        'created_after_date': createdAfterDate,
+        'created_before_date': createdBeforeDate,
+        'statuses': statuses,
+        'types': types
+      },
+    )));
+  }
 
-     Future<WalletToPaymentRequestsConnection> getPaymentRequests(LightsparkWalletClient client, { int? first, String? after, String? createdAfterDate, String? createdBeforeDate, }) async {
-        return (await client.executeRawQuery(Query(
-            r''' 
+  Future<WalletToPaymentRequestsConnection> getPaymentRequests(
+    LightsparkWalletClient client, {
+    int? first,
+    String? after,
+    String? createdAfterDate,
+    String? createdBeforeDate,
+  }) async {
+    return (await client.executeRawQuery(Query(
+      r''' 
 query FetchWalletToPaymentRequestsConnection($first: Int, $after: ID, $created_after_date: DateTime, $created_before_date: DateTime) {
     current_wallet {
         ... on Wallet {
@@ -343,17 +364,29 @@ query FetchWalletToPaymentRequestsConnection($first: Int, $after: ID, $created_a
     }
 }
 ''',
-            (json) {
-                final connection = json['current_wallet']['payment_requests'];
-                return WalletToPaymentRequestsConnection.fromJson(connection);
-            },
-            variables: {"first": first, "after": after, "created_after_date": createdAfterDate, "created_before_date": createdBeforeDate},
-        )));
-    }
+      (json) {
+        final connection = json['current_wallet']['payment_requests'];
+        return WalletToPaymentRequestsConnection.fromJson(connection);
+      },
+      variables: {
+        'first': first,
+        'after': after,
+        'created_after_date': createdAfterDate,
+        'created_before_date': createdBeforeDate
+      },
+    )));
+  }
 
-     Future<WalletToWithdrawalRequestsConnection> getWithdrawalRequests(LightsparkWalletClient client, { int? first, String? after, List<WithdrawalRequestStatus>? statuses, String? createdAfterDate, String? createdBeforeDate, }) async {
-        return (await client.executeRawQuery(Query(
-            r''' 
+  Future<WalletToWithdrawalRequestsConnection> getWithdrawalRequests(
+    LightsparkWalletClient client, {
+    int? first,
+    String? after,
+    List<WithdrawalRequestStatus>? statuses,
+    String? createdAfterDate,
+    String? createdBeforeDate,
+  }) async {
+    return (await client.executeRawQuery(Query(
+      r''' 
 query FetchWalletToWithdrawalRequestsConnection($first: Int, $after: ID, $statuses: [WithdrawalRequestStatus!], $created_after_date: DateTime, $created_before_date: DateTime) {
     current_wallet {
         ... on Wallet {
@@ -424,18 +457,23 @@ query FetchWalletToWithdrawalRequestsConnection($first: Int, $after: ID, $status
     }
 }
 ''',
-            (json) {
-                final connection = json['current_wallet']['withdrawal_requests'];
-                return WalletToWithdrawalRequestsConnection.fromJson(connection);
-            },
-            variables: {"first": first, "after": after, "statuses": statuses, "created_after_date": createdAfterDate, "created_before_date": createdBeforeDate},
-        )));
-    }
+      (json) {
+        final connection = json['current_wallet']['withdrawal_requests'];
+        return WalletToWithdrawalRequestsConnection.fromJson(connection);
+      },
+      variables: {
+        'first': first,
+        'after': after,
+        'statuses': statuses,
+        'created_after_date': createdAfterDate,
+        'created_before_date': createdBeforeDate
+      },
+    )));
+  }
 
-
-    static Query<Wallet> getWalletQuery() {
-        return Query(
-            '''
+  static Query<Wallet> getWalletQuery() {
+    return Query(
+      '''
 query GetWallet {
     current_wallet {
         ... on Wallet {
@@ -446,24 +484,26 @@ query GetWallet {
 
 $fragment  
 ''',
-            (json) => Wallet.fromJson(json["current_wallet"]),
-            variables: {},
-        );
-    }
+      (json) => Wallet.fromJson(json['current_wallet']),
+      variables: {},
+    );
+  }
 
-static Wallet fromJson(Map<String, dynamic> json) {
+  static Wallet fromJson(Map<String, dynamic> json) {
     return Wallet(
-        json["wallet_id"],
-        json["wallet_created_at"],
-        json["wallet_updated_at"],
-        WalletStatus.values.asNameMap()[json['wallet_status']] ?? WalletStatus.FUTURE_VALUE,
-"Wallet",        (json['wallet_balances'] != null ? Balances.fromJson(json['wallet_balances']) : null),
+      json['wallet_id'],
+      json['wallet_created_at'],
+      json['wallet_updated_at'],
+      WalletStatus.values.asNameMap()[json['wallet_status']] ??
+          WalletStatus.FUTURE_VALUE,
+      'Wallet',
+      (json['wallet_balances'] != null
+          ? Balances.fromJson(json['wallet_balances'])
+          : null),
+    );
+  }
 
-        );
-
-}
-
-    static const fragment = r'''
+  static const fragment = r'''
 fragment WalletFragment on Wallet {
     __typename
     wallet_id: id
@@ -498,5 +538,4 @@ fragment WalletFragment on Wallet {
     }
     wallet_status: status
 }''';
-
 }

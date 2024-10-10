@@ -1,33 +1,26 @@
-
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
-
 
 import './currency_amount.dart';
 
 /// This object represents the estimated L1 transaction fees for the Bitcoin network. Fee estimates are separated by potential confirmation speeds for settlement.
 class FeeEstimate {
+  final CurrencyAmount feeFast;
 
-    final CurrencyAmount feeFast;
+  final CurrencyAmount feeMin;
 
-    final CurrencyAmount feeMin;
+  FeeEstimate(
+    this.feeFast,
+    this.feeMin,
+  );
 
-
-    FeeEstimate(
-        this.feeFast, this.feeMin, 
-    );
-
-
-
-static FeeEstimate fromJson(Map<String, dynamic> json) {
+  static FeeEstimate fromJson(Map<String, dynamic> json) {
     return FeeEstimate(
-        CurrencyAmount.fromJson(json["fee_estimate_fee_fast"]),
-        CurrencyAmount.fromJson(json["fee_estimate_fee_min"]),
+      CurrencyAmount.fromJson(json['fee_estimate_fee_fast']),
+      CurrencyAmount.fromJson(json['fee_estimate_fee_min']),
+    );
+  }
 
-        );
-
-}
-
-    static const fragment = r'''
+  static const fragment = r'''
 fragment FeeEstimateFragment on FeeEstimate {
     __typename
     fee_estimate_fee_fast: fee_fast {
@@ -47,5 +40,4 @@ fragment FeeEstimateFragment on FeeEstimate {
         currency_amount_preferred_currency_value_approx: preferred_currency_value_approx
     }
 }''';
-
 }
