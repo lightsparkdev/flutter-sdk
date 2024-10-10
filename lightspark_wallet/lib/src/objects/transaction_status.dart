@@ -7,7 +7,7 @@ enum TransactionStatus {
   /// Clients should support unknown values as more of them could be added without notice.
   FUTURE_VALUE,
 
-  /// Transaction succeeded..
+  /// Transaction succeeded.
   SUCCESS,
 
   /// Transaction failed.

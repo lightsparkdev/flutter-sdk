@@ -19,6 +19,9 @@ enum CurrencyUnit {
   /// United States Dollar.
   USD,
 
+  /// Mexican Peso.
+  MXN,
+
   /// 0.000000001 (10e-9) Bitcoin or a billionth of a Bitcoin. We recommend using the Satoshi unit instead when possible.
   NANOBITCOIN,
 

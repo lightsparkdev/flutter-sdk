@@ -46,6 +46,7 @@ class Node implements Entity {
   /// A summary metric used to capture how well positioned a node is to send, receive, or route transactions efficiently.
   /// Maximizing a node's conductivity helps a node’s transactions to be capital efficient. The value is an integer ranging
   /// between 0 and 10 (bounds included).
+  /// @deprecated Not supported.
   final int? conductivity;
 
   /// The public key of this node. It acts as a unique identifier of this node in the Lightning Network.
