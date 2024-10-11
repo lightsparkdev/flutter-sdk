@@ -1,65 +1,63 @@
+
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import '../lightspark_exception.dart';
-import '../requester/query.dart';
-import './currency_amount.dart';
+import './transaction.dart';
 import './entity.dart';
-import './incoming_payment.dart';
+import './transaction_status.dart';
 import './outgoing_payment.dart';
 import './payment_failure_reason.dart';
-import './payment_request_data.dart';
 import './rich_text.dart';
-import './transaction.dart';
-import './transaction_status.dart';
+import './payment_request_data.dart';
+import '../lightspark_exception.dart';
+import './currency_amount.dart';
+import './incoming_payment.dart';
+import '../requester/query.dart';
 
 /// This is an object representing a transaction made over the Lightning Network. You can retrieve this object to receive information about a specific transaction made over Lightning for a Lightspark node.
 class LightningTransaction implements Transaction, Entity {
-  /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
-  @override
-  final String id;
 
-  /// The date and time when this transaction was initiated.
-  @override
-  final String createdAt;
+    /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
+@override
+final String id;
 
-  /// The date and time when the entity was last updated.
-  @override
-  final String updatedAt;
+    /// The date and time when this transaction was initiated.
+@override
+final String createdAt;
 
-  /// The current status of this transaction.
-  @override
-  final TransactionStatus status;
+    /// The date and time when the entity was last updated.
+@override
+final String updatedAt;
 
-  /// The amount of money involved in this transaction.
-  @override
-  final CurrencyAmount amount;
+    /// The current status of this transaction.
+@override
+final TransactionStatus status;
 
-  /// The typename of the object
-  @override
-  final String typename;
+    /// The amount of money involved in this transaction.
+@override
+final CurrencyAmount amount;
 
-  /// The date and time when this transaction was completed or failed.
-  @override
-  final String? resolvedAt;
+    /// The typename of the object
+@override
+final String typename;
 
-  /// The hash of this transaction, so it can be uniquely identified on the Lightning Network.
-  @override
-  final String? transactionHash;
+    /// The date and time when this transaction was completed or failed.
+@override
+final String? resolvedAt;
 
-  LightningTransaction(
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.status,
-    this.amount,
-    this.typename,
-    this.resolvedAt,
-    this.transactionHash,
-  );
+    /// The hash of this transaction, so it can be uniquely identified on the Lightning Network.
+@override
+final String? transactionHash;
 
-  static Query<LightningTransaction> getLightningTransactionQuery(String id) {
-    return Query(
-      '''
+
+    LightningTransaction(
+        this.id, this.createdAt, this.updatedAt, this.status, this.amount, this.typename, this.resolvedAt, this.transactionHash, 
+    );
+
+
+
+    static Query<LightningTransaction> getLightningTransactionQuery(String id) {
+        return Query(
+            '''
 query GetLightningTransaction(\$id: ID!) {
     entity(id: \$id) {
         ... on LightningTransaction {
@@ -70,60 +68,46 @@ query GetLightningTransaction(\$id: ID!) {
 
 $fragment  
 ''',
-      (json) => LightningTransaction.fromJson(json['entity']),
-      variables: {'id': id},
-    );
-  }
-
-  static LightningTransaction fromJson(Map<String, dynamic> json) {
-    if (json['__typename'] == 'IncomingPayment') {
-      return IncomingPayment(
-        json['incoming_payment_id'],
-        json['incoming_payment_created_at'],
-        json['incoming_payment_updated_at'],
-        TransactionStatus.values.asNameMap()[json['incoming_payment_status']] ??
-            TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json['incoming_payment_amount']),
-        'IncomingPayment',
-        json['incoming_payment_resolved_at'],
-        json['incoming_payment_transaction_hash'],
-        json['incoming_payment_payment_request']?['id'],
-      );
+            (json) => LightningTransaction.fromJson(json["entity"]),
+            variables: {'id': id},
+        );
     }
-    if (json['__typename'] == 'OutgoingPayment') {
-      return OutgoingPayment(
-        json['outgoing_payment_id'],
-        json['outgoing_payment_created_at'],
-        json['outgoing_payment_updated_at'],
-        TransactionStatus.values.asNameMap()[json['outgoing_payment_status']] ??
-            TransactionStatus.FUTURE_VALUE,
-        CurrencyAmount.fromJson(json['outgoing_payment_amount']),
-        'OutgoingPayment',
-        json['outgoing_payment_resolved_at'],
-        json['outgoing_payment_transaction_hash'],
-        (json['outgoing_payment_fees'] != null
-            ? CurrencyAmount.fromJson(json['outgoing_payment_fees'])
-            : null),
-        (json['outgoing_payment_payment_request_data'] != null
-            ? PaymentRequestData.fromJson(
-                json['outgoing_payment_payment_request_data'])
-            : null),
-        (json['outgoing_payment_failure_reason'] != null)
-            ? PaymentFailureReason.values
-                    .asNameMap()[json['outgoing_payment_failure_reason']] ??
-                PaymentFailureReason.FUTURE_VALUE
-            : null,
-        (json['outgoing_payment_failure_message'] != null
-            ? RichText.fromJson(json['outgoing_payment_failure_message'])
-            : null),
-        json['outgoing_payment_payment_preimage'],
-      );
-    }
-    throw LightsparkException('DeserializationError',
-        'Couldn\'t find a concrete type for interface LightningTransaction corresponding to the typename=${json['__typename']}');
-  }
 
-  static const fragment = r'''
+static LightningTransaction fromJson(Map<String, dynamic> json) {
+    if (json["__typename"] == "IncomingPayment") {
+        return IncomingPayment(
+            json["incoming_payment_id"],
+            json["incoming_payment_created_at"],
+            json["incoming_payment_updated_at"],
+            TransactionStatus.values.asNameMap()[json['incoming_payment_status']] ?? TransactionStatus.FUTURE_VALUE,
+            CurrencyAmount.fromJson(json["incoming_payment_amount"]),
+"IncomingPayment",            json["incoming_payment_resolved_at"],
+            json["incoming_payment_transaction_hash"],
+            json["incoming_payment_payment_request"]?["id"],
+
+        );
+
+}    if (json["__typename"] == "OutgoingPayment") {
+        return OutgoingPayment(
+            json["outgoing_payment_id"],
+            json["outgoing_payment_created_at"],
+            json["outgoing_payment_updated_at"],
+            TransactionStatus.values.asNameMap()[json['outgoing_payment_status']] ?? TransactionStatus.FUTURE_VALUE,
+            CurrencyAmount.fromJson(json["outgoing_payment_amount"]),
+"OutgoingPayment",            json["outgoing_payment_resolved_at"],
+            json["outgoing_payment_transaction_hash"],
+            (json['outgoing_payment_fees'] != null ? CurrencyAmount.fromJson(json['outgoing_payment_fees']) : null),
+            (json['outgoing_payment_payment_request_data'] != null ? PaymentRequestData.fromJson(json['outgoing_payment_payment_request_data']) : null),
+            (json['outgoing_payment_failure_reason'] != null) ? PaymentFailureReason.values.asNameMap()[json['outgoing_payment_failure_reason']] ?? PaymentFailureReason.FUTURE_VALUE : null,
+            (json['outgoing_payment_failure_message'] != null ? RichText.fromJson(json['outgoing_payment_failure_message']) : null),
+            json["outgoing_payment_payment_preimage"],
+
+        );
+
+}    throw LightsparkException('DeserializationError', 'Couldn\'t find a concrete type for interface LightningTransaction corresponding to the typename=${json['__typename']}');
+}
+
+    static const fragment = r'''
 fragment LightningTransactionFragment on LightningTransaction {
     __typename
     ... on IncomingPayment {
@@ -210,4 +194,5 @@ fragment LightningTransactionFragment on LightningTransaction {
         outgoing_payment_payment_preimage: payment_preimage
     }
 }''';
+
 }
