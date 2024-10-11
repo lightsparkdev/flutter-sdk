@@ -1,32 +1,39 @@
+
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
+
+
+
 
 /// This is an object representing information about a page returned by the Lightspark API. For more information, please see the “Pagination” section of our API docs for more information about its usage.
 class PageInfo {
-  final bool? hasNextPage;
 
-  final bool? hasPreviousPage;
+    final bool? hasNextPage;
 
-  final String? startCursor;
+    final bool? hasPreviousPage;
 
-  final String? endCursor;
+    final String? startCursor;
 
-  PageInfo(
-    this.hasNextPage,
-    this.hasPreviousPage,
-    this.startCursor,
-    this.endCursor,
-  );
+    final String? endCursor;
 
-  static PageInfo fromJson(Map<String, dynamic> json) {
-    return PageInfo(
-      json['page_info_has_next_page'],
-      json['page_info_has_previous_page'],
-      json['page_info_start_cursor'],
-      json['page_info_end_cursor'],
+
+    PageInfo(
+        this.hasNextPage, this.hasPreviousPage, this.startCursor, this.endCursor, 
     );
-  }
 
-  static const fragment = r'''
+
+
+static PageInfo fromJson(Map<String, dynamic> json) {
+    return PageInfo(
+        json["page_info_has_next_page"],
+        json["page_info_has_previous_page"],
+        json["page_info_start_cursor"],
+        json["page_info_end_cursor"],
+
+        );
+
+}
+
+    static const fragment = r'''
 fragment PageInfoFragment on PageInfo {
     __typename
     page_info_has_next_page: has_next_page
@@ -34,4 +41,5 @@ fragment PageInfoFragment on PageInfo {
     page_info_start_cursor: start_cursor
     page_info_end_cursor: end_cursor
 }''';
+
 }
