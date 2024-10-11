@@ -47,7 +47,8 @@ class RequestPaymentBloc
   RequestPaymentBloc(this.client) : super(Lce.loading()) {
     on<RequestPaymentStart>((event, emit) async {
       final invoice = await client.createInvoice(0);
-      emit(Lce.content(RequestPaymentState(invoice.data.encodedPaymentRequest, 0)));
+      emit(Lce.content(
+          RequestPaymentState(invoice.data.encodedPaymentRequest, 0)));
     });
 
     on<AddAmountTapped>((event, emit) {

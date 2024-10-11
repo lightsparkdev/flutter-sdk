@@ -1,33 +1,26 @@
-
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
-
 
 import './funds_recovery_kit.dart';
 
-
 class UpdateFundsRecoveryKitOutput {
+  final String walletId;
 
-    final String walletId;
+  final FundsRecoveryKit fundsRecoveryKit;
 
-    final FundsRecoveryKit fundsRecoveryKit;
+  UpdateFundsRecoveryKitOutput(
+    this.walletId,
+    this.fundsRecoveryKit,
+  );
 
-
-    UpdateFundsRecoveryKitOutput(
-        this.walletId, this.fundsRecoveryKit, 
-    );
-
-
-
-static UpdateFundsRecoveryKitOutput fromJson(Map<String, dynamic> json) {
+  static UpdateFundsRecoveryKitOutput fromJson(Map<String, dynamic> json) {
     return UpdateFundsRecoveryKitOutput(
-        json["update_funds_recovery_kit_output_wallet"]?["id"],
-        FundsRecoveryKit.fromJson(json["update_funds_recovery_kit_output_funds_recovery_kit"]),
+      json['update_funds_recovery_kit_output_wallet']?['id'],
+      FundsRecoveryKit.fromJson(
+          json['update_funds_recovery_kit_output_funds_recovery_kit']),
+    );
+  }
 
-        );
-
-}
-
-    static const fragment = r'''
+  static const fragment = r'''
 fragment UpdateFundsRecoveryKitOutputFragment on UpdateFundsRecoveryKitOutput {
     __typename
     update_funds_recovery_kit_output_wallet: wallet {
@@ -42,5 +35,4 @@ fragment UpdateFundsRecoveryKitOutputFragment on UpdateFundsRecoveryKitOutput {
         }
     }
 }''';
-
 }

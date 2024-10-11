@@ -1,65 +1,68 @@
-
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import './payment_request_data.dart';
-import './currency_amount.dart';
 import './bitcoin_network.dart';
+import './currency_amount.dart';
 import './graph_node.dart';
+import './payment_request_data.dart';
 
 /// This object represents the data associated with a BOLT #11 invoice. You can retrieve this object to receive the relevant data associated with a specific invoice.
 class InvoiceData implements PaymentRequestData {
+  @override
+  final String encodedPaymentRequest;
 
-    @override
-final String encodedPaymentRequest;
+  @override
+  final BitcoinNetwork bitcoinNetwork;
 
-    @override
-final BitcoinNetwork bitcoinNetwork;
+  /// The payment hash of this invoice.
+  final String paymentHash;
 
-    /// The payment hash of this invoice.
-final String paymentHash;
+  /// The requested amount in this invoice. If it is equal to 0, the sender should choose the amount to send.
+  final CurrencyAmount amount;
 
-    /// The requested amount in this invoice. If it is equal to 0, the sender should choose the amount to send.
-final CurrencyAmount amount;
+  /// The date and time when this invoice was created.
+  final String createdAt;
 
-    /// The date and time when this invoice was created.
-final String createdAt;
+  /// The date and time when this invoice will expire.
+  final String expiresAt;
 
-    /// The date and time when this invoice will expire.
-final String expiresAt;
+  /// The lightning node that will be paid when fulfilling this invoice.
+  final GraphNode destination;
 
-    /// The lightning node that will be paid when fulfilling this invoice.
-final GraphNode destination;
+  /// The typename of the object
+  @override
+  final String typename;
 
-    /// The typename of the object
-@override
-final String typename;
+  /// A short, UTF-8 encoded, description of the purpose of this invoice.
+  final String? memo;
 
-    /// A short, UTF-8 encoded, description of the purpose of this invoice.
-final String? memo;
+  InvoiceData(
+    this.encodedPaymentRequest,
+    this.bitcoinNetwork,
+    this.paymentHash,
+    this.amount,
+    this.createdAt,
+    this.expiresAt,
+    this.destination,
+    this.typename,
+    this.memo,
+  );
 
-
-    InvoiceData(
-        this.encodedPaymentRequest, this.bitcoinNetwork, this.paymentHash, this.amount, this.createdAt, this.expiresAt, this.destination, this.typename, this.memo, 
-    );
-
-
-
-static InvoiceData fromJson(Map<String, dynamic> json) {
+  static InvoiceData fromJson(Map<String, dynamic> json) {
     return InvoiceData(
-        json["invoice_data_encoded_payment_request"],
-        BitcoinNetwork.values.asNameMap()[json['invoice_data_bitcoin_network']] ?? BitcoinNetwork.FUTURE_VALUE,
-        json["invoice_data_payment_hash"],
-        CurrencyAmount.fromJson(json["invoice_data_amount"]),
-        json["invoice_data_created_at"],
-        json["invoice_data_expires_at"],
-        GraphNode.fromJson(json["invoice_data_destination"]),
-"InvoiceData",        json["invoice_data_memo"],
+      json['invoice_data_encoded_payment_request'],
+      BitcoinNetwork.values.asNameMap()[json['invoice_data_bitcoin_network']] ??
+          BitcoinNetwork.FUTURE_VALUE,
+      json['invoice_data_payment_hash'],
+      CurrencyAmount.fromJson(json['invoice_data_amount']),
+      json['invoice_data_created_at'],
+      json['invoice_data_expires_at'],
+      GraphNode.fromJson(json['invoice_data_destination']),
+      'InvoiceData',
+      json['invoice_data_memo'],
+    );
+  }
 
-        );
-
-}
-
-    static const fragment = r'''
+  static const fragment = r'''
 fragment InvoiceDataFragment on InvoiceData {
     __typename
     invoice_data_encoded_payment_request: encoded_payment_request
@@ -89,5 +92,4 @@ fragment InvoiceDataFragment on InvoiceData {
         graph_node_public_key: public_key
     }
 }''';
-
 }
