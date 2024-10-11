@@ -7,4 +7,8 @@ enum KeyType {
   FUTURE_VALUE,
 
   RSA_OAEP,
+
+  ELLIPTIC_CURVE,
+
+  ED25519,
 }

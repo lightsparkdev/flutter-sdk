@@ -73,4 +73,5 @@ export './withdrawal_fee_estimate_output.dart';
 export './withdrawal_mode.dart';
 export './withdrawal_request.dart';
 export './withdrawal_request_status.dart';
+export './withdrawal_request_to_withdrawals_connection.dart';
 export './wallet_dashboard.dart';

@@ -50,7 +50,7 @@ class ChannelOpeningTransaction
   @override
   final String? transactionHash;
 
-  /// The fees that were paid by the wallet sending the transaction to commit it to the Bitcoin blockchain.
+  /// The fees that were paid by the node for this transaction.
   @override
   final CurrencyAmount? fees;
 
