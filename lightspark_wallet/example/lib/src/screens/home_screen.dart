@@ -8,7 +8,6 @@ import 'package:lightspark_wallet_example/src/screens/unlock_wallet_dialog.dart'
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../components/transaction_row.dart';
-import '../utils/currency.dart';
 
 final _logger = Logger(printer: PrettyPrinter());
 

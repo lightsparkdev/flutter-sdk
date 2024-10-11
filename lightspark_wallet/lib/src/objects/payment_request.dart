@@ -1,50 +1,50 @@
-
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
+import '../lightspark_exception.dart';
+import '../requester/query.dart';
+import './currency_amount.dart';
 import './entity.dart';
+import './invoice.dart';
 import './invoice_data.dart';
 import './payment_request_data.dart';
-import '../lightspark_exception.dart';
 import './payment_request_status.dart';
-import './currency_amount.dart';
-import './invoice.dart';
-import '../requester/query.dart';
 
 /// This object contains information related to a payment request generated or received by a LightsparkNode. You can retrieve this object to receive payment information about a specific invoice.
 class PaymentRequest implements Entity {
+  /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
+  @override
+  final String id;
 
-    /// The unique identifier of this entity across all Lightspark systems. Should be treated as an opaque string.
-@override
-final String id;
+  /// The date and time when the entity was first created.
+  @override
+  final String createdAt;
 
-    /// The date and time when the entity was first created.
-@override
-final String createdAt;
+  /// The date and time when the entity was last updated.
+  @override
+  final String updatedAt;
 
-    /// The date and time when the entity was last updated.
-@override
-final String updatedAt;
+  /// The details of the payment request.
+  final PaymentRequestData data;
 
-    /// The details of the payment request.
-final PaymentRequestData data;
+  /// The status of the payment request.
+  final PaymentRequestStatus status;
 
-    /// The status of the payment request.
-final PaymentRequestStatus status;
+  /// The typename of the object
+  @override
+  final String typename;
 
-    /// The typename of the object
-@override
-final String typename;
+  PaymentRequest(
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.data,
+    this.status,
+    this.typename,
+  );
 
-
-    PaymentRequest(
-        this.id, this.createdAt, this.updatedAt, this.data, this.status, this.typename, 
-    );
-
-
-
-    static Query<PaymentRequest> getPaymentRequestQuery(String id) {
-        return Query(
-            '''
+  static Query<PaymentRequest> getPaymentRequestQuery(String id) {
+    return Query(
+      '''
 query GetPaymentRequest(\$id: ID!) {
     entity(id: \$id) {
         ... on PaymentRequest {
@@ -55,27 +55,31 @@ query GetPaymentRequest(\$id: ID!) {
 
 $fragment  
 ''',
-            (json) => PaymentRequest.fromJson(json["entity"]),
-            variables: {'id': id},
-        );
+      (json) => PaymentRequest.fromJson(json['entity']),
+      variables: {'id': id},
+    );
+  }
+
+  static PaymentRequest fromJson(Map<String, dynamic> json) {
+    if (json['__typename'] == 'Invoice') {
+      return Invoice(
+        json['invoice_id'],
+        json['invoice_created_at'],
+        json['invoice_updated_at'],
+        InvoiceData.fromJson(json['invoice_data']),
+        PaymentRequestStatus.values.asNameMap()[json['invoice_status']] ??
+            PaymentRequestStatus.FUTURE_VALUE,
+        'Invoice',
+        (json['invoice_amount_paid'] != null
+            ? CurrencyAmount.fromJson(json['invoice_amount_paid'])
+            : null),
+      );
     }
+    throw LightsparkException('DeserializationError',
+        'Couldn\'t find a concrete type for interface PaymentRequest corresponding to the typename=${json['__typename']}');
+  }
 
-static PaymentRequest fromJson(Map<String, dynamic> json) {
-    if (json["__typename"] == "Invoice") {
-        return Invoice(
-            json["invoice_id"],
-            json["invoice_created_at"],
-            json["invoice_updated_at"],
-            InvoiceData.fromJson(json["invoice_data"]),
-            PaymentRequestStatus.values.asNameMap()[json['invoice_status']] ?? PaymentRequestStatus.FUTURE_VALUE,
-"Invoice",            (json['invoice_amount_paid'] != null ? CurrencyAmount.fromJson(json['invoice_amount_paid']) : null),
-
-        );
-
-}    throw LightsparkException('DeserializationError', 'Couldn\'t find a concrete type for interface PaymentRequest corresponding to the typename=${json['__typename']}');
-}
-
-    static const fragment = r'''
+  static const fragment = r'''
 fragment PaymentRequestFragment on PaymentRequest {
     __typename
     ... on Invoice {
@@ -123,5 +127,4 @@ fragment PaymentRequestFragment on PaymentRequest {
         }
     }
 }''';
-
 }

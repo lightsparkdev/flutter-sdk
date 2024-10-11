@@ -1,31 +1,23 @@
-
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
-
 
 import './currency_amount.dart';
 
-
 class LightningFeeEstimateOutput {
+  /// The estimated fees for the payment.
+  final CurrencyAmount feeEstimate;
 
-    /// The estimated fees for the payment.
-final CurrencyAmount feeEstimate;
+  LightningFeeEstimateOutput(
+    this.feeEstimate,
+  );
 
-
-    LightningFeeEstimateOutput(
-        this.feeEstimate, 
-    );
-
-
-
-static LightningFeeEstimateOutput fromJson(Map<String, dynamic> json) {
+  static LightningFeeEstimateOutput fromJson(Map<String, dynamic> json) {
     return LightningFeeEstimateOutput(
-        CurrencyAmount.fromJson(json["lightning_fee_estimate_output_fee_estimate"]),
+      CurrencyAmount.fromJson(
+          json['lightning_fee_estimate_output_fee_estimate']),
+    );
+  }
 
-        );
-
-}
-
-    static const fragment = r'''
+  static const fragment = r'''
 fragment LightningFeeEstimateOutputFragment on LightningFeeEstimateOutput {
     __typename
     lightning_fee_estimate_output_fee_estimate: fee_estimate {
@@ -37,5 +29,4 @@ fragment LightningFeeEstimateOutputFragment on LightningFeeEstimateOutput {
         currency_amount_preferred_currency_value_approx: preferred_currency_value_approx
     }
 }''';
-
 }

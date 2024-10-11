@@ -1,36 +1,29 @@
-
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
-
 
 import './wallet.dart';
 
-
 class LoginWithJWTOutput {
+  final String accessToken;
 
-    final String accessToken;
+  final Wallet wallet;
 
-    final Wallet wallet;
+  final String validUntil;
 
-    final String validUntil;
+  LoginWithJWTOutput(
+    this.accessToken,
+    this.wallet,
+    this.validUntil,
+  );
 
-
-    LoginWithJWTOutput(
-        this.accessToken, this.wallet, this.validUntil, 
-    );
-
-
-
-static LoginWithJWTOutput fromJson(Map<String, dynamic> json) {
+  static LoginWithJWTOutput fromJson(Map<String, dynamic> json) {
     return LoginWithJWTOutput(
-        json["login_with_j_w_t_output_access_token"],
-        Wallet.fromJson(json["login_with_j_w_t_output_wallet"]),
-        json["login_with_j_w_t_output_valid_until"],
+      json['login_with_j_w_t_output_access_token'],
+      Wallet.fromJson(json['login_with_j_w_t_output_wallet']),
+      json['login_with_j_w_t_output_valid_until'],
+    );
+  }
 
-        );
-
-}
-
-    static const fragment = r'''
+  static const fragment = r'''
 fragment LoginWithJWTOutputFragment on LoginWithJWTOutput {
     __typename
     login_with_j_w_t_output_access_token: access_token
@@ -70,5 +63,4 @@ fragment LoginWithJWTOutputFragment on LoginWithJWTOutput {
     }
     login_with_j_w_t_output_valid_until: valid_until
 }''';
-
 }
