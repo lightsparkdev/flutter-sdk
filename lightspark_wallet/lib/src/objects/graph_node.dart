@@ -1,12 +1,12 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import '../lightspark_wallet_client.dart';
-import '../requester/query.dart';
-import './bitcoin_network.dart';
-import './entity.dart';
 import './node.dart';
-import './node_address_type.dart';
+import './entity.dart';
+import '../requester/query.dart';
 import './node_to_addresses_connection.dart';
+import './bitcoin_network.dart';
+import './node_address_type.dart';
+import '../lightspark_wallet_client.dart';
 
 /// This object represents a node that exists on the Lightning Network, including nodes not managed by Lightspark. You can retrieve this object to get publicly available information about any node on the Lightning Network.
 class GraphNode implements Node, Entity {

@@ -1,15 +1,15 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import '../lightspark_exception.dart';
+import './transaction.dart';
+import './entity.dart';
 import '../requester/query.dart';
+import './deposit.dart';
+import './currency_amount.dart';
+import './transaction_status.dart';
 import './channel_closing_transaction.dart';
 import './channel_opening_transaction.dart';
-import './currency_amount.dart';
-import './deposit.dart';
-import './entity.dart';
-import './transaction.dart';
-import './transaction_status.dart';
 import './withdrawal.dart';
+import '../lightspark_exception.dart';
 
 /// This object represents an L1 transaction that occurred on the Bitcoin Network. You can retrieve this object to receive information about a specific on-chain transaction made on the Lightning Network associated with your Lightspark Node.
 class OnChainTransaction implements Transaction, Entity {

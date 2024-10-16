@@ -1,16 +1,16 @@
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
-import '../lightspark_exception.dart';
-import '../requester/query.dart';
-import './currency_amount.dart';
-import './entity.dart';
-import './incoming_payment.dart';
-import './outgoing_payment.dart';
-import './payment_failure_reason.dart';
-import './payment_request_data.dart';
-import './rich_text.dart';
 import './transaction.dart';
+import './entity.dart';
+import '../requester/query.dart';
+import './incoming_payment.dart';
+import './currency_amount.dart';
 import './transaction_status.dart';
+import './rich_text.dart';
+import './payment_request_data.dart';
+import './payment_failure_reason.dart';
+import '../lightspark_exception.dart';
+import './outgoing_payment.dart';
 
 /// This is an object representing a transaction made over the Lightning Network. You can retrieve this object to receive information about a specific transaction made over Lightning for a Lightspark node.
 class LightningTransaction implements Transaction, Entity {
