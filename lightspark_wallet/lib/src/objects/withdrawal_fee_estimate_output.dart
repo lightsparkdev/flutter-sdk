@@ -1,23 +1,31 @@
+
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
+
 
 import './currency_amount.dart';
 
+
 class WithdrawalFeeEstimateOutput {
-  /// The estimated fee for the withdrawal.
-  final CurrencyAmount feeEstimate;
 
-  WithdrawalFeeEstimateOutput(
-    this.feeEstimate,
-  );
+    /// The estimated fee for the withdrawal.
+final CurrencyAmount feeEstimate;
 
-  static WithdrawalFeeEstimateOutput fromJson(Map<String, dynamic> json) {
-    return WithdrawalFeeEstimateOutput(
-      CurrencyAmount.fromJson(
-          json['withdrawal_fee_estimate_output_fee_estimate']),
+
+    WithdrawalFeeEstimateOutput(
+        this.feeEstimate, 
     );
-  }
 
-  static const fragment = r'''
+
+
+static WithdrawalFeeEstimateOutput fromJson(Map<String, dynamic> json) {
+    return WithdrawalFeeEstimateOutput(
+        CurrencyAmount.fromJson(json["withdrawal_fee_estimate_output_fee_estimate"]),
+
+        );
+
+}
+
+    static const fragment = r'''
 fragment WithdrawalFeeEstimateOutputFragment on WithdrawalFeeEstimateOutput {
     __typename
     withdrawal_fee_estimate_output_fee_estimate: fee_estimate {
@@ -29,4 +37,5 @@ fragment WithdrawalFeeEstimateOutputFragment on WithdrawalFeeEstimateOutput {
         currency_amount_preferred_currency_value_approx: preferred_currency_value_approx
     }
 }''';
+
 }

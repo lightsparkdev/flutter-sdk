@@ -1,21 +1,30 @@
+
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
+
 
 import './wallet.dart';
 
+
 class DeployWalletOutput {
-  final Wallet wallet;
 
-  DeployWalletOutput(
-    this.wallet,
-  );
+    final Wallet wallet;
 
-  static DeployWalletOutput fromJson(Map<String, dynamic> json) {
-    return DeployWalletOutput(
-      Wallet.fromJson(json['deploy_wallet_output_wallet']),
+
+    DeployWalletOutput(
+        this.wallet, 
     );
-  }
 
-  static const fragment = r'''
+
+
+static DeployWalletOutput fromJson(Map<String, dynamic> json) {
+    return DeployWalletOutput(
+        Wallet.fromJson(json["deploy_wallet_output_wallet"]),
+
+        );
+
+}
+
+    static const fragment = r'''
 fragment DeployWalletOutputFragment on DeployWalletOutput {
     __typename
     deploy_wallet_output_wallet: wallet {
@@ -53,4 +62,5 @@ fragment DeployWalletOutputFragment on DeployWalletOutput {
         wallet_status: status
     }
 }''';
+
 }
