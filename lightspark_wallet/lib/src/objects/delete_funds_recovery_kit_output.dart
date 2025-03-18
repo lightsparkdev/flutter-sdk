@@ -1,23 +1,35 @@
+
 // Copyright ©, 2023-present, Lightspark Group, Inc. - All Rights Reserved
 
+
+
+
+
 class DeleteFundsRecoveryKitOutput {
-  final String walletId;
 
-  DeleteFundsRecoveryKitOutput(
-    this.walletId,
-  );
+    final String walletId;
 
-  static DeleteFundsRecoveryKitOutput fromJson(Map<String, dynamic> json) {
-    return DeleteFundsRecoveryKitOutput(
-      json['delete_funds_recovery_kit_output_wallet']?['id'],
+
+    DeleteFundsRecoveryKitOutput(
+        this.walletId, 
     );
-  }
 
-  static const fragment = r'''
+
+
+static DeleteFundsRecoveryKitOutput fromJson(Map<String, dynamic> json) {
+    return DeleteFundsRecoveryKitOutput(
+        json["delete_funds_recovery_kit_output_wallet"]?["id"],
+
+        );
+
+}
+
+    static const fragment = r'''
 fragment DeleteFundsRecoveryKitOutputFragment on DeleteFundsRecoveryKitOutput {
     __typename
     delete_funds_recovery_kit_output_wallet: wallet {
         id
     }
 }''';
+
 }
